@@ -43,10 +43,23 @@ if($backgroundPollingRateType == 'Seconds')
 	<style type="text/css">
 		.img-responsive
 		{
-			max-width: 300px;
+			width: 100%;
+		}
+		.mainBox
+		{
 			width: 300px;
-			height: 300px;
-			max-height: 300px;
+			height: 450px;
+			display: inline-table;
+			background-color: #777;
+			padding: 10px;
+			margin: 20px;
+			border: 2px solid white;
+			border-radius: 15px;
+			box-shadow: 5px 5px 5px black;
+		}
+		.jumbotron
+		{
+			border: 1px solid white;
 		}
 	</style>
 </head>
@@ -58,7 +71,15 @@ if($backgroundPollingRateType == 'Seconds')
 
 	<div id="storage">
 		<div class="server">
-			<div id="{{id}}" style="width: 300px; height: 300px; display: inline-block; background-color: blue;">
+			<div id="{{id}}" class="mainBox">
+				<div>
+					<h2 style="font-size: 150%;">{{title}}</h2>
+				</div>
+				<div id="{{id}}Jumbotron" class="jumbotron">
+				</div>
+				<div style="border-top: 1px solid white;">
+					More Stuff Below
+				</div>
 			</div>
 		</div>
 	</div>
@@ -84,7 +105,7 @@ if($backgroundPollingRateType == 'Seconds')
 	<script type="text/javascript">
 		
 		var arrayOfData = new Array();
-
+		var heightBase = 0;
 
 		$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
 		{
@@ -108,11 +129,12 @@ if($backgroundPollingRateType == 'Seconds')
 					arrayOfData[proxyIdId] = {ip: proxyId, id: proxyIdId};
 					var item = $("#storage .server").html();
 					item = item.replace(/{{id}}/g, proxyIdId);
+					item = item.replace(/{{title}}/g, proxyId);
 					$("#main").append(item);
 				}
 			}
-			pollTwo();
 		}
+
 
 		function pollTwo()
 		{
@@ -148,12 +170,55 @@ if($backgroundPollingRateType == 'Seconds')
 			var header = data.split("class='container'");
 			header = header[1];
 
-			var jumbotron = data.split("class='jumbotron'>");
+			var jumbotron = data.split("src='");
+			jumbotron = jumbotron[1].split("'>");
+			jumbotron = jumbotron[0];
+			var newImg = new Image();
+
+		    newImg.onload = function()
+		    {
+		    	var idOfNewImg = dataExt["id"]+"Jumbotron";
+		    	var ratio = newImg.height/newImg.width;
+		    	var marginBottom = 10;
+		    	var width = 280;
+		    	var height = width*ratio;
+		    	if(height > heightBase)
+		    	{
+		    		heightBase = height;
+		    	}
+		    	else if(height < heightBase)
+		    	{
+		    		marginBottom = heightBase - height + marginBottom;
+		    	}
+		    	document.getElementById(idOfNewImg).setAttribute("style","width:"+width+"px; height:"+height+"px; margin-bottom: "+marginBottom+"px;");
+		    }
+
+		    newImg.src = jumbotron; 
+		    newImg.id = dataExt["id"];
+		    jumbotron = data.split("class='jumbotron'>");
 			jumbotron = jumbotron[1].split(" <!-- jumbotron -->");
 			jumbotron = jumbotron[0];
-
-			document.getElementById(dataExt["id"]).innerHTML = jumbotron;
+		   
+			document.getElementById(dataExt["id"]+"Jumbotron").innerHTML = jumbotron;
 		}
+
+		function resize() 
+		{
+			var targetHeight = window.innerHeight;
+			if($("#main").outerHeight() !== targetHeight)
+			{
+				$("#main").outerHeight(targetHeight);
+			}
+		}
+
+		$(document).ready(function()
+		{
+			resize();
+			window.onresize = resize;
+
+			setInterval(function(){pollTwo();},3000);
+
+		});
 
 	</script>
 </body>
