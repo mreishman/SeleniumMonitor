@@ -61,6 +61,49 @@ if($backgroundPollingRateType == 'Seconds')
 		{
 			border: 1px solid white;
 		}
+		.videos
+		{
+			text-decoration: none;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		a
+		{
+			color: white;
+		}
+		a:visited
+		{
+			color: white;
+		}
+		.menu
+		{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: inline-block;
+			vertical-align: bottom;
+			color: white;
+		}
+		.menu li
+		{
+			float: left;
+			padding: 4px;
+			background-color: #555;
+			border-radius: 10px 10px 0 0;
+			margin: 0 4px 0 4px;
+			cursor: pointer;
+		}
+		.menu .active
+		{
+			color: black;
+			background-color: white;
+		}
+		.conainerSub
+		{
+			max-height: 200px;
+			overflow-y: scroll;
+		}
 	</style>
 </head>
 <body>
@@ -76,9 +119,26 @@ if($backgroundPollingRateType == 'Seconds')
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
+					<img src="../core/img/loading.gif" style="width: 150px; height: 150px; margin-left: 60px;">
 				</div>
-				<div style="border-top: 1px solid white;">
-					More Stuff Below
+				<div style="border-bottom: 1px solid white;">
+					<ul class="menu">
+						<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
+							Stats
+						</li>
+						<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');" class="active">
+							Videos
+						</li>
+						<li id="{{id}}ActivityMenu" onclick="toggleTab('{{id}}', 'Activity');" ">
+							Activity
+						</li>
+					</ul>
+				</div>
+				<div class="conainerSub" id="{{id}}Videos">
+				</div>
+				<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
+				</div>
+				<div class="conainerSub" id="{{id}}Activity"  style="display: none;">
 				</div>
 			</div>
 		</div>
@@ -200,6 +260,22 @@ if($backgroundPollingRateType == 'Seconds')
 			jumbotron = jumbotron[0];
 		   
 			document.getElementById(dataExt["id"]+"Jumbotron").innerHTML = jumbotron;
+
+
+			var videos = data.split("<ul class='videos'>");
+			videos = videos[1].split("</ul>");
+			videos = videos[0];
+			videos = "<ul class='videos'>"+videos+"</ul>";
+
+			document.getElementById(dataExt["id"]+"Videos").innerHTML = videos;
+
+
+			var stats = data.split("<!-- videos -->");
+			stats = stats[1].split("<div class='col-lg-6'>");
+			stats = stats[1].split("</div> ");
+			stats = stats[0];
+
+			document.getElementById(dataExt["id"]+"Stats").innerHTML = stats;
 		}
 
 		function resize() 
@@ -209,6 +285,15 @@ if($backgroundPollingRateType == 'Seconds')
 			{
 				$("#main").outerHeight(targetHeight);
 			}
+		}
+
+		function toggleTab(currentId, tabIdToShow)
+		{
+			$("#"+currentId+" .menu li").removeClass("active");
+			$("#"+currentId+" .conainerSub").hide();
+
+			$("#"+currentId+tabIdToShow).show();
+			$("#"+currentId+tabIdToShow+"Menu").addClass("active");
 		}
 
 		$(document).ready(function()
