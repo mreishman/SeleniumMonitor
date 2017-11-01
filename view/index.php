@@ -101,8 +101,8 @@ if($backgroundPollingRateType == 'Seconds')
 		}
 		.conainerSub
 		{
-			max-height: 200px;
-			overflow-y: scroll;
+			height: 200px;
+			overflow-y: auto;
 		}
 	</style>
 </head>
@@ -203,7 +203,7 @@ if($backgroundPollingRateType == 'Seconds')
 				}
 				else
 				{
-
+					document.getElementById(proxyIdId+"Activity").innerHTML = browsersContentDetail;
 				}
 			}
 		}
@@ -318,7 +318,7 @@ if($backgroundPollingRateType == 'Seconds')
 			pollTwo();
 
 			setInterval(function(){pollTwo();},3000);
-			setInterval(function(){poll();},3000);
+			setInterval(function(){poll();},1500);
 		});
 
 	</script>
