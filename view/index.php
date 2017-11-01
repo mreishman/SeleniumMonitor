@@ -47,7 +47,7 @@ if($backgroundPollingRateType == 'Seconds')
 		}
 		.mainBox
 		{
-			width: 300px;
+			width: 333px;
 			height: 450px;
 			display: inline-table;
 			background-color: #777;
@@ -126,7 +126,7 @@ if($backgroundPollingRateType == 'Seconds')
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
-					<img src="../core/img/loading.gif" style="width: 150px; height: 150px; margin-left: 60px;">
+					<img src="../core/img/loading.gif" style="width: 75px; height: 75px; margin-left: 110px; margin-top: 75px; margin-bottom: 75px;">
 				</div>
 				<div style="border-bottom: 1px solid white;">
 					<ul class="menu">
@@ -142,6 +142,9 @@ if($backgroundPollingRateType == 'Seconds')
 						<li id="{{id}}ConfigMenu" onclick="toggleTab('{{id}}', 'Config');">
 							Config
 						</li>
+						<li id="{{id}}ActionsMenu" onclick="toggleTab('{{id}}', 'Actions');">
+							Actions
+						</li>
 					</ul>
 				</div>
 				<div class="conainerSub" id="{{id}}Videos" style="display: none;">
@@ -153,6 +156,8 @@ if($backgroundPollingRateType == 'Seconds')
 				</div>
 				<div class="conainerSub" id="{{id}}Config"  style="display: none;">
 					{{config}}
+				</div>
+				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
 				</div>
 			</div>
 		</div>
@@ -271,7 +276,7 @@ if($backgroundPollingRateType == 'Seconds')
 		    	var idOfNewImg = dataExt["id"]+"Jumbotron";
 		    	var ratio = newImg.height/newImg.width;
 		    	var marginBottom = 10;
-		    	var width = 280;
+		    	var width = 312;
 		    	var height = width*ratio;
 		    	if(height > heightBase)
 		    	{
