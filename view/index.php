@@ -126,19 +126,20 @@ if($backgroundPollingRateType == 'Seconds')
 						<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
 							Stats
 						</li>
-						<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');" class="active">
+						<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');">
 							Videos
 						</li>
-						<li id="{{id}}ActivityMenu" onclick="toggleTab('{{id}}', 'Activity');" ">
+						<li id="{{id}}ActivityMenu" onclick="toggleTab('{{id}}', 'Activity');" class="active">
 							Activity
 						</li>
 					</ul>
 				</div>
-				<div class="conainerSub" id="{{id}}Videos">
+				<div class="conainerSub" id="{{id}}Videos" style="display: none;">
 				</div>
 				<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
 				</div>
-				<div class="conainerSub" id="{{id}}Activity"  style="display: none;">
+				<div class="conainerSub" id="{{id}}Activity">
+					{{activity}}
 				</div>
 			</div>
 		</div>
@@ -158,6 +159,7 @@ if($backgroundPollingRateType == 'Seconds')
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
+		var ipOfMainServer = "<?php echo $mainServerIP;?>";
 
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
@@ -166,13 +168,15 @@ if($backgroundPollingRateType == 'Seconds')
 		
 		var arrayOfData = new Array();
 		var heightBase = 0;
-
-		$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+		function poll()
 		{
-			poll(data);
-		});
+			$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+			{
+				filterPoll(data);
+			});
+		}
 
-		function poll(data)
+		function filterPoll(data)
 		{
 			var splitData = data.split("<div class='proxy'>");
 			for (var i = 1; i < splitData.length; i++)
@@ -184,13 +188,22 @@ if($backgroundPollingRateType == 'Seconds')
 				var proxyIdId = proxyId.split('.').join('point');
 				proxyIdId = proxyIdId.split(':').join('colon');
 				proxyIdId = proxyIdId.split('/').join('forwardSlash');
+				var browsersContentDetail = splitData[i].split("<div type='browsers' class='content_detail'>");
+				browsersContentDetail = browsersContentDetail[1].split("</div>");
+				browsersContentDetail = browsersContentDetail[0];
+				browsersContentDetail = browsersContentDetail.split('/grid/resources/org/openqa/grid/images/').join('../core/img/');
 				if($("#main #"+proxyIdId).length === 0)
 				{
 					arrayOfData[proxyIdId] = {ip: proxyId, id: proxyIdId};
 					var item = $("#storage .server").html();
 					item = item.replace(/{{id}}/g, proxyIdId);
 					item = item.replace(/{{title}}/g, proxyId);
+					item = item.replace(/{{activity}}/g, browsersContentDetail);
 					$("#main").append(item);
+				}
+				else
+				{
+
 				}
 			}
 		}
@@ -301,8 +314,11 @@ if($backgroundPollingRateType == 'Seconds')
 			resize();
 			window.onresize = resize;
 
-			setInterval(function(){pollTwo();},3000);
+			poll();
+			pollTwo();
 
+			setInterval(function(){pollTwo();},3000);
+			setInterval(function(){poll();},3000);
 		});
 
 	</script>
