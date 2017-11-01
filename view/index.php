@@ -103,6 +103,13 @@ if($backgroundPollingRateType == 'Seconds')
 		{
 			height: 200px;
 			overflow-y: auto;
+			word-wrap:break-word; 
+			word-break: break-all;
+		}
+		.busy
+		{
+			opacity: 0.4;
+			filter: alpha(opacity=40);
 		}
 	</style>
 </head>
@@ -132,6 +139,9 @@ if($backgroundPollingRateType == 'Seconds')
 						<li id="{{id}}ActivityMenu" onclick="toggleTab('{{id}}', 'Activity');" class="active">
 							Activity
 						</li>
+						<li id="{{id}}ConfigMenu" onclick="toggleTab('{{id}}', 'Config');">
+							Config
+						</li>
 					</ul>
 				</div>
 				<div class="conainerSub" id="{{id}}Videos" style="display: none;">
@@ -140,6 +150,9 @@ if($backgroundPollingRateType == 'Seconds')
 				</div>
 				<div class="conainerSub" id="{{id}}Activity">
 					{{activity}}
+				</div>
+				<div class="conainerSub" id="{{id}}Config"  style="display: none;">
+					{{config}}
 				</div>
 			</div>
 		</div>
@@ -192,6 +205,9 @@ if($backgroundPollingRateType == 'Seconds')
 				browsersContentDetail = browsersContentDetail[1].split("</div>");
 				browsersContentDetail = browsersContentDetail[0];
 				browsersContentDetail = browsersContentDetail.split('/grid/resources/org/openqa/grid/images/').join('../core/img/');
+				var browserConfig = splitData[i].split("<div type='config' class='content_detail'>");
+				browserConfig = browserConfig[1].split("</div>");
+				browserConfig = browserConfig[0];
 				if($("#main #"+proxyIdId).length === 0)
 				{
 					arrayOfData[proxyIdId] = {ip: proxyId, id: proxyIdId};
@@ -199,11 +215,13 @@ if($backgroundPollingRateType == 'Seconds')
 					item = item.replace(/{{id}}/g, proxyIdId);
 					item = item.replace(/{{title}}/g, proxyId);
 					item = item.replace(/{{activity}}/g, browsersContentDetail);
+					item = item.replace(/{{config}}/g, browserConfig);
 					$("#main").append(item);
 				}
 				else
 				{
 					document.getElementById(proxyIdId+"Activity").innerHTML = browsersContentDetail;
+					document.getElementById(proxyIdId+"Config").innerHTML = browserConfig;
 				}
 			}
 		}
