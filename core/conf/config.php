@@ -1,7 +1,7 @@
 <?php
 
 $defaultConfig = array(
-	'autoCheckDaysUpdate'			=>	'7',
+	'autoCheckDaysUpdate'			=> '7',
 	'autoCheckUpdate' 				=> 'true',
 	'backgroundColor'				=> "#292929",
 	'backgroundHeaderColor'			=> "#222222",
@@ -25,6 +25,7 @@ $defaultConfig = array(
 	'locationForMonitor'			=> '',
 	'locationForSearch'				=> '',
 	'locationForStatus'				=> '',
+	'locationOfTests'				=> '',
 	'logFontColor'					=> '#FFFFFF',
 	'mainFontColor'					=> '#FFFFFF',
 	'mainServerIP'					=> "192.168.1.5",

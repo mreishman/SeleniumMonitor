@@ -227,3 +227,12 @@ function addResetButton($idOfForm)
 {
 	return "<a onclick=\"resetArrayObject('".$idOfForm."');\" id=\"".$idOfForm."ResetButton\" style=\"display: none;\" class=\"linkSmall\" > Reset Current Changes</a>";
 }
+
+function isDirRmpty($dir)
+{
+	if(!is_readable($dir))
+	{
+		return NULL;
+	}
+  	return (count(scandir($dir)) == 2);
+}
