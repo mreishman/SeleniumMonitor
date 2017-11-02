@@ -61,13 +61,18 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		.testSelectPart
 		{
 			padding: 5px;
-			width: 310px;
+			width: 180px;
 			height: 150px;
-			display: inline-grid;
+			display: inline-table;
 		}
 		.title
 		{
 			text-align: center;
+		}
+		.newTestPartFive
+		{
+			margin-top: 30px;
+			border-top: 1px solid white;
 		}
 	</style>
 </head>
@@ -85,8 +90,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<h1 class="title">1.</h1>
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
-						<select>
-							<option>Select A File</option>
+						<select id="fileListSelector" onchange="getFileList();">
+							<option value="PLACEHOLDER">Select A File</option>
 							<?php
 							$files = array_diff(scandir($locationOfTests), array('..', '.'));
 							foreach($files as $key => $value)
@@ -94,7 +99,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 								$path = realpath($locationOfTests.DIRECTORY_SEPARATOR.$value);
 						        if(!is_dir($path))
 						        {
-						        	echo "<option>".$value."</option>";
+						        	echo "<option value='".$path."'' >".$value."</option>";
 						        }
 							}?>
 						</select>
@@ -111,7 +116,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					<button>Set Base Url</button>
 				</div>
-				<div class="newTestPartTwo testSelectPart">
+				<div class="newTestPartThree testSelectPart testSelectPartBorder">
 					<h1 class="title">3.</h1>
 					<br>
 					Run tests by:
@@ -121,6 +126,26 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<option>Group</option>
 						<option>Custom</option>
 					</select>
+				</div>
+				<div class="newTestPartFour testSelectPart">
+					<h1 class="title">4.</h1>
+					<br>
+					Max number of concurrent tests:
+					<br>
+					<select>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+				</div>
+				<br>
+				<div class="newTestPartFive">
+					<h1 class="title">5.</h1>
+					<br>
+					Tests:
+					<br>
+					<div id="testsPlaceHodler">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -139,6 +164,39 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
+
+
+		function getFileList()
+		{
+			var urlForSend = '../core/php/returnFileContent.php?format=json';
+			var valueForFile = document.getElementById("fileListSelector").value;
+			if(valueForFile !== "PLACEHOLDER")
+			{
+				var data = {file: valueForFile };
+				$.ajax(
+				{
+					url: urlForSend,
+					dataType: "json",
+					data: data,
+					type: "POST",
+					success(data)
+					{
+						console.log();
+						var tests = data['arrayOfTests'];
+						var testsHtml = "<ul>";
+						for (var i = tests.length - 1; i >= 0; i--) {
+							testsHtml += "<li>"+tests[i]+"</li>";
+						}
+						testsHtml += "</ul>";
+						document.getElementById("testsPlaceHodler").innerHTML = testsHtml;
+					}
+				});
+			}
+			else
+			{
+				document.getElementById("testsPlaceHodler").innerHTML = "";
+			}
+		}
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
 </body>

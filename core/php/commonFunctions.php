@@ -243,6 +243,7 @@ function filterFunctionName($line)
 	$line = str_replace("\r\n", "", $line);
 	$line = str_replace(" ", "", $line);
 	$line = str_replace("()", "", $line);
+	$line = str_replace("{", "", $line);
 	return $line;
 }
 

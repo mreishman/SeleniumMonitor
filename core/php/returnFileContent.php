@@ -1,7 +1,7 @@
 <?php
 require_once("commonFunctions.php");
-//$file = file($_POST['file']);
-$file = file("/var/www/html/app/code/local/Goed/Phpyre/Phpunit/Model/Tests/Selenium/AddToCartTest.php");
+$file = file($_POST['file']);
+//$file = file("/var/www/html/app/code/local/Goed/Phpyre/Phpunit/Model/Tests/Selenium/AddToCartTest.php");
 $arrayOfArrays = array();
 $arrayOfGroups = array();
 $arrayOfTests = array();
@@ -23,10 +23,16 @@ for ($i=0; $i < count($file); $i++)
 { 
 	if(strpos($file[$i], "public function") !== false)
 	{
-		$line = filterFunctionName($file[$i]);
-		if(!in_array($line, $arrayOfTests))
+		if(strpos($file[$i], "test") !== false)
 		{
-			array_push($arrayOfTests, $line);
+			if(strpos($file[$i], "//") === false)
+			{
+				$line = filterFunctionName($file[$i]);
+				if(!in_array($line, $arrayOfTests))
+				{
+					array_push($arrayOfTests, $line);
+				}
+			}
 		}
 	}
 }
