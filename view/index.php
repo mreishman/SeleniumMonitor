@@ -158,6 +158,7 @@ if($backgroundPollingRateType == 'Seconds')
 					{{config}}
 				</div>
 				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
+					<button>Send Reboot</button>
 				</div>
 			</div>
 		</div>

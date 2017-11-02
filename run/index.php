@@ -22,6 +22,15 @@ require_once('../core/php/configStatic.php');
 require_once('../core/php/loadVars.php');
 require_once('../core/php/updateCheck.php');
 
+if(is_file($locationOfTests."baseUrl.php"))
+{
+	require_once($locationOfTests."baseUrl.php");
+}
+else
+{
+	$staticBaseUrl = "";
+}
+
 $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 ?>
 <!doctype html>
@@ -37,9 +46,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		.runNewTest
 		{
 			display: inline-block;
-		    width: 660px;
-		    margin-left: 25%;
-		    margin-top: 10%;
+		    width: 1000px;
+		    margin-left: 2%;
+		    margin-top: 2%;
 		    background: rgba(0,0,0,.6);
 		    border: 1px solid white;
 		    padding: 25px;
@@ -52,8 +61,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		.testSelectPart
 		{
 			padding: 5px;
-			width: 197px;
+			width: 310px;
 			height: 150px;
+			display: inline-grid;
 		}
 		.title
 		{
@@ -71,7 +81,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 	<!-- <div id="storage"> -->
 		<div class="newTestPopup">
 			<div class="runNewTest">
-				<div class="newTestPartOne testSelectPartBorder testSelectPart" style="display: inline-block;">
+				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
@@ -92,14 +102,16 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						Please specifiy a directory of where test are located on the settings page
 					<?php endif;?>
 				</div>
-				<div class="newTestPartTwo testSelectPart testSelectPartBorder" style="display: inline-block;">
+				<div class="newTestPartTwo testSelectPart testSelectPartBorder">
 					<h1 class="title">2.</h1>
 					<br>
 					Set Base URL (i)
 					<br>
-					<input type="text" name="baseUrl">
+					<input type="text" value="<?php echo $staticBaseUrl; ?>" name="baseUrl">
+					<br>
+					<button>Set Base Url</button>
 				</div>
-				<div class="newTestPartTwo testSelectPart" style="display: inline-block;">
+				<div class="newTestPartTwo testSelectPart">
 					<h1 class="title">3.</h1>
 					<br>
 					Run tests by:
