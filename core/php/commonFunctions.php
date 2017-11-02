@@ -236,3 +236,21 @@ function isDirRmpty($dir)
 	}
   	return (count(scandir($dir)) == 2);
 }
+
+function filterFunctionName($line)
+{
+	$line = str_replace("public function", "", $line);
+	$line = str_replace("\r\n", "", $line);
+	$line = str_replace(" ", "", $line);
+	$line = str_replace("()", "", $line);
+	return $line;
+}
+
+function filterGroupname($line)
+{
+	$line = str_replace("@group", "", $line);
+	$line = str_replace("\r\n", "", $line);
+	$line = str_replace(" ", "", $line);
+	$line = str_replace("*", "", $line);
+	return $line;
+}
