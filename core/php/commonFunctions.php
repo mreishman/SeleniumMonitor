@@ -307,3 +307,13 @@ function getAllTestsFromGroup($file, $groupNameArray)
 	}
 	return $arrayOfTests;
 }
+
+function checkPhpUnit()
+{
+	$commandResult = shell_exec("phpunit --version");
+	if(strpos($commandResult, "command not found") === false)
+	{
+		return true;
+	}
+	return false;
+}

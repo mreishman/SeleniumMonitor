@@ -159,6 +159,9 @@ if($backgroundPollingRateType == 'Seconds')
 				</div>
 				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
 					<button>Send Reboot</button>
+					<button>Go to 3000</button>
+					<button>Go to 4444</button>
+					<button>Go to 5555</button>
 				</div>
 			</div>
 		</div>
@@ -187,6 +190,8 @@ if($backgroundPollingRateType == 'Seconds')
 		
 		var arrayOfData = new Array();
 		var heightBase = 0;
+		var firstLoad = true;
+
 		function poll()
 		{
 			$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
@@ -223,12 +228,19 @@ if($backgroundPollingRateType == 'Seconds')
 					item = item.replace(/{{activity}}/g, browsersContentDetail);
 					item = item.replace(/{{config}}/g, browserConfig);
 					$("#main").append(item);
+					firstLoad = true;
 				}
 				else
 				{
 					document.getElementById(proxyIdId+"Activity").innerHTML = browsersContentDetail;
 					document.getElementById(proxyIdId+"Config").innerHTML = browserConfig;
 				}
+			}
+
+			if(firstLoad)
+			{
+				firstLoad = false;
+				pollTwo();
 			}
 		}
 
@@ -339,10 +351,9 @@ if($backgroundPollingRateType == 'Seconds')
 			window.onresize = resize;
 
 			poll();
-			pollTwo();
 
-			setInterval(function(){pollTwo();},3000);
-			setInterval(function(){poll();},1500);
+			setInterval(function(){pollTwo();},30000);
+			setInterval(function(){poll();},250);
 		});
 
 	</script>

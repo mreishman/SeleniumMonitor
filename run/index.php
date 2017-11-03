@@ -250,11 +250,16 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						for (var i = tests.length - 1; i >= 0; i--) {
 							testsHtml += "<li><input type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
 						}
-						testsHtml += "</ul></form><br><button> Run Tests </button>";
+						testsHtml += "</ul></form><br><button onclick='runTests();'> Run Tests </button>";
 					}
 					document.getElementById("testsPlaceHolder").innerHTML = testsHtml;
 				}
 			});
+		}
+
+		function runTests()
+		{
+			
 		}
 	</script>
 	<?php readfile('../core/html/popup.html') ?>

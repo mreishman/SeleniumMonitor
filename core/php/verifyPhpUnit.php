@@ -1,2 +1,3 @@
 <?php
-echo json_encode(shell_exec("phpunit --version"));
+require_once("commonFunctions.php");
+echo json_encode(checkPhpUnit());
