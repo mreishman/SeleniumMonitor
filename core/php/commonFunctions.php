@@ -244,6 +244,7 @@ function filterFunctionName($line)
 	$line = str_replace(" ", "", $line);
 	$line = str_replace("()", "", $line);
 	$line = str_replace("{", "", $line);
+	$line =  trim(preg_replace('/\t+/', "", $line));
 	return $line;
 }
 
@@ -253,6 +254,7 @@ function filterGroupname($line)
 	$line = str_replace("\r\n", "", $line);
 	$line = str_replace(" ", "", $line);
 	$line = str_replace("*", "", $line);
+	$line =  trim(preg_replace('/\t+/', "", $line));
 	return $line;
 }
 

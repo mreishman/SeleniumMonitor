@@ -26,6 +26,7 @@ $defaultConfig = array(
 	'locationForSearch'				=> '',
 	'locationForStatus'				=> '',
 	'locationOfTests'				=> '',
+	'locationOfSelenium'			=> '',
 	'logFontColor'					=> '#FFFFFF',
 	'mainFontColor'					=> '#FFFFFF',
 	'mainServerIP'					=> "192.168.1.5",

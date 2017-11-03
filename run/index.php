@@ -47,7 +47,6 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		{
 			display: inline-block;
 		    width: 1000px;
-		    margin-left: 2%;
 		    margin-top: 2%;
 		    background: rgba(0,0,0,.6);
 		    border: 1px solid white;
@@ -84,6 +83,50 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		{
 			text-decoration: none;
 			list-style: none;
+		}
+		.partFiveContainer
+		{
+			display: inline-block;
+			vertical-align: top;
+		}
+		.containerMain
+		{
+			width: 80%;
+			margin-left: 10%;
+			padding: 5px;
+			margin-bottom: 40px;
+		}
+		.block
+		{
+			width: 10px;
+			height: 10px;
+			margin: 3px;
+			display: inline-block;
+		}
+		.blockEmpty
+		{
+			background-color: darkgrey;
+			border: 1px solid black;
+		}
+		.blockInProgress
+		{
+			background-color: cyan;
+			border: 1px solid white;
+		}
+		.blockPass
+		{
+			background-color: limegreen;
+			border: 1px solid black;
+		}
+		.blockError
+		{
+			background-color: yellow;
+			border: 1px solid black;
+		}
+		.blockFail
+		{
+			background-color: red;
+			border: 1px solid black;
 		}
 	</style>
 </head>
@@ -140,21 +183,21 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</div>
 				<br>
 				<div class="newTestPartFive">
-					<h1 class="title">5.</h1>
+					<h1 class="title">4.</h1>
 					<br>
-					<div style="display: inline-block;">
+					<div class="partFiveContainer">
 						<span>Groups:</span>
 						<br>
 						<div id="groupsPlaceHodler">
 						</div>
 					</div>
-					<div style="display: inline-block;">
+					<div class="partFiveContainer">
 						<span>Exclude Groups: </span>
 						<br>
 						<div id="groupExcludePlaceHolder">
 						</div>
 					</div>
-					<div style="display: inline-block;">
+					<div class="partFiveContainer">
 						<span>Tests to be run: </span>
 						<br>
 						<div id="testsPlaceHolder">
@@ -177,8 +220,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						</div>
 					</h3>
 				</div>
-				<div id="{{id}}FoundThings" style="background-color: grey; max-height: 400px; border: 1px solid black; margin-top: 10px; overflow-y: scroll; display: none;">
-
+				<div id="{{id}}ProgressBlocks" style="background-color: grey; max-height: 400px; border: 1px solid black; margin-top: 10px; overflow-y: scroll;">
+					{{ProgressBlocks}}
+				</div>
+				<div style="display: none;">
+					<input type="hidden" id="{{id}}File" value="{{file}}">
 				</div>
 			</div>
 		</div>
@@ -206,6 +252,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			window.onresize = resize;
 
 			showStartTestNewPopup();
+
+			setInterval(function(){poll();},1000);
 		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>

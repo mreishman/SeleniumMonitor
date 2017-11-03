@@ -19,4 +19,29 @@ require_once('../../core/php/loadVars.php');
 $filter = $_POST["filter"];
 $file = $_POST["file"];
 
-echo json_encode(shell_exec("cd ".$locationOfTests." && phpunit ".$file." --filter ".$filter));
+$arrayOfArrays = array();
+
+$output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter);
+$output = explode(PHP_EOL, $output);
+
+$arrayOfArrays["output"] = $output;
+
+$result = $output[5];
+$resultString = "?";
+if(substr( $result, 0, 1 ) === ".")
+{
+	$resultString = "Passed";
+}
+elseif(substr( $result, 0, 1 ) === "E")
+{
+	$resultString = "Error";
+}
+elseif(substr( $result, 0, 1 ) === "F")
+{
+	$resultString = "Failed";
+}
+
+$arrayOfArrays["Result"] = $resultString;
+
+
+echo json_encode($arrayOfArrays);
