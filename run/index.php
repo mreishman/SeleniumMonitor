@@ -94,9 +94,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		
 	</div>
 	
-	<!-- <div id="storage"> -->
+	<div id="storage">
 		<div class="newTestPopup">
-			<div class="runNewTest">
+			<div id="{{id}}" class="runNewTest">
 				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>
 					<br>
@@ -163,9 +163,29 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</div>
 			</div>
 		</div>
-	<!-- </div> -->
+		<div class="container">
+			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
+				<div>
+					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}Progress" value="0" max="1"></progress>
+				</div>
+				<div style="color: black; width: 100%; text-align: left;" id="{{id}}Title">
+					<h3>
+						<span id="{{id}}Folder">{{file}}</span>
+						<span id="{{id}}ProgressTxt" >--</span>%
+						<div style="float: right;">
+							<img onclick="deleteSearch('{{id}}');" src="../core/img/trashCan.png" style="width: 25px; height: 25px; margin-top: -4px; cursor: pointer;">
+						</div>
+					</h3>
+				</div>
+				<div id="{{id}}FoundThings" style="background-color: grey; max-height: 400px; border: 1px solid black; margin-top: 10px; overflow-y: scroll; display: none;">
+
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<form id="settingsInstallUpdate" action="../update/updater.php" method="post" style="display: none"></form>
+	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script>
 		<?php
 		echo "var autoCheckUpdate = ".$autoCheckUpdate.";";
@@ -178,7 +198,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
-
+		var testNumber = 1;
 
 		function getFileList()
 		{
@@ -261,6 +281,21 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		{
 			
 		}
+
+		function showStartTestNewPopup()
+		{
+			var item = $("#storage .newTestPopup").html();
+			item = item.replace(/{{id}}/g, "Test"+testNumber);
+			$("#main").append(item);
+		}
+
+		$(document).ready(function()
+		{
+			resize();
+			window.onresize = resize;
+
+			showStartTestNewPopup();
+		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
 </body>

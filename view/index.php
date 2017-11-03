@@ -186,6 +186,7 @@ if($backgroundPollingRateType == 'Seconds')
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
 	<script src="../core/js/update.js?v=<?php echo $cssVersion?>"></script>
+	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script type="text/javascript">
 		
 		var arrayOfData = new Array();
@@ -325,15 +326,6 @@ if($backgroundPollingRateType == 'Seconds')
 			stats = stats[0];
 
 			document.getElementById(dataExt["id"]+"Stats").innerHTML = stats;
-		}
-
-		function resize() 
-		{
-			var targetHeight = window.innerHeight;
-			if($("#main").outerHeight() !== targetHeight)
-			{
-				$("#main").outerHeight(targetHeight);
-			}
 		}
 
 		function toggleTab(currentId, tabIdToShow)
