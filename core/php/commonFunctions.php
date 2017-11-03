@@ -255,3 +255,55 @@ function filterGroupname($line)
 	$line = str_replace("*", "", $line);
 	return $line;
 }
+
+function getAllTestsFromGroup($file, $groupNameArray)
+{
+	$file = file($file);
+	$arrayOfTests = array();
+	foreach ($groupNameArray as $groupName)
+	{
+		for ($i=0; $i < count($file); $i++)
+		{ 
+			if(strpos($file[$i], "@group") !== false)
+			{
+				if(strpos($file[$i], "//") === false)
+				{
+					if(strpos($file[$i], $groupName) !== false)
+					{
+						//find next public function
+						$j = 1;
+						$stayInLoop = true;
+						while ($stayInLoop)
+						{
+							if(isset($file[$i+$j]))
+							{
+								$lineCheckForFunction = $file[$i+$j];
+								if(strpos($lineCheckForFunction, "public function") !== false)
+								{
+									if(strpos($lineCheckForFunction, "test") !== false)
+									{
+										if(strpos($lineCheckForFunction, "//") === false)
+										{
+											$line = filterFunctionName($lineCheckForFunction);
+											if(!in_array($line, $arrayOfTests))
+											{
+												array_push($arrayOfTests, $line);
+											}
+										}
+									}
+									$stayInLoop = false;
+								}
+								$j++;
+							}
+							else
+							{
+								$stayInLoop = false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return $arrayOfTests;
+}

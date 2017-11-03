@@ -61,9 +61,15 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		.testSelectPart
 		{
 			padding: 5px;
-			width: 180px;
+			width: 310px;
 			height: 150px;
 			display: inline-table;
+		}
+		.testSelectPart select, .testSelectPart input, .testSelectPart button
+		{
+			width: 100%;
+			padding: 0;
+			margin-left: 0;
 		}
 		.title
 		{
@@ -73,6 +79,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		{
 			margin-top: 30px;
 			border-top: 1px solid white;
+		}
+		.list
+		{
+			text-decoration: none;
+			list-style: none;
 		}
 	</style>
 </head>
@@ -116,19 +127,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					<button>Set Base Url</button>
 				</div>
-				<div class="newTestPartThree testSelectPart testSelectPartBorder">
-					<h1 class="title">3.</h1>
-					<br>
-					Run tests by:
-					<br>
-					<select>
-						<option>Select</option>
-						<option>Group</option>
-						<option>Custom</option>
-					</select>
-				</div>
 				<div class="newTestPartFour testSelectPart">
-					<h1 class="title">4.</h1>
+					<h1 class="title">3.</h1>
 					<br>
 					Max number of concurrent tests:
 					<br>
@@ -142,9 +142,23 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<div class="newTestPartFive">
 					<h1 class="title">5.</h1>
 					<br>
-					Tests:
-					<br>
-					<div id="testsPlaceHodler">
+					<div style="display: inline-block;">
+						<span>Groups:</span>
+						<br>
+						<div id="groupsPlaceHodler">
+						</div>
+					</div>
+					<div style="display: inline-block;">
+						<span>Exclude Groups: </span>
+						<br>
+						<div id="groupExcludePlaceHolder">
+						</div>
+					</div>
+					<div style="display: inline-block;">
+						<span>Tests to be run: </span>
+						<br>
+						<div id="testsPlaceHolder">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -177,25 +191,70 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				{
 					url: urlForSend,
 					dataType: "json",
-					data: data,
+					data,
 					type: "POST",
 					success(data)
 					{
-						console.log();
-						var tests = data['arrayOfTests'];
-						var testsHtml = "<ul>";
+						var tests = data['arrayOfGroups'];
+						var testsHtml = "<ul class='list'>";
 						for (var i = tests.length - 1; i >= 0; i--) {
-							testsHtml += "<li>"+tests[i]+"</li>";
+							testsHtml += "<li><input  onchange='getTestList();' type='checkbox' name='"+tests[i]+"'>"+tests[i]+"</li>";
 						}
-						testsHtml += "</ul>";
-						document.getElementById("testsPlaceHodler").innerHTML = testsHtml;
+						testsHtml += "</ul></form>";
+						document.getElementById("groupsPlaceHodler").innerHTML = "<form id='groupsIncludeListForm'>"+testsHtml;
+						document.getElementById("groupExcludePlaceHolder").innerHTML = "<form  id='groupsExcludeListForm'>"+testsHtml;
+						document.getElementById("testsPlaceHolder").innerHTML = "";
+						
 					}
 				});
 			}
 			else
 			{
-				document.getElementById("testsPlaceHodler").innerHTML = "";
+				document.getElementById("groupsPlaceHodler").innerHTML = "";
+				document.getElementById("groupExcludePlaceHolder").innerHTML = "";
+				document.getElementById("testsPlaceHolder").innerHTML = "";
 			}
+		}
+
+		function getTestList()
+		{
+			var urlForSend = '../core/php/returnListOfTests.php?format=json';
+			var groupsInclude = $("#groupsIncludeListForm").serializeArray();
+			if(!(groupsInclude.length > 0))
+			{
+				groupsInclude = "empty array";
+			}
+			var groupsExclude = $("#groupsExcludeListForm").serializeArray();
+			if(!(groupsExclude.length > 0))
+			{
+				groupsExclude = "empty array";
+			}
+			var valueForFile = document.getElementById("fileListSelector").value;
+			console.log(groupsInclude);
+			console.log(groupsExclude);
+			console.log(valueForFile);
+			var data = {groupsInclude, groupsExclude, file: valueForFile };
+			$.ajax(
+			{
+				url: urlForSend,
+				dataType: "json",
+				data,
+				type: "POST",
+				success(data)
+				{
+					var tests = data["testList"];
+					var testsHtml = "";
+					if(tests.length > 0)
+					{
+						testsHtml += "<form id='testsListForm'><ul class='list'>";
+						for (var i = tests.length - 1; i >= 0; i--) {
+							testsHtml += "<li><input type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
+						}
+						testsHtml += "</ul></form><br><button> Run Tests </button>";
+					}
+					document.getElementById("testsPlaceHolder").innerHTML = testsHtml;
+				}
+			});
 		}
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
