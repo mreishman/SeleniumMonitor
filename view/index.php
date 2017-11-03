@@ -36,7 +36,7 @@ if($backgroundPollingRateType == 'Seconds')
 ?>
 <!doctype html>
 <head>
-	<title>Log Hog | Index</title>
+	<title>SeleniumMonitor | View</title>
 	<?php echo loadCSS($baseUrl, $cssVersion);?>
 	<link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>img/favicon.png" />
 	<script src="../core/js/jquery.js"></script>
@@ -196,7 +196,7 @@ if($backgroundPollingRateType == 'Seconds')
 
 			poll();
 
-			setInterval(function(){pollTwo();},30000);
+			setInterval(function(){pollTwo();},3000);
 			setInterval(function(){poll();},250);
 		});
 	</script>

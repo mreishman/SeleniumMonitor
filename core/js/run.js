@@ -1,6 +1,6 @@
 var testNumber = 0;
 var arrayOfTests = new Array();
-var maxTests = 1;
+var maxTests = 3;
 var currentTestsRunning = 0;
 
 
@@ -124,6 +124,7 @@ function poll()
 		{
 			document.getElementById("Test"+testNumber+arrayOfTests[0]).classList.remove("blockEmpty");
 			document.getElementById("Test"+testNumber+arrayOfTests[0]).classList.add("blockInProgress");
+			document.getElementById("Test"+testNumber+arrayOfTests[0]).title = "{ "+arrayOfTests[0]+" Test In Progress}";
 
 			var valueForFile = document.getElementById("Test"+testNumber+"File").value;
 			var data = {id: "Test"+testNumber, testName: arrayOfTests[0]};
@@ -138,10 +139,10 @@ function poll()
 					type: "POST",
 					success(data)
 					{
-						console.log(data);
-						console.log(_data);
 						var result = data["Result"];
 						document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
+						document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" "+data['timeMem']+"}";
+						
 						if(result === "Passed")
 						{
 							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
@@ -149,10 +150,20 @@ function poll()
 						else if(result === "Error")
 						{
 							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Errored}";
+							console.log(data['output']);
 						}
 						else if(result === "Failed")
 						{
 							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
+							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Failed}";
+							console.log(data['output']);
+						}
+						else if(result === "Skipped")
+						{
+							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
+							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Skipped}";
+							console.log(data['output']);
 						}
 						else
 						{
@@ -162,7 +173,6 @@ function poll()
 					}
 				});
 			}(data));
-
 
 			currentTestsRunning++;
 			arrayOfTests.shift();

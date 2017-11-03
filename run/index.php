@@ -35,7 +35,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 ?>
 <!doctype html>
 <head>
-	<title>Log Hog | Index</title>
+	<title>SeleniumMonitor | Run</title>
 	<?php echo loadCSS($baseUrl, $cssVersion);?>
 	<link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>img/favicon.png" />
 	<script src="../core/js/jquery.js"></script>
@@ -126,6 +126,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		.blockFail
 		{
 			background-color: red;
+			border: 1px solid black;
+		}
+		.blockSkip
+		{
+			background-color: orange;
 			border: 1px solid black;
 		}
 	</style>
