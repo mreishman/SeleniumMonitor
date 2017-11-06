@@ -54,18 +54,17 @@ while (file_exists($baseUrl."conf/config".$count.".php"))
 		</div>
 		<div class="settingsDiv" >
 			<ul id="settingsUl">
-				<li>
-					<span class="settingsBuffer"> Branch: </span>
-					<div class="selectDiv">	
-						<select name="branchSelected">		
-							<option <?php if($branchSelected == 'default'){echo "selected";} ?> value="default" >Default</option>		
-							<option <?php if($branchSelected == 'beta'){echo "selected";} ?> value="beta">Beta</option>		
-							<?php if($enableDevBranchDownload == 'true'):?>		
-								<option <?php if($branchSelected == 'dev'){echo "selected";} ?> value="dev">Dev</option>		
-							<?php endif;?>		
-						</select>
-					</div>
-				</li>
+				<?php if($enableDevBranchDownload == 'true'):?>
+					<li>
+						<span class="settingsBuffer"> Branch: </span>
+						<div class="selectDiv">	
+							<select name="branchSelected">		
+								<option <?php if($branchSelected == 'default'){echo "selected";} ?> value="default" >Default</option>
+								<option <?php if($branchSelected == 'dev'){echo "selected";} ?> value="dev">Dev</option>
+							</select>
+						</div>
+					</li>
+				<?php endif;?>	
 				<li>
 					<span class="settingsBuffer"> Number of versions saved:</span>
 					<div class="selectDiv">

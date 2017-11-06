@@ -110,19 +110,5 @@ require_once('../core/php/updateCheck.php');
 			</ul>
 		</div>
 	</form>
-
-	<div class="settingsHeader">
-			Edit Files
-		</div>
-		<div class="settingsDiv" >
-			<ul id="settingsUl">
-				<li>
-				Insert Links Here
-				</li>
-			</ul>
-		</div>
-
-
-	</div>
 	<?php readfile('../core/html/popup.html') ?>	
 </body>
