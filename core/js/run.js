@@ -138,6 +138,7 @@ function showStartTestNewPopup()
 	}
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
+	item = item.replace(/{{baseUrl}}/g, staticBaseUrl);
 	$("#main").append(item);
 	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
 }
@@ -256,4 +257,23 @@ function poll()
 function setMaxNumber(newValue)
 {
 	maxTests = newValue;
+}
+
+function changeBaseUrl(idForBaseUrl)
+{
+	displayLoadingPopup();
+	var urlForSend = '../core/php/changeBaseUrl.php?format=json';
+	var valueForFile = document.getElementById(idForBaseUrl).value;
+	var data = {baseUrl: valueForFile};
+	$.ajax(
+	{
+		url: urlForSend,
+		dataType: "json",
+		data,
+		type: "POST",
+		complete()
+		{
+			//verify that file is changed
+		}
+	});
 }

@@ -190,9 +190,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					Set Base URL (i)
 					<br>
-					<input type="text" value="<?php echo $staticBaseUrl; ?>" name="baseUrl">
+					<input id="{{id}}BaseUrl" type="text" value="{{baseUrl}}" name="baseUrl">
 					<br>
-					<button>Set Base Url</button>
+					<button onclick="changeBaseUrl('{{id}}BaseUrl')">Set Base Url</button>
 				</div>
 				<div class="newTestPartFour testSelectPart">
 					<h1 class="title">3.</h1>
@@ -269,6 +269,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
+		var staticBaseUrl = "<?php echo $staticBaseUrl;?>";
 
 		$(document).ready(function()
 		{

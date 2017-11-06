@@ -22,6 +22,7 @@ $defaultConfig = array(
 	'fontFamily'					=> 'monospace',
 	'invertMenuImages'				=> 'false',
 	'layoutVersion'					=> 1,
+	'locationOfBaseUrl'				=> '',
 	'locationForMonitor'			=> '',
 	'locationForSearch'				=> '',
 	'locationForStatus'				=> '',
