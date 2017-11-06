@@ -571,3 +571,13 @@ div {
 	padding-bottom: 5px;
 	margin-bottom: 5px;
 }
+
+a
+{
+	color: white;
+}
+
+a:visited
+{
+	color: white;
+}

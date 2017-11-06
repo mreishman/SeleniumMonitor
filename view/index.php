@@ -44,6 +44,13 @@ if($backgroundPollingRateType == 'Seconds')
 </head>
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
+	<div id="menu">
+		<a class="active">View</a>
+		<a href="../run/">Run</a>
+		<a href="../settings/"> Settings </a>
+	</div>
+
+
 	<div id="main">
 		
 	</div>

@@ -3,6 +3,7 @@ var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
 var phpUnitVerify = false;
+var pausePoll = false;
 
 function getFileList()
 {
@@ -145,111 +146,114 @@ function showStartTestNewPopup()
 
 function poll()
 {
-	if(arrayOfTests.length > 0)
+	if(!pausePoll)
 	{
-		if(arrayOfTests[0]["tests"].length > 0)
+		if(arrayOfTests.length > 0)
 		{
-			if(currentTestsRunning < maxTests)
+			if(arrayOfTests[0]["tests"].length > 0)
 			{
-				var testNumberLocal = arrayOfTests[0]["name"];
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = "{ "+arrayOfTests[0]["tests"][0]+" Test In Progress}";
+				if(currentTestsRunning < maxTests)
+				{
+					var testNumberLocal = arrayOfTests[0]["name"];
+					document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
+					document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
+					document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = "{ "+arrayOfTests[0]["tests"][0]+" Test In Progress}";
 
-				arrayOfTests[0]["startCount"]++;
-				document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(2));
+					arrayOfTests[0]["startCount"]++;
+					document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(2));
 
-				var valueForFile = document.getElementById("Test"+testNumberLocal+"File").value;
-				var data = {id: "Test"+testNumberLocal, testName: arrayOfTests[0]["tests"][0]};
-				var urlForSend = '../core/php/runTest.php?format=json';
+					var valueForFile = document.getElementById("Test"+testNumberLocal+"File").value;
+					var data = {id: "Test"+testNumberLocal, testName: arrayOfTests[0]["tests"][0]};
+					var urlForSend = '../core/php/runTest.php?format=json';
 
-				(function(_data){
-					$.ajax(
-					{
-						url: urlForSend,
-						dataType: "json",
-						data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile },
-						type: "POST",
-						success(data)
+					(function(_data){
+						$.ajax(
 						{
-							var result = data["Result"];
-							document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
-							document.getElementById(_data["id"]+_data["testName"]).title = _data['testName']+" "+data['timeMem'];
+							url: urlForSend,
+							dataType: "json",
+							data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile },
+							type: "POST",
+							success(data)
+							{
+								var result = data["Result"];
+								document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
+								document.getElementById(_data["id"]+_data["testName"]).title = _data['testName']+" "+data['timeMem'];
 
-							//update percent
-							arrayOfTests[0]["count"]++;
-							var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
-							if(percentValue !== 1)
-							{
-								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
-								document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(2));
-							}
-							else
-							{
-								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
-								document.getElementById(_data["id"]+"Progress").value = 1;
-							}
+								//update percent
+								arrayOfTests[0]["count"]++;
+								var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
+								if(percentValue !== 1)
+								{
+									document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+									document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(2));
+								}
+								else
+								{
+									document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
+									document.getElementById(_data["id"]+"Progress").value = 1;
+								}
 
-							if(result === "Passed")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Passed";
+								if(result === "Passed")
+								{
+									document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
+									document.getElementById(_data["id"]+_data["testName"]).title += " Passed";
+								}
+								else if(result === "Error")
+								{
+									document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+									document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
+									console.log(data['output']);
+								}
+								else if(result === "Failed")
+								{
+									document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
+									document.getElementById(_data["id"]+_data["testName"]).title += " Failed";
+									console.log(data['output']);
+								}
+								else if(result === "Skipped")
+								{
+									document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
+									document.getElementById(_data["id"]+_data["testName"]).title += " Skipped";
+									console.log(data['output']);
+								}
+								else
+								{
+									document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+								}
+								currentTestsRunning--;
 							}
-							else if(result === "Error")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
-								console.log(data['output']);
-							}
-							else if(result === "Failed")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Failed";
-								console.log(data['output']);
-							}
-							else if(result === "Skipped")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Skipped";
-								console.log(data['output']);
-							}
-							else
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-							}
-							currentTestsRunning--;
-						}
-					});
-				}(data));
+						});
+					}(data));
 
-				currentTestsRunning++;
-				arrayOfTests[0]["tests"].shift();
+					currentTestsRunning++;
+					arrayOfTests[0]["tests"].shift();
+				}
+			}
+			else
+			{
+				if(currentTestsRunning === 0)
+				{
+					arrayOfTests.shift();
+				}
 			}
 		}
 		else
 		{
-			if(currentTestsRunning === 0)
+			if(!phpUnitVerify)
 			{
-				arrayOfTests.shift();
+				$.getJSON("../core/php/verifyPhpUnit.php", {}, function(data) 
+				{
+					if(!data)
+					{
+						$(".bannerPHP").show();
+					}
+					else
+					{
+						$(".bannerPHP").hide();
+						phpUnitVerify = true;
+					}
+				});
 			}
-		}
-	}
-	else
-	{
-		if(!phpUnitVerify)
-		{
-			$.getJSON("../core/php/verifyPhpUnit.php", {}, function(data) 
-			{
-				if(!data)
-				{
-					$(".bannerPHP").show();
-				}
-				else
-				{
-					$(".bannerPHP").hide();
-					phpUnitVerify = true;
-				}
-			});
 		}
 	}
 }
@@ -291,4 +295,19 @@ function checkBaseUrl()
 			hidePopup();
 		}
 	});
+}
+
+function pausePollAction()
+{
+	if(pausePoll)
+	{
+		document.getElementById("playImage").style.display = "none";
+		document.getElementById("pauseImage").style.display = "inline-block";
+	}
+	else
+	{
+		document.getElementById("pauseImage").style.display = "none";
+		document.getElementById("playImage").style.display = "inline-block";
+	}
+	pausePoll = !pausePoll;
 }
