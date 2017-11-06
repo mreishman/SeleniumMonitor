@@ -263,8 +263,8 @@ function changeBaseUrl(idForBaseUrl)
 {
 	displayLoadingPopup();
 	var urlForSend = '../core/php/changeBaseUrl.php?format=json';
-	var valueForFile = document.getElementById(idForBaseUrl).value;
-	var data = {baseUrl: valueForFile};
+	staticBaseUrl = document.getElementById(idForBaseUrl).value;
+	var data = {baseUrl: staticBaseUrl};
 	$.ajax(
 	{
 		url: urlForSend,
@@ -273,7 +273,22 @@ function changeBaseUrl(idForBaseUrl)
 		type: "POST",
 		complete()
 		{
-			//verify that file is changed
+			checkBaseUrl();
+		}
+	});
+}
+
+function checkBaseUrl()
+{
+	$.getJSON("../core/php/verifyBaseUrl.php", {}, function(data) 
+	{
+		if(data !== staticBaseUrl)
+		{
+			checkBaseUrl();
+		}
+		else
+		{
+			hidePopup();
 		}
 	});
 }
