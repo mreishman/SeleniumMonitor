@@ -35,7 +35,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		<div class="settingsDiv" >
 			<ul id="settingsUl">
 				<li>
-					<h2>Current Version of Log-Hog: <?php echo $configStatic['version'];?></h2>
+					<h2>Current Version of Selenium Monitor: <?php echo $configStatic['version'];?></h2>
 				</li>	
 				<li>
 					<h2>You last checked for updates <span id="spanNumOfDaysUpdateSince" ><u><?php echo $daysSince;?> Day<?php if($daysSince != 1){ echo "s";} ?></span></u> Ago</h2>

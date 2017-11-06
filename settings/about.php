@@ -42,32 +42,18 @@ require_once('../core/php/updateCheck.php');
 		<div class="settingsDiv" >
 			<ul id="settingsUl">
 				<li>
-					<h2>Log-Hog</h2>
+					<h2>Selenium Monitor</h2>
 				</li>
 				<li>
-					<p>A simple log monitoring tool that is intended for use on dev boxes.</p>
-
-					<p>If you need Log Hog to watch Apache's logs, see this: <a href="https://stackoverflow.com/questions/9568118/apache-access-log-automatically-set-permissions">https://stackoverflow.com/questions/9568118/apache-access-log-automatically-set-permissions</a></p>
+					<p>A visual monitor for selenium grids. Also adds the ability to run php tests from a web interface</p>
 				</li>
-				<li>
-					<p>Includes files from the following project: </p>
-
-					<p> <a href="https://github.com/ai/visibilityjs">https://github.com/ai/visibilityjs </a> </p> 
-				</li>
-			</ul>
-		</div>
-		<div class="settingsHeader">
-			GitHub
-		</div>
-		<div class="settingsDiv" >
-			<ul id="settingsUl">
 				<li>
 					<h2>Github</h2>
 				</li>
 				<li>
-					<p>View the project on github: <a href="https://github.com/mreishman/Log-Hog">https://github.com/mreishman/Log-Hog</a> </p>
+					<p>View the project on github: <a href="https://github.com/mreishman/SeleniumMonitor">https://github.com/mreishman/SeleniumMonitor</a> </p>
 
-					<p>Add an issue: <a href="https://github.com/mreishman/Log-Hog/issues">https://github.com/mreishman/Log-Hog/issues</a></p>
+					<p>Add an issue: <a href="https://github.com/mreishman/SeleniumMonitor/issues">https://github.com/mreishman/SeleniumMonitor/issues</a></p>
 				</li>
 			</ul>
 		</div>
