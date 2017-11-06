@@ -39,79 +39,8 @@ if($backgroundPollingRateType == 'Seconds')
 	<title>SeleniumMonitor | View</title>
 	<?php echo loadCSS($baseUrl, $cssVersion);?>
 	<link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>img/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="../core/template/viewcss.css?v=<?php echo $cssVersion; ?>">
 	<script src="../core/js/jquery.js"></script>
-	<style type="text/css">
-		.img-responsive
-		{
-			width: 100%;
-		}
-		.mainBox
-		{
-			width: 333px;
-			height: 450px;
-			display: inline-table;
-			background-color: #777;
-			padding: 10px;
-			margin: 20px;
-			border: 2px solid white;
-			border-radius: 15px;
-			box-shadow: 5px 5px 5px black;
-		}
-		.jumbotron
-		{
-			border: 1px solid white;
-		}
-		.videos
-		{
-			text-decoration: none;
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-		a
-		{
-			color: white;
-		}
-		a:visited
-		{
-			color: white;
-		}
-		.menu
-		{
-			margin: 0;
-			padding: 0;
-			list-style: none;
-			display: inline-block;
-			vertical-align: bottom;
-			color: white;
-		}
-		.menu li
-		{
-			float: left;
-			padding: 4px;
-			background-color: #555;
-			border-radius: 10px 10px 0 0;
-			margin: 0 4px 0 4px;
-			cursor: pointer;
-		}
-		.menu .active
-		{
-			color: black;
-			background-color: white;
-		}
-		.conainerSub
-		{
-			height: 200px;
-			overflow-y: auto;
-			word-wrap:break-word; 
-			word-break: break-all;
-		}
-		.busy
-		{
-			opacity: 0.4;
-			filter: alpha(opacity=40);
-		}
-	</style>
 </head>
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
