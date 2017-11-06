@@ -30,6 +30,7 @@ $defaultConfig = array(
 	'logFontColor'					=> '#FFFFFF',
 	'mainFontColor'					=> '#FFFFFF',
 	'mainServerIP'					=> "192.168.1.5",
+	'maxConcurrentTests'			=> 3,
 	'pollingRate'					=> 1000,
 	'pollingRateType'				=> 'Milliseconds',
 	'popupWarnings'					=>	'all',

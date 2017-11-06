@@ -65,7 +65,7 @@ function updateNoNewVersionCheck()
 
 function checkIfChanges()
 {
-	if(checkForChangesArray(["devAdvanced","pollAdvanced","loggingDisplay","jsPhpSend","locationOtherApps","advancedConfig"]))
+	if(checkForChangesArray(["devAdvanced","jsPhpSend","locationOtherApps","advancedConfig"]))
 	{
 		return true;
 	}
@@ -145,6 +145,6 @@ function verifyNoConfigBackups()
 
 $( document ).ready(function() 
 {
-	refreshArrayObjectOfArrays(["devAdvanced","pollAdvanced","loggingDisplay","jsPhpSend","locationOtherApps","advancedConfig"]);
+	refreshArrayObjectOfArrays(["devAdvanced","jsPhpSend","locationOtherApps","advancedConfig"]);
 	setInterval(poll, 100);
 });

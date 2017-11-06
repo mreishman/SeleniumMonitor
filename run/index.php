@@ -144,7 +144,16 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 </head>
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
-	
+	<div id="menu">
+		<div onclick="pausePollAction();" class="menuImageDiv">
+				<img id="playImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Play.png" style="display: none;" height="30px">
+				<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
+			</div>
+		<a>View</a>
+		<a class="active">Run</a>
+		<a> Settings </a>
+	</div>
+
 	<div id="main">
 		
 	</div>
@@ -190,11 +199,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					Max number of concurrent tests:
 					<br>
-					<select>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-					</select>
+					{{maxTestsNum}}
 				</div>
 				<br>
 				<div class="newTestPartFive">
@@ -257,6 +262,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		echo "var dateOfLastUpdate = '".$configStatic['lastCheck']."';";
 		echo "var daysSinceLastCheck = '".$daysSince."';";
 		echo "var daysSetToUpdate = '".$autoCheckDaysUpdate."';";
+		echo "var maxTestsStatic = ".$maxConcurrentTests.";"
 		?>
 		var dontNotifyVersion = "<?php echo $dontNotifyVersion;?>";
 		var currentVersion = "<?php echo $configStatic['version'];?>";

@@ -115,6 +115,7 @@ function runTests()
 
 	//remove add stuff
 	$("#Test"+testNumber).remove();
+	showStartTestNewPopup();
 }
 
 function showStartTestNewPopup()
@@ -124,6 +125,19 @@ function showStartTestNewPopup()
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
 	var item = $("#storage .newTestPopup").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
+
+	var maxTestsHtml = "<ul style=\"list-style: none;\">";
+	for (var i = 1; i <= maxTestsStatic; i++)
+	{
+		maxTestsHtml += "<li><input style=\"width: auto;\" ";
+		if(i === maxTests)
+		{
+			maxTestsHtml += " checked ";
+		}
+		maxTestsHtml += " onclick=\"setMaxNumber("+i+");\" type=\"radio\" name=\"maxTests\" value=\""+i+"\">"+i+"</li>";
+	}
+	maxTestsHtml += "</ul>";
+	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
 	$("#main").append(item);
 	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
 }
@@ -237,4 +251,9 @@ function poll()
 			});
 		}
 	}
+}
+
+function setMaxNumber(newValue)
+{
+	maxTests = newValue;
 }
