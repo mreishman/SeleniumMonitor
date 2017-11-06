@@ -2,7 +2,7 @@ var testNumber = 0;
 var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
-
+var phpUnitVerify = false;
 
 function getFileList()
 {
@@ -85,14 +85,26 @@ function runTests()
 	var listOfNames = new Array();
 	var progressBlocksHtml = "";
 
+	var innerArrayOfTests = new Array();
+
 	for (var i = groupsExclude.length - 1; i >= 0; i--) {
 		listOfNames.push(groupsExclude[i]["name"]);
 	}
 
 	for (var i = listOfNames.length - 1; i >= 0; i--) {
-		arrayOfTests.push(listOfNames[i]);
+		innerArrayOfTests.push(listOfNames[i]);
 		progressBlocksHtml += "<div id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
 	}
+
+	var arrayForNewTestArray = {
+		name: testNumber,
+		tests: innerArrayOfTests,
+		count: 0,
+		startCount: 0,
+		total: innerArrayOfTests.length
+		};
+
+	arrayOfTests.push(arrayForNewTestArray)
  	
 	//create display for thing 
 	var item = $("#storage .container").html();
@@ -120,62 +132,109 @@ function poll()
 {
 	if(arrayOfTests.length > 0)
 	{
-		if(currentTestsRunning < maxTests)
+		if(arrayOfTests[0]["tests"].length > 0)
 		{
-			document.getElementById("Test"+testNumber+arrayOfTests[0]).classList.remove("blockEmpty");
-			document.getElementById("Test"+testNumber+arrayOfTests[0]).classList.add("blockInProgress");
-			document.getElementById("Test"+testNumber+arrayOfTests[0]).title = "{ "+arrayOfTests[0]+" Test In Progress}";
+			if(currentTestsRunning < maxTests)
+			{
+				var testNumberLocal = arrayOfTests[0]["name"];
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = "{ "+arrayOfTests[0]["tests"][0]+" Test In Progress}";
 
-			var valueForFile = document.getElementById("Test"+testNumber+"File").value;
-			var data = {id: "Test"+testNumber, testName: arrayOfTests[0]};
-			var urlForSend = '../core/php/runTest.php?format=json';
+				arrayOfTests[0]["startCount"]++;
+				document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(2));
 
-			(function(_data){
-				$.ajax(
-				{
-					url: urlForSend,
-					dataType: "json",
-					data: {filter: arrayOfTests[0], file: valueForFile },
-					type: "POST",
-					success(data)
+				var valueForFile = document.getElementById("Test"+testNumberLocal+"File").value;
+				var data = {id: "Test"+testNumberLocal, testName: arrayOfTests[0]["tests"][0]};
+				var urlForSend = '../core/php/runTest.php?format=json';
+
+				(function(_data){
+					$.ajax(
 					{
-						var result = data["Result"];
-						document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
-						document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" "+data['timeMem']+"}";
-						
-						if(result === "Passed")
+						url: urlForSend,
+						dataType: "json",
+						data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile },
+						type: "POST",
+						success(data)
 						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
-						}
-						else if(result === "Error")
-						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Errored}";
-							console.log(data['output']);
-						}
-						else if(result === "Failed")
-						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
-							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Failed}";
-							console.log(data['output']);
-						}
-						else if(result === "Skipped")
-						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
-							document.getElementById(_data["id"]+_data["testName"]).title = "{"+_data['testName']+" Skipped}";
-							console.log(data['output']);
-						}
-						else
-						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-						}
-						currentTestsRunning--;
-					}
-				});
-			}(data));
+							var result = data["Result"];
+							document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
+							document.getElementById(_data["id"]+_data["testName"]).title = _data['testName']+" "+data['timeMem'];
 
-			currentTestsRunning++;
-			arrayOfTests.shift();
+							//update percent
+							arrayOfTests[0]["count"]++;
+							var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
+							if(percentValue !== 1)
+							{
+								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+								document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(2));
+							}
+							else
+							{
+								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
+								document.getElementById(_data["id"]+"Progress").value = 1;
+							}
+
+							if(result === "Passed")
+							{
+								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
+								document.getElementById(_data["id"]+_data["testName"]).title += " Passed";
+							}
+							else if(result === "Error")
+							{
+								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+								document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
+								console.log(data['output']);
+							}
+							else if(result === "Failed")
+							{
+								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
+								document.getElementById(_data["id"]+_data["testName"]).title += " Failed";
+								console.log(data['output']);
+							}
+							else if(result === "Skipped")
+							{
+								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
+								document.getElementById(_data["id"]+_data["testName"]).title += " Skipped";
+								console.log(data['output']);
+							}
+							else
+							{
+								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+							}
+							currentTestsRunning--;
+						}
+					});
+				}(data));
+
+				currentTestsRunning++;
+				arrayOfTests[0]["tests"].shift();
+			}
+		}
+		else
+		{
+			if(currentTestsRunning === 0)
+			{
+				arrayOfTests.shift();
+			}
+		}
+	}
+	else
+	{
+		if(!phpUnitVerify)
+		{
+			$.getJSON("../core/php/verifyPhpUnit.php", {}, function(data) 
+			{
+				if(!data)
+				{
+					$(".bannerPHP").show();
+				}
+				else
+				{
+					$(".bannerPHP").hide();
+					phpUnitVerify = true;
+				}
+			});
 		}
 	}
 }

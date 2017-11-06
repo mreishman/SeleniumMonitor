@@ -94,12 +94,13 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			width: 80%;
 			margin-left: 10%;
 			padding: 5px;
-			margin-bottom: 40px;
+			margin-bottom: 20px;
+			margin-top: 20px;
 		}
 		.block
 		{
-			width: 10px;
-			height: 10px;
+			width: 15px;
+			height: 15px;
 			margin: 3px;
 			display: inline-block;
 		}
@@ -133,6 +134,12 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			background-color: orange;
 			border: 1px solid black;
 		}
+		.bannerPHP
+		{
+			background-color: red;
+			color: black;
+			padding: 2px;
+		}
 	</style>
 </head>
 <body>
@@ -145,6 +152,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 	<div id="storage">
 		<div class="newTestPopup">
 			<div id="{{id}}" class="runNewTest">
+				<div class="bannerPHP" style="display: none;">
+					PhpUnit id not detected. Please verify that PhpUnit is installed and configured. 
+				</div>
 				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>
 					<br>
@@ -214,12 +224,15 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		<div class="container">
 			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
 				<div>
+					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}ProgressStart" value="0" max="1"></progress>
+				</div>
+				<div>
 					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}Progress" value="0" max="1"></progress>
 				</div>
 				<div style="color: black; width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
-						<span id="{{id}}ProgressTxt" >--</span>%
+						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
 							<img onclick="deleteSearch('{{id}}');" src="../core/img/trashCan.png" style="width: 25px; height: 25px; margin-top: -4px; cursor: pointer;">
 						</div>
