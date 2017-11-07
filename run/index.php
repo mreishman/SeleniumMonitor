@@ -90,7 +90,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<div class="newTestPartTwo testSelectPart testSelectPartBorder">
 					<h1 class="title">2.</h1>
 					<br>
-					Set Base URL (i)
+					Set Base URL
 					<br>
 					<input id="{{id}}BaseUrl" type="text" value="{{baseUrl}}" name="baseUrl">
 					<br>
@@ -141,7 +141,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<span id="{{id}}Folder">{{file}}</span>
 						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
-							<img onclick="deleteSearch('{{id}}');" src="../core/img/trashCan.png" style="width: 25px; height: 25px; margin-top: -4px; cursor: pointer;">
+							<img onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png" style="width: 25px; height: 25px; margin-top: -4px; cursor: pointer;">
 						</div>
 					</h3>
 				</div>

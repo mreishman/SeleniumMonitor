@@ -23,6 +23,7 @@ $defaultConfig = array(
 	'invertMenuImages'				=> 'false',
 	'layoutVersion'					=> 1,
 	'locationOfBaseUrl'				=> '',
+	'locationForLogHog'				=> '',
 	'locationForMonitor'			=> '',
 	'locationForSearch'				=> '',
 	'locationForStatus'				=> '',

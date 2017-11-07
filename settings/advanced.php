@@ -175,6 +175,11 @@ while (file_exists($baseUrl."conf/config".$count.".php"))
 		<div class="settingsDiv" >
 			<ul id="settingsUl">
 				<li>
+					<span class="settingsBuffer" >  Log-Hog Location:  </span> <input type="text" style="width: 400px;"  name="locationForStatus" value="<?php echo $locationForLogHog;?>" > 
+					<br>
+					<p>Default = <?php echo "https://" . $_SERVER['SERVER_NAME']."/Log-Hog"; ?></p>
+				</li>
+				<li>
 					<span class="settingsBuffer" >  Status Location:  </span> <input type="text" style="width: 400px;"  name="locationForStatus" value="<?php echo $locationForStatus;?>" > 
 					<br>
 					<p>Default = <?php echo "https://" . $_SERVER['SERVER_NAME']."/status"; ?></p>
