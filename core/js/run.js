@@ -29,7 +29,7 @@ function getFileList()
 				document.getElementById("groupsPlaceHodler").innerHTML = "<a onclick=\"toggleCheckBoxes('groupsIncludeListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('groupsIncludeListForm', false);\" class=\"link\">Uncheck All</a><form id='groupsIncludeListForm'>"+testsHtml;
 				document.getElementById("groupExcludePlaceHolder").innerHTML = "<a onclick=\"toggleCheckBoxes('groupsExcludeListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('groupsExcludeListForm', false);\" class=\"link\">Uncheck All</a><form  id='groupsExcludeListForm'>"+testsHtml;
 				document.getElementById("testsPlaceHolder").innerHTML = "";
-				
+				document.getElementById("testCount").innerHTML =  "";
 			}
 		});
 	}
@@ -38,6 +38,7 @@ function getFileList()
 		document.getElementById("groupsPlaceHodler").innerHTML = "";
 		document.getElementById("groupExcludePlaceHolder").innerHTML = "";
 		document.getElementById("testsPlaceHolder").innerHTML = "";
+		document.getElementById("testCount").innerHTML =  "";
 	}
 }
 
@@ -65,6 +66,7 @@ function getTestList()
 		success(data)
 		{
 			var tests = data["testList"];
+			document.getElementById("testCount").innerHTML =  data["testListCount"];
 			var testsHtml = "";
 			if(tests.length > 0)
 			{

@@ -30,13 +30,17 @@ foreach ($groupsExcludeArray as $key => $value)
 $testListOfIncludeArray = getAllTestsFromGroup($file, $filterInclude);
 $testListOfExcludeArray = getAllTestsFromGroup($file, $filterExclude);
 
+$count = 0;
+
 foreach ($testListOfIncludeArray as $test)
 {
 	if(!in_array($test, $testListOfExcludeArray))
 	{
 		array_push($arrayOfFinalTests, $test);
+		$count++;
 	}
 }
 $arrayOfArrays["testList"] = $arrayOfFinalTests;
+$arrayOfArrays["testListCount"] = $count;
 
 echo json_encode($arrayOfArrays);

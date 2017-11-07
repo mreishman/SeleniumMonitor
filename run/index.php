@@ -120,7 +120,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						</div>
 					</div>
 					<div class="partFiveContainer">
-						<span>Tests to be run: </span>
+						<span>Tests to be run<b>(<span id="testCount"></span>)</b>: </span>
 						<br>
 						<div id="testsPlaceHolder">
 						</div>
