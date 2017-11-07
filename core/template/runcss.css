@@ -111,3 +111,14 @@
 	color: black;
 	padding: 2px;
 }
+
+.blockKey
+{
+	margin-bottom: -3px;
+}
+
+.key
+{
+	color: black;
+	text-align: center;
+}

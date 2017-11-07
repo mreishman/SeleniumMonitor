@@ -148,6 +148,16 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<div id="{{id}}ProgressBlocks" style="background-color: grey; max-height: 400px; border: 1px solid black; margin-top: 10px; overflow-y: scroll;">
 					{{ProgressBlocks}}
 				</div>
+				<div class="key">
+					Key:
+					<br>
+					<div class="block blockKey blockEmpty"></div> - Waiting
+					<div class="block blockKey blockInProgress"></div> - Running
+					<div class="block blockKey blockPass"></div> - Passed
+					<div class="block blockKey blockError"></div> - Error
+					<div class="block blockKey blockFail"></div> - Fail
+					<div class="block blockKey blockSkip"></div> - Skipped
+				</div>
 				<div style="display: none;">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
 				</div>
