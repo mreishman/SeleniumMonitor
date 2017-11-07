@@ -26,8 +26,8 @@ function getFileList()
 					testsHtml += "<li><input  onchange='getTestList();' type='checkbox' name='"+tests[i]+"'>"+tests[i]+"</li>";
 				}
 				testsHtml += "</ul></form>";
-				document.getElementById("groupsPlaceHodler").innerHTML = "<form id='groupsIncludeListForm'>"+testsHtml;
-				document.getElementById("groupExcludePlaceHolder").innerHTML = "<form  id='groupsExcludeListForm'>"+testsHtml;
+				document.getElementById("groupsPlaceHodler").innerHTML = "<a onclick=\"toggleCheckBoxes('groupsIncludeListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('groupsIncludeListForm', false);\" class=\"link\">Uncheck All</a><form id='groupsIncludeListForm'>"+testsHtml;
+				document.getElementById("groupExcludePlaceHolder").innerHTML = "<a onclick=\"toggleCheckBoxes('groupsExcludeListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('groupsExcludeListForm', false);\" class=\"link\">Uncheck All</a><form  id='groupsExcludeListForm'>"+testsHtml;
 				document.getElementById("testsPlaceHolder").innerHTML = "";
 				
 			}
@@ -65,10 +65,10 @@ function getTestList()
 		success(data)
 		{
 			var tests = data["testList"];
-			var testsHtml = "";
+			var testsHtml = "<a onclick=\"toggleCheckBoxes('testsListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false);\" class=\"link\">Uncheck All</a> ";
 			if(tests.length > 0)
 			{
-				testsHtml += "<button onclick='runTests();'> Run Tests </button><br><form id='testsListForm'><ul class='list'>";
+				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a><br><form id='testsListForm'><ul class='list'>";
 				for (var i = tests.length - 1; i >= 0; i--) {
 					testsHtml += "<li><input type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
 				}
@@ -375,5 +375,24 @@ function toggleSubtitleEF(idForTest)
 		document.getElementById(idForTest).style.display = "block";
 		document.getElementById(idForTest+"Contract").style.display = "block";
 		document.getElementById(idForTest+"Expand").style.display = "none";
+	}
+}
+
+function toggleCheckBoxes(formid, showOrHide)
+{
+	$("#"+formid+" input:checkbox").each(function()
+	{
+		if(showOrHide)
+		{
+			$(this).prop('checked', true);
+		}
+		else
+		{
+			$(this).prop('checked', false);
+		}
+	});
+	if(formid !== "testsListForm")
+	{
+		getTestList();
 	}
 }
