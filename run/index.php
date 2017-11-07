@@ -143,7 +143,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
-							<a id="{{id}}StopButton" class="link" onclick="stopTestById('{{id}}');">Stop Test</a>
+							<a id="{{id}}StopButton" class="link stopButtonClass" onclick="stopTestById('{{id}}');">Stop Test</a>
 						</div>
 					</h3>
 				</div>

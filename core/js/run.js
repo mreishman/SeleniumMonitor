@@ -425,6 +425,7 @@ function stopAllTests()
 	{
 		stopTest(i);
 	}
+	$(".stopButtonClass").hide();
 }
 
 function stopTestById(idOfTest)
