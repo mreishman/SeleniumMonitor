@@ -413,3 +413,29 @@ function updateCount(formid)
 	});
 	document.getElementById("testCount").innerHTML = ""+count+"/"+totalCount;
 }
+
+function stopTest(testNumber)
+{
+	arrayOfTests[testNumber]["tests"] = [];
+}
+
+function stopAllTests()
+{
+	for (var i = arrayOfTests.length - 1; i >= 0; i--)
+	{
+		stopTest(i);
+	}
+}
+
+function stopTestById(idOfTest)
+{
+	for (var i = arrayOfTests.length - 1; i >= 0; i--)
+	{
+		if("Test"+arrayOfTests[i]["name"] === idOfTest)
+		{
+			stopTest(i);
+			break;
+		}
+	}
+	document.getElementById(idOfTest+"StopButton").style.display = "none";
+}
