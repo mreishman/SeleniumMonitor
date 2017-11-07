@@ -136,7 +136,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<div>
 					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}Progress" value="0" max="1"></progress>
 				</div>
-				<div style="color: black; width: 100%; text-align: left;" id="{{id}}Title">
+				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
 						<span id="{{id}}ProgressTxt" >--</span>
@@ -145,10 +145,10 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						</div>
 					</h3>
 				</div>
-				<div id="{{id}}ProgressBlocks" style="background-color: grey; max-height: 400px; border: 1px solid black; margin-top: 10px; overflow-y: scroll;">
+				<div id="{{id}}ProgressBlocks" class="containerBox">
 					{{ProgressBlocks}}
 				</div>
-				<div class="key">
+				<div class="key fontChange">
 					Key:
 					<br>
 					<div class="block blockKey blockEmpty"></div> - Waiting
@@ -157,6 +157,16 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<div class="block blockKey blockError"></div> - Error
 					<div class="block blockKey blockFail"></div> - Fail
 					<div class="block blockKey blockSkip"></div> - Skipped
+				</div>
+				<div class="fontChange subTitleEF">
+					(<span id="{{id}}FailCount">0</span>)Fails: 
+				</div>
+				<div id="{{id}}Fails" class="containerBox">
+				</div>
+				<div  class="fontChange subTitleEF">
+					(<span id="{{id}}ErrorCount">0</span>)Errors:
+				</div>
+				<div id="{{id}}Errors" class="containerBox">
 				</div>
 				<div style="display: none;">
 					<input type="hidden" id="{{id}}File" value="{{file}}">

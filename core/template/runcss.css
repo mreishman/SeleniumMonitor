@@ -117,8 +117,26 @@
 	margin-bottom: -3px;
 }
 
-.key
+.fontChange
 {
 	color: black;
+}
+
+.key
+{
 	text-align: center;
+}
+
+.containerBox
+{
+	background-color: grey;
+	max-height: 400px;
+	border: 1px solid black;
+	margin-top: 10px;
+	overflow-y: scroll;
+}
+
+.subTitleEF
+{
+	margin-top: 10px;
 }
