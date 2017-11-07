@@ -141,7 +141,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<span id="{{id}}Folder">{{file}}</span>
 						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
-							<img onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png" style="width: 25px; height: 25px; margin-top: -4px; cursor: pointer;">
+							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 						</div>
 					</h3>
 				</div>
@@ -159,12 +159,20 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<div class="block blockKey blockSkip"></div> - Skipped
 				</div>
 				<div class="fontChange subTitleEF">
-					(<span id="{{id}}FailCount">0</span>)Fails: 
+					(<span id="{{id}}FailCount">0</span>)Fails:
+					<div style="float: right;">
+						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png">
+						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" style="display: none;">
+					</div>
 				</div>
 				<div id="{{id}}Fails" class="containerBox">
 				</div>
 				<div  class="fontChange subTitleEF">
 					(<span id="{{id}}ErrorCount">0</span>)Errors:
+					<div style="float: right;">
+						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png" >
+						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png" style="display: none;">
+					</div>
 				</div>
 				<div id="{{id}}Errors" class="containerBox">
 				</div>

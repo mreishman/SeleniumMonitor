@@ -361,3 +361,19 @@ function deleteTests(idForTest)
 {
 	document.getElementById(idForTest).remove();
 }
+
+function toggleSubtitleEF(idForTest)
+{
+	if(document.getElementById(idForTest).style.display !== "none")
+	{
+		document.getElementById(idForTest).style.display = "none";
+		document.getElementById(idForTest+"Contract").style.display = "none";
+		document.getElementById(idForTest+"Expand").style.display = "block";
+	}
+	else
+	{
+		document.getElementById(idForTest).style.display = "block";
+		document.getElementById(idForTest+"Contract").style.display = "block";
+		document.getElementById(idForTest+"Expand").style.display = "none";
+	}
+}

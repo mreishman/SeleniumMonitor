@@ -140,3 +140,11 @@
 {
 	margin-top: 10px;
 }
+
+.imageInHeaderContainer
+{
+	width: 25px;
+	height: 25px;
+	margin-top: -4px;
+	cursor: pointer;
+}
