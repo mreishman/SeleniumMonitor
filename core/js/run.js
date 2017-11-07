@@ -65,10 +65,10 @@ function getTestList()
 		success(data)
 		{
 			var tests = data["testList"];
-			var testsHtml = "<a onclick=\"toggleCheckBoxes('testsListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false);\" class=\"link\">Uncheck All</a> ";
+			var testsHtml = "";
 			if(tests.length > 0)
 			{
-				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a><br><form id='testsListForm'><ul class='list'>";
+				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a> <a onclick=\"toggleCheckBoxes('testsListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false);\" class=\"link\">Uncheck All</a> <br><form id='testsListForm'><ul class='list'>";
 				for (var i = tests.length - 1; i >= 0; i--) {
 					testsHtml += "<li><input type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
 				}
