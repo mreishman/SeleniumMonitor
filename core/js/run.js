@@ -66,13 +66,13 @@ function getTestList()
 		success(data)
 		{
 			var tests = data["testList"];
-			document.getElementById("testCount").innerHTML =  data["testListCount"];
+			document.getElementById("testCount").innerHTML =  data["testListCount"]+"/"+data["testListCount"];
 			var testsHtml = "";
 			if(tests.length > 0)
 			{
-				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a> <a onclick=\"toggleCheckBoxes('testsListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false);\" class=\"link\">Uncheck All</a> <br><form id='testsListForm'><ul class='list'>";
+				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a> <a onclick=\"toggleCheckBoxes('testsListForm', true); updateCount('testsListForm');\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false); updateCount('testsListForm');\" class=\"link\">Uncheck All</a> <br><form id='testsListForm'><ul class='list'>";
 				for (var i = tests.length - 1; i >= 0; i--) {
-					testsHtml += "<li><input type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
+					testsHtml += "<li><input onchange=\"updateCount('testsListForm');\" type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
 				}
 				testsHtml += "</ul></form>";
 			}
@@ -397,4 +397,19 @@ function toggleCheckBoxes(formid, showOrHide)
 	{
 		getTestList();
 	}
+}
+
+function updateCount(formid)
+{
+	var count = 0;
+	var totalCount = 0;
+	$("#"+formid+" input:checkbox").each(function()
+	{
+		if($(this).is(':checked'))
+		{
+			count++;
+		}
+		totalCount++;
+	});
+	document.getElementById("testCount").innerHTML = ""+count+"/"+totalCount;
 }
