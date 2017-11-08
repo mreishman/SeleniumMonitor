@@ -171,9 +171,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</div>
 				<div id="{{id}}Errors" class="containerBox">
 				</div>
-				<div style="display: none;">
+				<div class="fontChange">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
-					<input type="hidden" id="{{id}}BaseUrl" value="{{baseUrl}}">
+					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}" disabled>
 				</div>
 			</div>
 		</div>

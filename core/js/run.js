@@ -118,6 +118,7 @@ function runTests()
 	var item = $("#storage .container").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{file}}/g, document.getElementById("fileListSelector").value);
+	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
 	$("#main").append(item);
 

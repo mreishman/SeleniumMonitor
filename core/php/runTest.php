@@ -26,12 +26,22 @@ $output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter "
 $output = explode(PHP_EOL, $output);
 
 $arrayOfArrays["output"] = $output;
-$arrayOfArrays["timeMem"] = $output[7];
+$arrayOfArrays["timeMem"] = "?";
+if(isset($output[7]))
+{
+	$arrayOfArrays["timeMem"] = $output[7];
+}
 
-
-$result = $output[5];
+$result = "E";
+if(isset($output[5]))
+{
+	$result = $output[5];
+}
 $resultString = "?";
 $message = "";
+
+
+$resultString = "Error";
 
 if(substr( $result, 0, 1 ) === ".")
 {
@@ -40,7 +50,6 @@ if(substr( $result, 0, 1 ) === ".")
 elseif(substr( $result, 0, 1 ) === "E")
 {
 	$resultString = "Error";
-
 }
 elseif(substr( $result, 0, 1 ) === "F")
 {
