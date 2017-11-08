@@ -96,7 +96,7 @@ function runTests()
 
 	for (var i = listOfNames.length - 1; i >= 0; i--) {
 		innerArrayOfTests.push(listOfNames[i]);
-		progressBlocksHtml += "<div id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
+		progressBlocksHtml += "<div title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -165,7 +165,7 @@ function poll()
 					{
 						document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
 						document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
-						document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = "{ "+arrayOfTests[0]["tests"][0]+" Test In Progress}";
+						document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = arrayOfTests[0]["tests"][0]+" Test In Progress";
 
 						arrayOfTests[0]["startCount"]++;
 						document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(5));
@@ -416,6 +416,12 @@ function updateCount(formid)
 
 function stopTest(testNumber)
 {
+	for (var i = arrayOfTests[testNumber]["tests"].length - 1; i >= 0; i--)
+	{
+		document.getElementById("Test"+arrayOfTests[testNumber]["name"]+arrayOfTests[testNumber]["tests"][i]).classList.remove("blockEmpty");
+		document.getElementById("Test"+arrayOfTests[testNumber]["name"]+arrayOfTests[testNumber]["tests"][i]).classList.add("blockSkip");
+		document.getElementById("Test"+arrayOfTests[testNumber]["name"]+arrayOfTests[testNumber]["tests"][i]).title = arrayOfTests[testNumber]["tests"][i]+" Skipped";
+	}
 	arrayOfTests[testNumber]["tests"] = [];
 }
 

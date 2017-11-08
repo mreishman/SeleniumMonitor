@@ -54,7 +54,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			<img id="playImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Play.png" style="display: none;" height="30px">
 			<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
 		</div>
-		<a onclick="stopAllTests();"> Stop All Tests</a>
+		<img class="menuImage" src="<?php echo $baseUrl; ?>img/stopSignLight.png" onclick="stopAllTests();" style="display: inline-block; cursor: pointer;" height="30px">
 	</div>
 
 	<div id="main">
@@ -143,7 +143,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
-							<a id="{{id}}StopButton" class="link stopButtonClass" onclick="stopTestById('{{id}}');">Stop Test</a>
+							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
 						</div>
 					</h3>
 				</div>
