@@ -22,15 +22,6 @@ require_once('../core/php/configStatic.php');
 require_once('../core/php/loadVars.php');
 require_once('../core/php/updateCheck.php');
 
-if(is_file($locationOfTests."baseUrl.php"))
-{
-	require_once($locationOfTests."baseUrl.php");
-}
-else
-{
-	$staticBaseUrl = "";
-}
-
 $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 ?>
 <!doctype html>
@@ -93,9 +84,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					Set Base URL
 					<br>
-					<input id="{{id}}BaseUrl" type="text" value="{{baseUrl}}" name="baseUrl">
+					<input id="baseUrlInput" type="text" placeholder="https://test.website.com/" name="baseUrl">
+					<!--
 					<br>
 					<button onclick="changeBaseUrl('{{id}}BaseUrl')">Set Base Url</button>
+					-->
 				</div>
 				<div class="newTestPartFour testSelectPart">
 					<h1 class="title">3.</h1>
@@ -180,6 +173,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</div>
 				<div style="display: none;">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
+					<input type="hidden" id="{{id}}BaseUrl" value="{{baseUrl}}">
 				</div>
 			</div>
 		</div>
@@ -201,7 +195,6 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
-		var staticBaseUrl = "<?php echo $staticBaseUrl;?>";
 
 		$(document).ready(function()
 		{

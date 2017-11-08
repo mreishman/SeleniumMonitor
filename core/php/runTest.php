@@ -18,10 +18,11 @@ require_once('../../core/php/loadVars.php');
 
 $filter = $_POST["filter"];
 $file = $_POST["file"];
+$baseUrl = $_POST["baseUrl"];
 
 $arrayOfArrays = array();
 
-$output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter);
+$output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl);
 $output = explode(PHP_EOL, $output);
 
 $arrayOfArrays["output"] = $output;

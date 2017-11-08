@@ -108,6 +108,7 @@ function runTests()
 		errorCount: 0,
 		failCount: 0,
 		skipCount: 0,
+		baseUrl: document.getElementById("baseUrlInput").value,
 		total: innerArrayOfTests.length
 		};
 
@@ -145,7 +146,6 @@ function showStartTestNewPopup()
 	}
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
-	item = item.replace(/{{baseUrl}}/g, staticBaseUrl);
 	$("#main").append(item);
 	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
 }
@@ -179,7 +179,7 @@ function poll()
 							{
 								url: urlForSend,
 								dataType: "json",
-								data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile },
+								data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile, baseUrl: arrayOfTests[0]["baseUrl"]},
 								type: "POST",
 								success(data)
 								{
