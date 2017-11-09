@@ -160,7 +160,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" style="display: none;">
 					</div>
 				</div>
-				<div id="{{id}}Fails" class="containerBox">
+				<div class="containerBox">
+					<span id="{{id}}Fails">
+					</span>
 				</div>
 				<div  class="fontChange subTitleEF">
 					(<span id="{{id}}ErrorCount">0</span>)Errors:
@@ -169,7 +171,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png" style="display: none;">
 					</div>
 				</div>
-				<div id="{{id}}Errors" class="containerBox">
+				<div class="containerBox">
+					<span id="{{id}}Errors">
+					</span>
 				</div>
 				<div class="fontChange">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
