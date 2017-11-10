@@ -96,7 +96,7 @@ if($backgroundPollingRateType == 'Seconds')
 				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
 					<ul class="linkActions">
 						<li>
-							<a class="link">Send Reboot</a>
+							<a class="link" onclick="rebootMachine('{{linkOne}}');">Send Reboot</a>
 						</li>
 						<li>
 							<a class="link" href="{{linkOne}}">Go to 3000</a>

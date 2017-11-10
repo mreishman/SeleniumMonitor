@@ -148,3 +148,22 @@ function toggleTab(currentId, tabIdToShow)
 	$("#"+currentId+tabIdToShow).show();
 	$("#"+currentId+tabIdToShow+"Menu").addClass("active");
 }
+
+function rebootMachine(ipAddress)
+{
+	var data = {ipAddress};
+	var urlForSend = "../core/php/sendRebootCommand.php?format=json";
+	$.ajax(
+	{
+		url: urlForSend,
+		dataType: "json",
+		data,
+		type: "POST",
+		success(data)
+		{
+			showPopup();
+			document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Reboot sent...</div><br><br><div style='width:100%;text-align:center;'>"+data+" </div>";
+		}
+	});
+	
+}
