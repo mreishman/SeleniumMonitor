@@ -67,6 +67,7 @@
 	height: 15px;
 	margin: 3px;
 	display: inline-block;
+	cursor: pointer;
 }
 
 .blockEmpty
@@ -130,11 +131,15 @@
 .containerBox
 {
 	background-color: grey;
-	max-height: 400px;
 	border: 1px solid black;
-	margin-top: 10px;
-	overflow-y: scroll;
+	margin-top: 10px;	
+}
+
+.containerMaxHeight
+{
 	min-height: 1px;
+	max-height: 400px;
+	overflow-y: scroll;
 }
 
 .subTitleEF
@@ -148,4 +153,16 @@
 	height: 25px;
 	margin-top: -4px;
 	cursor: pointer;
+}
+
+.testPopupBlock
+{
+	display: none;
+	color: black;
+	background-color: white;
+	border: 1px solid black;
+	transition: 1s ease-out;
+	-webkit-transition: 1s ease-out ease-in;
+  	-moz-transition: 1s ease-out ease-in;
+  	-o-transition: 1s ease-out ease-in;
 }

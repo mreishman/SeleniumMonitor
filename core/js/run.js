@@ -96,7 +96,7 @@ function runTests()
 
 	for (var i = listOfNames.length - 1; i >= 0; i--) {
 		innerArrayOfTests.push(listOfNames[i]);
-		progressBlocksHtml += "<div title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
+		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div><div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'></div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -211,6 +211,15 @@ function poll()
 											}
 										}
 										arrayForOutput += "</table>";
+
+										var arrayForPopup = "<table>";
+										for (var i = 0; i < data['output'].length; i++)
+										{
+											arrayForPopup += "<tr><td>"+(data['output'][i])+"</td><tr>";
+										}
+										arrayForPopup += "</table>";
+
+										document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
 
 										//update percent
 										arrayOfTests[0]["count"]++;
@@ -446,4 +455,16 @@ function stopTestById(idOfTest)
 		}
 	}
 	document.getElementById(idOfTest+"StopButton").style.display = "none";
+}
+
+function showTestPopup(idOfTest)
+{
+	if(document.getElementById(idOfTest).style.display === "block")
+	{
+		document.getElementById(idOfTest).style.display = "none";
+	}
+	else
+	{
+		document.getElementById(idOfTest).style.display = "block";
+	}
 }

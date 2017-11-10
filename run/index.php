@@ -156,23 +156,23 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<div class="fontChange subTitleEF">
 					(<span id="{{id}}FailCount">0</span>)Fails:
 					<div style="float: right;">
-						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png">
-						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" style="display: none;">
+						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png" style="display: none;">
+						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" >
 					</div>
 				</div>
-				<div class="containerBox">
-					<span id="{{id}}Fails">
+				<div class="containerBox containerMaxHeight">
+					<span  style="display: none;" id="{{id}}Fails">
 					</span>
 				</div>
 				<div  class="fontChange subTitleEF">
 					(<span id="{{id}}ErrorCount">0</span>)Errors:
 					<div style="float: right;">
-						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png" >
-						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png" style="display: none;">
+						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png"  style="display: none;" >
+						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png">
 					</div>
 				</div>
-				<div class="containerBox">
-					<span id="{{id}}Errors">
+				<div class="containerBox containerMaxHeight">
+					<span style="display: none;" id="{{id}}Errors">
 					</span>
 				</div>
 				<div class="fontChange">
