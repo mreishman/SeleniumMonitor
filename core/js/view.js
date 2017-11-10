@@ -34,9 +34,12 @@ function filterPoll(data)
 			arrayOfData[proxyIdId] = {ip: proxyId, id: proxyIdId};
 			var item = $("#storage .server").html();
 			item = item.replace(/{{id}}/g, proxyIdId);
-			item = item.replace(/{{title}}/g, proxyId);
+			item = item.replace(/{{title}}/g, (proxyId.replace(":5555","")));
 			item = item.replace(/{{activity}}/g, browsersContentDetail);
 			item = item.replace(/{{config}}/g, browserConfig);
+			item = item.replace(/{{linkOne}}/g, (proxyId.replace("5555","3000")));
+			item = item.replace(/{{linkTwo}}/g, ((proxyId.replace("5555","4444"))+"/grid/console"));
+			item = item.replace(/{{linkThree}}/g, (proxyId+"/wd/hub/static/resource/hub.html"));
 			$("#main").append(item);
 			firstLoad = true;
 		}

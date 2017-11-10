@@ -94,10 +94,20 @@ if($backgroundPollingRateType == 'Seconds')
 					{{config}}
 				</div>
 				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
-					<button>Send Reboot</button>
-					<button>Go to 3000</button>
-					<button>Go to 4444</button>
-					<button>Go to 5555</button>
+					<ul class="linkActions">
+						<li>
+							<a class="link">Send Reboot</a>
+						</li>
+						<li>
+							<a class="link" href="{{linkOne}}">Go to 3000</a>
+						</li>
+						<li>
+							<a class="link" href="{{linkTwo}}">Go to 4444</a>
+						</li>
+						<li>
+							<a class="link" href="{{linkThree}}">Go to 5555</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

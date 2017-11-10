@@ -68,3 +68,13 @@
 	opacity: 0.4;
 	filter: alpha(opacity=40);
 }
+
+.linkActions
+{
+	list-style: none;
+}
+
+.linkActions li
+{
+	padding: 5px;
+}
