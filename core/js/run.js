@@ -192,20 +192,31 @@ function poll()
 
 										var arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
 										var endFound = false;
-										for (var i = 11; i < data['output'].length; i++)
+										if(data['output'].length > 11)
 										{
-											if(i === 11)
+											for (var i = 11; i < data['output'].length; i++)
 											{
-												data['output'][i] = data['output'][i].substring(3);
-											}
-											if(!endFound)
-											{
-												if(data['output'][i] === "FAILURES!" || data['output'][i] === "ERRORS!")
+												if(i === 11)
 												{
-													endFound = true;
+													data['output'][i] = data['output'][i].substring(3);
+												}
+												if(!endFound)
+												{
+													if(data['output'][i] === "FAILURES!" || data['output'][i] === "ERRORS!")
+													{
+														endFound = true;
+													}
+												}
+												if(!endFound)
+												{
+													arrayForOutput += "<tr><td>"+(data['output'][i])+"</td><tr>";
 												}
 											}
-											if(!endFound)
+										}
+										else
+										{
+											arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
+											for (var i = 0; i < data['output'].length; i++)
 											{
 												arrayForOutput += "<tr><td>"+(data['output'][i])+"</td><tr>";
 											}
