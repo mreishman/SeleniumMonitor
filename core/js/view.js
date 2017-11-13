@@ -1,4 +1,4 @@
-var arrayOfData = new Array();
+var serverArray = new Array();
 var heightBase = 0;
 var firstLoad = true;
 
@@ -29,9 +29,14 @@ function filterPoll(data)
 		var browserConfig = splitData[i].split("<div type='config' class='content_detail'>");
 		browserConfig = browserConfig[1].split("</div>");
 		browserConfig = browserConfig[0];
+		var pollType = "slow";
+		if(browsersContentDetail.indexOf("busy") !== -1)
+		{
+			pollType = "fast";
+		}
 		if($("#main #"+proxyIdId).length === 0)
 		{
-			arrayOfData[proxyIdId] = {ip: proxyId, id: proxyIdId};
+			serverArray[proxyIdId] = {ip: proxyId, id: proxyIdId, poll: "slow"};
 			var item = $("#storage .server").html();
 			item = item.replace(/{{id}}/g, proxyIdId);
 			item = item.replace(/{{title}}/g, (proxyId.replace(":5555","")));
@@ -45,6 +50,7 @@ function filterPoll(data)
 		}
 		else
 		{
+			serverArray[proxyIdId]["poll"] = pollType;
 			document.getElementById(proxyIdId+"Activity").innerHTML = browsersContentDetail;
 			document.getElementById(proxyIdId+"Config").innerHTML = browserConfig;
 		}
@@ -55,30 +61,42 @@ function filterPoll(data)
 		firstLoad = false;
 		pollTwo();
 	}
+	else
+	{
+		pollInner("fast");
+	}
 }
 
 
 function pollTwo()
 {
-	var servers = Object.keys(arrayOfData);
+	pollInner("slow");
+}
+
+function pollInner(type)
+{
+	var servers = Object.keys(serverArray);
 	var stop = servers.length;
 	for(var i = 0; i !== stop; ++i)
 	{
-		var data = arrayOfData[servers[i]];
-		var urlForSend = "../core/php/getMainHostInfo.php?format=json";
-		(function(_data){
-			$.ajax(
-			{
-				url: urlForSend,
-				dataType: "json",
-				data,
-				type: "POST",
-				success(data)
+		var data = serverArray[servers[i]];
+		if(data["poll"] === type)
+		{
+			var urlForSend = "../core/php/getMainHostInfo.php?format=json";
+			(function(_data){
+				$.ajax(
 				{
-					filterAndShow(data, _data);
-				},
-			});
-		}(data));
+					url: urlForSend,
+					dataType: "json",
+					data,
+					type: "POST",
+					success(data)
+					{
+						filterAndShow(data, _data);
+					},
+				});
+			}(data));
+		}
 	}
 }
 
