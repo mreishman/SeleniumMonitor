@@ -23,6 +23,12 @@ require_once('../core/php/loadVars.php');
 require_once('../core/php/updateCheck.php');
 
 $daysSince = calcuateDaysSince($configStatic['lastCheck']);
+
+if($pollingRateType == 'Seconds')
+{
+	$pollingRate *= 1000;
+}
+
 ?>
 <!doctype html>
 <head>
@@ -192,7 +198,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		echo "var dateOfLastUpdate = '".$configStatic['lastCheck']."';";
 		echo "var daysSinceLastCheck = '".$daysSince."';";
 		echo "var daysSetToUpdate = '".$autoCheckDaysUpdate."';";
-		echo "var maxTestsStatic = ".$maxConcurrentTests.";"
+		echo "var maxTestsStatic = ".$maxConcurrentTests.";";
+		echo "var pollingRate = ".$pollingRate.";";
 		?>
 		var dontNotifyVersion = "<?php echo $dontNotifyVersion;?>";
 		var currentVersion = "<?php echo $configStatic['version'];?>";
@@ -207,7 +214,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 			showStartTestNewPopup();
 
-			setInterval(function(){poll();},1000);
+			setInterval(function(){poll();},pollingRate);
 		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>

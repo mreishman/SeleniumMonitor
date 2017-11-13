@@ -208,8 +208,6 @@ while (file_exists($baseUrl."conf/config".$count.".php"))
 				<li>
 					<a style="text-decoration: none;" href="../setup/step1.php" class="link">Re-do Setup</a>
 					<span> | </span>
-					<a onclick="revertPopup();" class="link">Revert Version</a>
-					<span> | </span>
 					<a onclick="resetUpdateNotification();" class="link">Reset Update Notification</a>
 				</li>
 			</ul>
@@ -225,6 +223,3 @@ while (file_exists($baseUrl."conf/config".$count.".php"))
 		<input type="hidden" style="width: 400px;"  name="newestVersion" value="<?php echo $configStatic['version'];?>" > 
 	</form>
 </body>
-<script type="text/javascript">
-	var htmlRestoreOptions = "<?php readfile('../core/html/restoreVersionOptions.html') ?>";
-</script>

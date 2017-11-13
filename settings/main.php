@@ -27,12 +27,12 @@ require_once('../core/php/commonFunctions.php');
 <?php require_once('header.php');?>	
 
 	<div id="main">
-		<?php require_once('../core/php/template/mainVars.php'); ?>
+		<?php
+		require_once('../core/php/template/mainVars.php');
+		require_once('../core/php/template/runVars.php'); 
+		require_once('../core/php/template/viewVars.php');
+		?>
 	</div>
 	<?php readfile('../core/html/popup.html') ?>	
 </body>
-<script type="text/javascript">
-var fileArray = JSON.parse('<?php echo json_encode($config['watchList']) ?>');
-var logTrimType = "<?php echo $logTrimType; ?>";
-</script>
 <script src="../core/js/settingsMain.js?v=<?php echo $cssVersion?>"></script>

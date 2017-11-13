@@ -13,15 +13,6 @@ Main Settings
 <div class="settingsDiv" >
 <ul id="settingsUl">
 	<li>
-		<span class="settingsBuffer" > Polling Rate: </span>  <input type="text" name="pollingRate" value="<?php echo $pollingRate;?>" >
-		<div class="selectDiv">
-			<select name="pollingRateType">
-				<option <?php if($pollingRateType == 'Milliseconds'){echo "selected";} ?> value="Milliseconds">Milliseconds</option>
-				<option <?php if($pollingRateType == 'Seconds'){echo "selected";} ?> value="Seconds">Seconds</option>
-			</select>
-		</div>
-	</li>
-	<li>
 		<span class="settingsBuffer" > Show Update Notification: </span>
 		<div class="selectDiv">
 			<select name="updateNotificationEnabled">

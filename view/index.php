@@ -24,9 +24,9 @@ require_once('../core/php/updateCheck.php');
 
 $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
-if($pollingRateType == 'Seconds')
+if($pollingRateTypeView == 'Seconds')
 {
-	$pollingRate *= 1000;
+	$pollingRateView *= 1000;
 }
 if($backgroundPollingRateType == 'Seconds')
 {
@@ -120,7 +120,8 @@ if($backgroundPollingRateType == 'Seconds')
 		echo "var dateOfLastUpdate = '".$configStatic['lastCheck']."';";
 		echo "var daysSinceLastCheck = '".$daysSince."';";
 		echo "var daysSetToUpdate = '".$autoCheckDaysUpdate."';";
-		echo "var pollingRate = ".$pollingRate.";";
+		echo "var pollingRateView = ".$pollingRateView.";";
+		echo "var backgroundPollingRate = ".$backgroundPollingRate.";";
 		?>
 		var dontNotifyVersion = "<?php echo $dontNotifyVersion;?>";
 		var currentVersion = "<?php echo $configStatic['version'];?>";
@@ -142,8 +143,8 @@ if($backgroundPollingRateType == 'Seconds')
 
 			poll();
 
-			setInterval(function(){pollTwo();},3000);
-			setInterval(function(){poll();},250);
+			setInterval(function(){pollTwo();},backgroundPollingRate);
+			setInterval(function(){poll();},pollingRateView);
 		});
 	</script>
 </body>
