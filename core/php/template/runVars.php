@@ -2,7 +2,7 @@
 <div class="settingsHeader">
 Run Settings 
 <div class="settingsHeaderButtons">
-	<?php echo addResetButton("settingsMainVars");
+	<?php echo addResetButton("settingsRunVars");
 	if ($setupProcess == "preStart" || $setupProcess == "finished"): ?>
 		<a class="linkSmall" onclick="saveAndVerifyMain('settingsRunVars');" >Save Changes</a>
 	<?php else: ?>
@@ -20,6 +20,12 @@ Run Settings
 				<option <?php if($pollingRateType == 'Seconds'){echo "selected";} ?> value="Seconds">Seconds</option>
 			</select>
 		</div>
+	</li>
+	<li>
+		<span class="settingsBuffer" > Test Folder: </span>  <input style="width: 600px;" type="text" name="locationOfTests" value="<?php echo $locationOfTests;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > Selenium Folder: </span>  <input style="width: 600px;" type="text" name="locationOfSelenium" value="<?php echo $locationOfSelenium;?>" >
 	</li>
 </ul>
 </div>

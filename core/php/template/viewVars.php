@@ -2,7 +2,7 @@
 <div class="settingsHeader">
 View Settings 
 <div class="settingsHeaderButtons">
-	<?php echo addResetButton("settingsMainVars");
+	<?php echo addResetButton("settingsViewVars");
 	if ($setupProcess == "preStart" || $setupProcess == "finished"): ?>
 		<a class="linkSmall" onclick="saveAndVerifyMain('settingsViewVars');" >Save Changes</a>
 	<?php else: ?>
