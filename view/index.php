@@ -48,6 +48,7 @@ if($backgroundPollingRateType == 'Seconds')
 		<a class="active">View</a>
 		<a href="../run/">Run</a>
 		<a href="../settings/"> Settings </a>
+		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 
 

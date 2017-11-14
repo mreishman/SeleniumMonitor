@@ -52,6 +52,7 @@ if($pollingRateType == 'Seconds')
 			<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
 		</div>
 		<img class="menuImage" src="<?php echo $baseUrl; ?>img/stopSignLight.png" onclick="stopAllTests();" style="display: inline-block; cursor: pointer;" height="30px">
+		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 
 	<div id="main">
