@@ -129,7 +129,7 @@ $"."updateProgress = array(
 	file_put_contents($fileToPutContent, $writtenTextTofile);
 }
 
-function downloadFile($file = null, $update = true, $downloadFrom = 'Log-Hog/archive/', $downloadTo = '../../update/downloads/updateFiles/updateFiles.zip')
+function downloadFile($file = null, $update = true, $downloadFrom = 'SeleniumMonitor/archive/', $downloadTo = '../../update/downloads/updateFiles/updateFiles.zip')
 {
 
 	if($update == true)

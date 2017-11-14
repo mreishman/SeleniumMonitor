@@ -5,7 +5,7 @@ var showPopupForUpdateBool = true;
 var dontNotifyVersionNotSet = "";
 var dataFromJSON = "";
 
-function checkForUpdates(urlSend = "../", whatAmIUpdating = "Log-Hog", currentNewVersion = currentVersion, updateFormIDLocal = "settingsInstallUpdate", showPopupForUpdateInner = true, dontNotifyVersionInner = "")
+function checkForUpdates(urlSend = "../", whatAmIUpdating = "SeleniumMonitor", currentNewVersion = currentVersion, updateFormIDLocal = "settingsInstallUpdate", showPopupForUpdateInner = true, dontNotifyVersionInner = "")
 {
 	versionUpdate = currentNewVersion;
 	urlSend = urlSend;

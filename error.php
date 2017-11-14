@@ -26,7 +26,7 @@ if($_GET["error"] == 550)
 ?>
 
 <p> More Information: </p>
-<p> Current Version of Log-Hog: <?php echo $configStatic['version']; ?> </p>
+<p> Current Version of seleniumMonitor: <?php echo $configStatic['version']; ?> </p>
 <p> File Permissions: </p>
 <?php
 

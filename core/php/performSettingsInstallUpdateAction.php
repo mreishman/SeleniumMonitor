@@ -99,7 +99,7 @@ elseif($action === "changeDirUnzipped")
 }
 elseif($action === 'moveDirUnzipped')
 {
-	rename("../../Log-Hog-".$_POST['version'], "../../restore/extracted");
+	rename("../../SeleniumMonitor-".$_POST['version'], "../../restore/extracted");
 	$response = true; 
 }
 elseif($action === 'updateProgressFile')
