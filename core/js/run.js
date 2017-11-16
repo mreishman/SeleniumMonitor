@@ -233,20 +233,6 @@ function poll()
 
 										document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
 
-										//update percent
-										arrayOfTests[0]["count"]++;
-										var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
-										if(percentValue !== 1)
-										{
-											document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
-											document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(5));
-										}
-										else
-										{
-											document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
-											document.getElementById(_data["id"]+"Progress").value = 1;
-										}
-
 										if(result === "Passed")
 										{
 											document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
@@ -285,6 +271,45 @@ function poll()
 										{
 											document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
 										}
+									}
+								},
+								error(xhr, error)
+								{
+									if(document.getElementById(_data["id"]))
+									{
+										document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
+										document.getElementById(_data["id"]+_data["testName"]).title = _data['testName'];
+										currentTestsRunning--;
+
+										var arrayForPopup = "<table>";
+										arrayForPopup += "<tr><td>"+xhr+"</td><tr>";
+										arrayForPopup += "<tr><td>"+error+"</td><tr>";
+										arrayForPopup += "</table>";
+										document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
+
+										document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+										document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
+										arrayOfTests[0]["errorCount"]++;
+									}
+								},
+								complete(data)
+								{
+									if(document.getElementById(_data["id"]))
+									{
+										//update percent
+										arrayOfTests[0]["count"]++;
+										var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
+										if(percentValue !== 1)
+										{
+											document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+											document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(5));
+										}
+										else
+										{
+											document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
+											document.getElementById(_data["id"]+"Progress").value = 1;
+										}
+										
 									}
 									currentTestsRunning--;
 								}
