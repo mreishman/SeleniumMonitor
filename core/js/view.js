@@ -92,7 +92,15 @@ function pollInner(type)
 					type: "POST",
 					success(data)
 					{
-						filterAndShow(data, _data);
+						if(data)
+						{
+							filterAndShow(data, _data);
+						}
+						else
+						{
+							document.getElementById(_data["id"]+"Jumbotron").classList.remove("jumbotron");
+							document.getElementById(_data["id"]+"Jumbotron").classList.add("jumbotronDisconnect");
+						}
 					},
 				});
 			}(data));

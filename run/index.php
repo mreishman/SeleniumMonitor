@@ -130,7 +130,7 @@ if($pollingRateType == 'Seconds')
 			</div>
 		</div>
 		<div class="container">
-			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
+			<div style="background-color: white; border: 1px solid black; " id="{{id}}" class="scanBar containerMain">
 				<div>
 					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}ProgressStart" value="0" max="1"></progress>
 				</div>
@@ -159,6 +159,7 @@ if($pollingRateType == 'Seconds')
 					<div class="block blockKey blockError"></div> - Error
 					<div class="block blockKey blockFail"></div> - Fail
 					<div class="block blockKey blockSkip"></div> - Skipped
+					<div class="block blockKey blockRisky"></div> - Risky
 				</div>
 				<div class="fontChange subTitleEF">
 					(<span id="{{id}}FailCount">0</span>)Fails:

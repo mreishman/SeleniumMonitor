@@ -21,6 +21,11 @@
 	border: 1px solid white;
 }
 
+.jumbotronDisconnect
+{
+	filter: grayscale(1);
+}
+
 .videos
 {
 	text-decoration: none;

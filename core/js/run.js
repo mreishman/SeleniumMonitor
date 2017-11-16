@@ -108,6 +108,7 @@ function runTests()
 		errorCount: 0,
 		failCount: 0,
 		skipCount: 0,
+		riskyCount: 0,
 		baseUrl: document.getElementById("baseUrlInput").value,
 		total: innerArrayOfTests.length
 		};
@@ -272,8 +273,13 @@ function poll()
 										{
 											document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
 											document.getElementById(_data["id"]+_data["testName"]).title += " Skipped";
-											console.log(data['output']);
 											arrayOfTests[0]["skipCount"]++;
+										}
+										else if(result === "Risky")
+										{
+											document.getElementById(_data["id"]+_data["testName"]).classList.add("blockRisky");
+											document.getElementById(_data["id"]+_data["testName"]).title += " Risky";
+											arrayOfTests[0]["riskyCount"]++;
 										}
 										else
 										{

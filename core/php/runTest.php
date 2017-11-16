@@ -59,6 +59,10 @@ elseif(substr( $result, 0, 1 ) === "I")
 {
 	$resultString = "Skipped";
 }
+elseif(substr( $result, 0, 1 ) === "R")
+{
+	$resultString = "Risky";
+}
 
 $arrayOfArrays["Result"] = $resultString;
 
