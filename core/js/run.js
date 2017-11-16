@@ -282,8 +282,8 @@ function poll()
 										currentTestsRunning--;
 
 										var arrayForPopup = "<table>";
-										arrayForPopup += "<tr><td>"+xhr+"</td><tr>";
-										arrayForPopup += "<tr><td>"+error+"</td><tr>";
+										arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
+										arrayForPopup += "<tr><td>"+JSON.stringify(error)+"</td><tr>";
 										arrayForPopup += "</table>";
 										document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
 
