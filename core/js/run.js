@@ -301,7 +301,6 @@ function poll()
 									{
 										document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
 										document.getElementById(_data["id"]+_data["testName"]).title = _data['testName'];
-										currentTestsRunning--;
 
 										var arrayForPopup = "<table>";
 										arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
