@@ -130,6 +130,28 @@ function runTests()
 
 function showStartTestNewPopup()
 {
+	$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+	{
+		createNewTestPopup(data);
+	});
+}
+
+function createNewTestPopup(data)
+{
+	var maxTests = 0;
+	var splitData = data.split("<div class='proxy'>");
+	for (var i = 1; i < splitData.length; i++)
+	{
+		var browserConfig = splitData[i].split("<div type='config' class='content_detail'>");
+		browserConfig = browserConfig[1].split("</div>");
+		browserConfig = browserConfig[0].split("maxSession:");
+		browserConfig = browserConfig[1].split("</p>");
+		browserConfig = parseInt(browserConfig[0]);
+		maxTests += browserConfig;
+	}
+
+
+
 	testNumber++;
 	var targetWidthMargin = window.innerWidth;
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
@@ -137,7 +159,7 @@ function showStartTestNewPopup()
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
-	for (var i = 1; i <= maxTestsStatic; i++)
+	for (var i = 1; i <= maxTests; i++)
 	{
 		maxTestsHtml += "<li><input style=\"width: auto;\" ";
 		if(i === maxTests)
