@@ -63,7 +63,7 @@ if($backgroundPollingRateType == 'Seconds')
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
-					<img src="../core/img/loading.gif" style="width: 75px; height: 75px; margin-left: 110px; margin-top: 75px; margin-bottom: 75px;">
+					<img src="../core/img/static.gif" style="width: 100%; height: 100%;">
 				</div>
 				<div style="border-bottom: 1px solid white;">
 					<ul class="menu">
