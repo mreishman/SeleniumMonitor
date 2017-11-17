@@ -121,9 +121,46 @@ function filterAndShow(data, dataExt)
 	var jumbotron = data.split("src='");
 	jumbotron = jumbotron[1].split("'>");
 	jumbotron = jumbotron[0];
-	var newImg = new Image();
+	
 
-    newImg.onload = function()
+	var urlForSend = "../core/php/getImage.php?format=json";
+	(function(_data){
+		$.ajax(
+		{
+			url: urlForSend,
+			dataType: "json",
+			data: {imageSrc: jumbotron},
+			type: "POST",
+			success(data)
+			{
+				showImage(_data, data);
+			}
+		});
+	}(data));
+
+
+	var videos = data.split("<ul class='videos'>");
+	videos = videos[1].split("</ul>");
+	videos = videos[0];
+	videos = "<ul class='videos'>"+videos+"</ul>";
+
+	document.getElementById(dataExt["id"]+"Videos").innerHTML = videos;
+
+
+	var stats = data.split("<!-- videos -->");
+	stats = stats[1].split("<div class='col-lg-6'>");
+	stats = stats[1].split("</div> ");
+	stats = stats[0];
+
+	document.getElementById(dataExt["id"]+"Stats").innerHTML = stats;
+}
+
+function showImage(dataExt, srcImg)
+{
+	var newImg = new Image();
+	
+	console.log(srcImg);
+	newImg.onload = function()
     {
     	var idOfNewImg = dataExt["id"]+"Jumbotron";
     	var ratio = newImg.height/newImg.width;
@@ -141,29 +178,10 @@ function filterAndShow(data, dataExt)
     	document.getElementById(idOfNewImg).setAttribute("style","width:"+width+"px; height:"+height+"px; margin-bottom: "+marginBottom+"px;");
     }
 
-    newImg.src = jumbotron; 
+    newImg.src = srcImg; 
     newImg.id = dataExt["id"];
-    jumbotron = data.split("class='jumbotron'>");
-	jumbotron = jumbotron[1].split(" <!-- jumbotron -->");
-	jumbotron = jumbotron[0];
-   
-	document.getElementById(dataExt["id"]+"Jumbotron").innerHTML = jumbotron;
 
-
-	var videos = data.split("<ul class='videos'>");
-	videos = videos[1].split("</ul>");
-	videos = videos[0];
-	videos = "<ul class='videos'>"+videos+"</ul>";
-
-	document.getElementById(dataExt["id"]+"Videos").innerHTML = videos;
-
-
-	var stats = data.split("<!-- videos -->");
-	stats = stats[1].split("<div class='col-lg-6'>");
-	stats = stats[1].split("</div> ");
-	stats = stats[0];
-
-	document.getElementById(dataExt["id"]+"Stats").innerHTML = stats;
+	document.getElementById(dataExt["id"]+"Jumbotron").innerHTML = srcImg;
 }
 
 function toggleTab(currentId, tabIdToShow)
