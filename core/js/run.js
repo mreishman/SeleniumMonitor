@@ -138,7 +138,7 @@ function showStartTestNewPopup()
 
 function createNewTestPopup(data)
 {
-	var maxTests = 0;
+	var maxTestsStatic = 0;
 	var splitData = data.split("<div class='proxy'>");
 	for (var i = 1; i < splitData.length; i++)
 	{
@@ -147,7 +147,7 @@ function createNewTestPopup(data)
 		browserConfig = browserConfig[0].split("maxSession:");
 		browserConfig = browserConfig[1].split("</p>");
 		browserConfig = parseInt(browserConfig[0]);
-		maxTests += browserConfig;
+		maxTestsStatic += browserConfig;
 	}
 
 
@@ -159,7 +159,7 @@ function createNewTestPopup(data)
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
-	for (var i = 1; i <= maxTests; i++)
+	for (var i = 1; i <= maxTestsStatic; i++)
 	{
 		maxTestsHtml += "<li><input style=\"width: auto;\" ";
 		if(i === maxTests)
