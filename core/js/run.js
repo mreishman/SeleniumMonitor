@@ -109,7 +109,6 @@ function runTests()
 		failCount: 0,
 		skipCount: 0,
 		riskyCount: 0,
-		baseUrl: document.getElementById("baseUrlInput").value,
 		total: innerArrayOfTests.length
 		};
 
@@ -203,7 +202,7 @@ function poll()
 							{
 								url: urlForSend,
 								dataType: "json",
-								data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile, baseUrl: arrayOfTests[0]["baseUrl"]},
+								data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile, baseUrl: document.getElementById("Test"+testNumberLocal+"BaseUrl").value},
 								type: "POST",
 								success(data)
 								{
@@ -381,40 +380,6 @@ function poll()
 function setMaxNumber(newValue)
 {
 	maxTests = newValue;
-}
-
-function changeBaseUrl(idForBaseUrl)
-{
-	displayLoadingPopup();
-	var urlForSend = '../core/php/changeBaseUrl.php?format=json';
-	staticBaseUrl = document.getElementById(idForBaseUrl).value;
-	var data = {baseUrl: staticBaseUrl};
-	$.ajax(
-	{
-		url: urlForSend,
-		dataType: "json",
-		data,
-		type: "POST",
-		complete()
-		{
-			checkBaseUrl();
-		}
-	});
-}
-
-function checkBaseUrl()
-{
-	$.getJSON("../core/php/verifyBaseUrl.php", {}, function(data) 
-	{
-		if(data !== staticBaseUrl)
-		{
-			checkBaseUrl();
-		}
-		else
-		{
-			hidePopup();
-		}
-	});
 }
 
 function pausePollAction()

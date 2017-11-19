@@ -185,7 +185,7 @@ if($pollingRateType == 'Seconds')
 				</div>
 				<div class="fontChange">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
-					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}" disabled>
+					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
 				</div>
 			</div>
 		</div>
