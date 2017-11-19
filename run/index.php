@@ -91,11 +91,7 @@ if($pollingRateType == 'Seconds')
 					<br>
 					Set Base URL
 					<br>
-					<input id="baseUrlInput" type="text" placeholder="https://test.website.com/" name="baseUrl">
-					<!--
-					<br>
-					<button onclick="changeBaseUrl('{{id}}BaseUrl')">Set Base Url</button>
-					-->
+					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
 				</div>
 				<div class="newTestPartFour testSelectPart">
 					<h1 class="title">3.</h1>

@@ -4,6 +4,7 @@ var maxTests = 3;
 var currentTestsRunning = 0;
 var phpUnitVerify = false;
 var pausePoll = false;
+var placeholderBaseUrl = "";
 
 function getFileList()
 {
@@ -87,7 +88,7 @@ function runTests()
 	var groupsExclude = $("#testsListForm").serializeArray();
 	var listOfNames = new Array();
 	var progressBlocksHtml = "";
-
+	placeholderBaseUrl = document.getElementById("baseUrlInput").value;
 	var innerArrayOfTests = new Array();
 
 	for (var i = groupsExclude.length - 1; i >= 0; i--) {
@@ -156,7 +157,7 @@ function createNewTestPopup(data)
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
 	var item = $("#storage .newTestPopup").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
-
+	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	for (var i = 1; i <= maxTestsStatic; i++)
 	{
