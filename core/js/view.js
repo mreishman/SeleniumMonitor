@@ -100,7 +100,8 @@ function pollInner(type)
 							if(document.getElementById(idForDisconnectMessage).style.display !== "none")
 							{
 								document.getElementById(idForDisconnectMessage).style.display = "none";
-								document.getElementById(idForJumbotronImage).classList.remove("jumbotronDisconnect");
+								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotronDisconnect");
+								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotron");
 							}
 							filterAndShow(data, _data);
 						}
@@ -111,6 +112,7 @@ function pollInner(type)
 								document.getElementById(idForDisconnectMessage).style.marginTop = ""+((heightBase/2)-13)+"px";
 								document.getElementById(idForDisconnectMessage).style.display = "block";
 								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotronDisconnect");
+								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotron");
 							}
 						}
 					},
