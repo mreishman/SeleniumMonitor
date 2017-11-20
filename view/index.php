@@ -63,8 +63,8 @@ if($backgroundPollingRateType == 'Seconds')
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
-					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed - Disconnected</div>
-					<img src="../core/img/static.gif" style="width: 100%; height: 100%;">
+					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
+					<img id="{{id}}JumbotronImage" class='img-responsive' src="../core/img/static.gif">
 				</div>
 				<div style="border-bottom: 1px solid white;">
 					<ul class="menu">
