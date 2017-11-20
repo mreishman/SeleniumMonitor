@@ -64,7 +64,9 @@ if($backgroundPollingRateType == 'Seconds')
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
 					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
-					<img id="{{id}}JumbotronImage" class='img-responsive' src="../core/img/static.gif">
+					<span id="{{id}}JumbotronImageSpan">
+						<img class='img-responsive' src="../core/img/static.gif">
+					</span>
 				</div>
 				<div style="border-bottom: 1px solid white;">
 					<ul class="menu">
