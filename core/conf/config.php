@@ -48,6 +48,7 @@ $defaultConfig = array(
 	'sendCrashInfoJS'				=> 'true',
 	'sendCrashInfoPHP'				=> 'true',
 	'themeVersion'					=> 3,
+	'timeoutViewMain'				=> 6,
 	'truncateLog'					=> 'true',
 	'updateNoticeMeter'				=> 'every',
 	'updateNotificationEnabled'		=> 'true',
