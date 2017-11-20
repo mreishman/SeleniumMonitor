@@ -92,12 +92,22 @@ function pollInner(type)
 					type: "POST",
 					success(data)
 					{
+						var idForDisconnectMessage = _data["id"]+"Disconnected";
+						
 						if(data)
 						{
+							if(document.getElementById(idForDisconnectMessage).style.display !== "none")
+							{
+								document.getElementById(idForDisconnectMessage).style.display = "none";
+							}
 							filterAndShow(data, _data);
 						}
 						else
 						{
+							if(document.getElementById(idForDisconnectMessage).style.display !== "block")
+							{
+								document.getElementById(idForDisconnectMessage).style.display = "block";
+							}
 							document.getElementById(_data["id"]+"Jumbotron").classList.remove("jumbotron");
 							document.getElementById(_data["id"]+"Jumbotron").classList.add("jumbotronDisconnect");
 						}
