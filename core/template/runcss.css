@@ -123,6 +123,7 @@
 .blockKey
 {
 	margin-bottom: -3px;
+	cursor: default;
 }
 
 .fontChange
