@@ -164,6 +164,14 @@ function filterAndShow(data, dataExt)
 	    newImg.src = jumbotron; 
 	    newImg.id = dataExt["id"];
     }
+    else
+    {
+    	marginBottom = heightBase - document.getElementById(idForImage).style.height + marginBottom;
+    	if(document.getElementById(idForImage).style.marginBottom !== marginBottom)
+    	{
+    		document.getElementById(idForImage).style.marginBottom =  marginBottom;
+    	}
+    }
 	document.getElementById(dataExt["id"]+"JumbotronImageSpan").innerHTML = "<img id='"+idForImage+"' class='img-responsive' src='"+jumbotron+"'>";
 
 
