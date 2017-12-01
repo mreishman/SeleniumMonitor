@@ -89,7 +89,7 @@ if($pollingRateType == 'Seconds')
 				<div class="newTestPartTwo testSelectPart testSelectPartBorder">
 					<h1 class="title">2.</h1>
 					<br>
-					Set Base URL
+					Set Base URL <a href="../settings/faq.php#howSetupBaseUrl"><img src="../core/img/info.png" height="10px" width="10px"></a>
 					<br>
 					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
 				</div>
