@@ -166,7 +166,7 @@ function filterAndShow(data, dataExt)
     }
     else
     {
-    	marginBottom = heightBase - document.getElementById(idForImage).style.height + marginBottom;
+    	var marginBottom = heightBase - document.getElementById(idForImage).style.height + 10;
     	if(document.getElementById(idForImage).style.marginBottom !== marginBottom)
     	{
     		document.getElementById(idForImage).style.marginBottom =  marginBottom;
