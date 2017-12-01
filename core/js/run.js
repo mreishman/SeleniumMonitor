@@ -92,13 +92,16 @@ function runTests()
 	placeholderBaseUrl = document.getElementById("baseUrlInput").value;
 	var innerArrayOfTests = new Array();
 
-	for (var i = groupsExclude.length - 1; i >= 0; i--) {
+	for (var i = groupsExclude.length - 1; i >= 0; i--)
+	{
 		listOfNames.push(groupsExclude[i]["name"]);
 	}
 
-	for (var i = listOfNames.length - 1; i >= 0; i--) {
+	for (var i = listOfNames.length - 1; i >= 0; i--)
+	{
 		innerArrayOfTests.push(listOfNames[i]);
-		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div><div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'></div>";
+		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
+		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> <span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span> </div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -222,6 +225,7 @@ function pollInner(data)
 			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
 			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
 			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = arrayOfTests[0]["tests"][0]+" Test In Progress";
+			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
 
 			arrayOfTests[0]["startCount"]++;
 			document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(5));
@@ -285,7 +289,7 @@ function pollInner(data)
 							}
 							arrayForPopup += "</table>";
 
-							document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
+							document.getElementById(_data["id"]+_data["testName"]+"popupSpan").innerHTML = arrayForPopup;
 
 							if(result === "Passed")
 							{
@@ -338,7 +342,7 @@ function pollInner(data)
 							arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
 							arrayForPopup += "<tr><td>"+JSON.stringify(error)+"</td><tr>";
 							arrayForPopup += "</table>";
-							document.getElementById(_data["id"]+_data["testName"]+"popup").innerHTML = arrayForPopup;
+							document.getElementById(_data["id"]+_data["testName"]+"popupSpan").innerHTML = arrayForPopup;
 
 							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
 							document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
