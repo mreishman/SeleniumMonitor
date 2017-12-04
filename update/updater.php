@@ -945,6 +945,52 @@ if(count($arrayOfVersions) === 0)
 				{
 					retryCount = 0;
 					clearInterval(verifyFileTimer);
+					finishedUpdateAfterAjaxSetToOneHundred();
+				}
+			},
+			failure: function(data)
+			{
+				retryCount++;
+			}
+		});
+	}
+
+	function finishedUpdateAfterAjaxSetToOneHundred()
+	{
+		updateProgressBar(99);
+		updateStatusFunc("Finished Updating to ","finishedUpdate",100);
+		retryCount = 0;
+		verifyFileTimer = setInterval(function(){finishUpdateOneHundredCheck();},2000);
+	}
+
+	function finishUpdateOneHundredCheck()
+	{
+		if(retryCount == 0)
+		{
+			updateText("Verifying Update Complete");
+		}
+		else
+		{
+			updateText("Attempt "+(retryCount+1)+" of 3 for Verifying Update Complete");
+		}
+		if(retryCount > 3)
+		{
+			clearInterval(verifyFileTimer);
+			updateError();
+		}
+		var urlForSend = "../core/php/verifyVersionInstallComplete.php";
+		var dataSend = {};
+		$.ajax({
+			url: urlForSend,
+			dataType: "json",
+			data: dataSend,
+			type: "POST",
+			success: function(data)
+			{
+				if(data === true)
+				{
+					retryCount = 0;
+					clearInterval(verifyFileTimer);
 					finishedUpdateAfterAjax();
 				}
 			},
