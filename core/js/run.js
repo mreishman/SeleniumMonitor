@@ -641,7 +641,7 @@ function reRunTests(idOfTest)
 	document.getElementById(idOfTest+"Progress").value = (percentValue.toFixed(5));
 
 	var arrayForNewTestArray = {
-		name: idOfTest,
+		name: idOfTest.substring(4),
 		tests: arrayOfTestsToBeReRun,
 		count: newStart,
 		startCount: newStart,
@@ -653,8 +653,6 @@ function reRunTests(idOfTest)
 		total: totalTestCount
 		};
 
-	console.log(arrayForNewTestArray);
-	
 	arrayOfTests.push(arrayForNewTestArray);
 
 	hidePopup();
