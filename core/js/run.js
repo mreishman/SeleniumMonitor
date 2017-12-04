@@ -552,7 +552,8 @@ function reRunTests(idOfTest)
 	{
 		objectCount[testReRun[i]["name"]] = 0;
 		var testArray = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]+" input");
-		for (var j = testArray.length - 1; j >= 0; j--)
+		var testArrayLength = testArray.length;
+		for (var j = 0; j < testArrayLength; j++)
 		{
 			arrayOfTestsToBeReRun.push(testArray[j].value);
 		}
@@ -591,4 +592,8 @@ function reRunTests(idOfTest)
 	arrayOfTests.push(arrayForNewTestArray);
 
 	hidePopup();
+
+	//hide re-run button, show stop button
+	document.getElementById(idOfTest+"StopButton").style.display = "inline-block";
+	document.getElementById(idOfTest+"RefreshButton").style.display = "none";
 }
