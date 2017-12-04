@@ -63,7 +63,7 @@ if($pollingRateType == 'Seconds')
 		<div class="newTestPopup">
 			<div id="{{id}}" class="runNewTest">
 				<div class="bannerPHP" style="display: none;">
-					PhpUnit id not detected. Please verify that PhpUnit is installed and configured. 
+					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
 				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>

@@ -313,7 +313,7 @@ function getAllTestsFromGroup($file, $groupNameArray)
 function checkPhpUnit()
 {
 	$commandResult = shell_exec("phpunit --version");
-	if(strpos($commandResult, "command not found") === false)
+	if(strpos(strtolower($commandResult), "command not found") === false && $commandResult !== null)
 	{
 		return true;
 	}
