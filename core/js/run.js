@@ -4,7 +4,6 @@ var maxTests = 3;
 var currentTestsRunning = 0;
 var phpUnitVerify = false;
 var pausePoll = false;
-var placeholderBaseUrl = "";
 var pausePollAjaxDelay = false;
 
 function getFileList()
@@ -100,8 +99,11 @@ function runTests()
 	for (var i = listOfNames.length - 1; i >= 0; i--)
 	{
 		innerArrayOfTests.push(listOfNames[i]);
-		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'></div>";
-		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> <span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span> </div>";
+		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'>";
+		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[i]+"\" id='Test"+testNumber+listOfNames[i]+"TestName' >";
+		progressBlocksHtml += "</div>";
+		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> <span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span>";
+		progressBlocksHtml += " </div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -117,7 +119,7 @@ function runTests()
 		total: innerArrayOfTests.length
 		};
 
-	arrayOfTests.push(arrayForNewTestArray)
+	arrayOfTests.push(arrayForNewTestArray);
  	
 	//create display for thing 
 	var item = $("#storage .container").html();
@@ -188,6 +190,11 @@ function poll()
 			{
 				if(currentTestsRunning === 0)
 				{
+					//end test icon change
+					var idOfTest = arrayOfTests[0]["name"];
+					document.getElementById("Test"+idOfTest+"StopButton").style.display = "none";
+					document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
+
 					arrayOfTests.shift();
 				}
 			}
@@ -198,7 +205,7 @@ function poll()
 			{
 				$.getJSON("../core/php/verifyPhpUnit.php", {}, function(data) 
 				{
-					if(!data)
+					if(data !== true)
 					{
 						$(".bannerPHP").show();
 					}
@@ -211,6 +218,16 @@ function poll()
 			}
 		}
 	}
+}
+
+function updateProgressBar()
+{
+
+}
+
+function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
+{
+	document.getElementById(testNumberLocal+"ProgressStart").value = ((firstNum/secondNum).toFixed(5));
 }
 
 function pollInner(data)
@@ -228,7 +245,7 @@ function pollInner(data)
 			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
 
 			arrayOfTests[0]["startCount"]++;
-			document.getElementById("Test"+testNumberLocal+"ProgressStart").value = ((arrayOfTests[0]["startCount"]/arrayOfTests[0]["total"]).toFixed(5));
+			updateProgressBarStart("Test"+testNumberLocal, arrayOfTests[0]["startCount"], arrayOfTests[0]["total"]);
 
 			var valueForFile = document.getElementById("Test"+testNumberLocal+"File").value;
 			var data = {id: "Test"+testNumberLocal, testName: arrayOfTests[0]["tests"][0]};
@@ -504,4 +521,141 @@ function showTestPopup(idOfTest)
 	{
 		document.getElementById(idOfTest).style.display = "block";
 	}
+}
+
+function reRunTestsPopup(idOfTest)
+{
+	//show popup with checkbox of types
+	showPopup();
+	document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Re-run tests?</div><br><div style='width:100%;text-align:left;padding-left:10px;padding-right:10px;'>Select the following test groups to re-run<form id='testFormResetForm' ><input type='checkbox' name='passed'> Passed  | <input type='checkbox' name='error'> Error | <input type='checkbox' name='fail'> Fail  <br> <input type='checkbox' name='skipped'> Skipped | <input type='checkbox' name='risky'> Risky </form></div><div class='link' onclick='reRunTests(\""+idOfTest+"\");' style='margin-left:125px; margin-top: 8px; margin-right:50px;'>Run</div><div onclick='hidePopup();' class='link'>Cancel</div></div>";
+}
+
+function reRunTests(idOfTest)
+{
+
+	//schedule tests to re-run with applied filters
+	var testReRun = $("#testFormResetForm").serializeArray();
+	var arrayOfTestsToBeReRun = new Array();
+	var testProgressBlocks = idOfTest+"ProgressBlocks";
+	var totalTestCount = $("#"+testProgressBlocks+" .block").length;
+
+	//default vars
+	var passedCount =  $("#"+testProgressBlocks+" .blockPass").length;
+	var errorCount =  $("#"+testProgressBlocks+" .blockError").length;
+	var failCount =  $("#"+testProgressBlocks+" .blockFail").length;
+	var skipCount =  $("#"+testProgressBlocks+" .blockSkip").length;
+	var riskyCount =  $("#"+testProgressBlocks+" .blockRisky").length;
+
+	//look into making variable later
+	for (var i = testReRun.length - 1; i >= 0; i--)
+	{
+		if(testReRun[i]["name"] === "passed")
+		{
+			passedCount = 0;
+			var passArray = $("#"+testProgressBlocks+" .blockPass input");
+			for (var i = passArray.length - 1; i >= 0; i--)
+			{
+				arrayOfTestsToBeReRun.push(passArray[i].value);
+			}
+
+			var passBlockArray = $("#"+testProgressBlocks+" .blockPass");
+			for (var i = passBlockArray.length - 1; i >= 0; i--)
+			{
+				passBlockArray[i].classList.remove("blockPass");
+				passBlockArray[i].classList.add("blockEmpty");
+			}
+		}
+		else if(testReRun[i]["name"] === "error")
+		{
+			errorCount = 0;
+			var errorArray = $("#"+testProgressBlocks+" .blockError input");
+			for (var i = errorArray.length - 1; i >= 0; i--)
+			{
+				arrayOfTestsToBeReRun.push(errorArray[i].value);
+			}
+
+			var errorBlockArray = $("#"+testProgressBlocks+" .blockError");
+			for (var i = errorBlockArray.length - 1; i >= 0; i--)
+			{
+				errorBlockArray[i].classList.remove("blockError");
+				errorBlockArray[i].classList.add("blockEmpty");
+			}
+		}
+		else if(testReRun[i]["name"] === "fail")
+		{
+			failCount = 0;
+			var failArray = $("#"+testProgressBlocks+" .blockFail input");
+			for (var i = failArray.length - 1; i >= 0; i--)
+			{
+				arrayOfTestsToBeReRun.push(failArray[i].value);
+			}
+
+			var failBlockArray = $("#"+testProgressBlocks+" .blockFail");
+			for (var i = failBlockArray.length - 1; i >= 0; i--)
+			{
+				failBlockArray[i].classList.remove("blockFail");
+				failBlockArray[i].classList.add("blockEmpty");
+			}
+		}
+		else if(testReRun[i]["name"] === "skipped")
+		{
+			skipCount = 0;
+			var skipArray = $("#"+testProgressBlocks+" .blockSkip input");
+			for (var i = skipArray.length - 1; i >= 0; i--)
+			{
+				arrayOfTestsToBeReRun.push(skipArray[i].value);
+			}
+
+			var skipBlockArray = $("#"+testProgressBlocks+" .blockSkip");
+			for (var i = skipBlockArray.length - 1; i >= 0; i--)
+			{
+				skipBlockArray[i].classList.remove("blockSkip");
+				skipBlockArray[i].classList.add("blockEmpty");
+			}
+		}
+		else if(testReRun[i]["name"] === "risky")
+		{
+			riskyCount = 0;
+			var riskyArray = $("#"+testProgressBlocks+" .blockRisky input");
+			for (var i = riskyArray.length - 1; i >= 0; i--)
+			{
+				arrayOfTestsToBeReRun.push(riskyArray[i].value);
+			}
+
+			var riskyBlockArray = $("#"+testProgressBlocks+" .blockRisky");
+			for (var i = riskyBlockArray.length - 1; i >= 0; i--)
+			{
+				riskyBlockArray[i].classList.remove("blockRisky");
+				riskyBlockArray[i].classList.add("blockEmpty");
+			}
+		}
+	}
+
+	var newStart = totalTestCount - arrayOfTestsToBeReRun.length;
+	//reset percent bar (get number of tests from boxes)
+
+	updateProgressBarStart(idOfTest, newStart, totalTestCount);
+
+	var percentValue = (newStart/totalTestCount);
+	document.getElementById(idOfTest+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+	document.getElementById(idOfTest+"Progress").value = (percentValue.toFixed(5));
+
+	var arrayForNewTestArray = {
+		name: idOfTest,
+		tests: arrayOfTestsToBeReRun,
+		count: newStart,
+		startCount: newStart,
+		passedCount: passedCount,  
+		errorCount: errorCount,
+		failCount: failCount,
+		skipCount: skipCount,
+		riskyCount: riskyCount,
+		total: totalTestCount
+		};
+
+	console.log(arrayForNewTestArray);
+	
+	arrayOfTests.push(arrayForNewTestArray);
+
+	hidePopup();
 }

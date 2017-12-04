@@ -140,6 +140,7 @@ if($pollingRateType == 'Seconds')
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
+							<img style="display: none;" id="{{id}}RefreshButton" class="imageInHeaderContainer" onclick="reRunTestsPopup('{{id}}');" src="../core/img/Refresh.png">
 						</div>
 					</h3>
 				</div>
@@ -204,6 +205,7 @@ if($pollingRateType == 'Seconds')
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
+		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
 
 		$(document).ready(function()
 		{

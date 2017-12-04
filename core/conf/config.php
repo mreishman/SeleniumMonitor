@@ -15,6 +15,7 @@ $defaultConfig = array(
 	'configVersion'					=> 2,
 	'cssVersion'					=> 1,
 	'currentTheme'					=> 'Default',
+	'defaultBaseUrl'				=> '',
 	'developmentTabEnabled'			=> 'false',
 	'dontNotifyVersion'				=> '0',
 	'enableDevBranchDownload' 		=> 'false',
