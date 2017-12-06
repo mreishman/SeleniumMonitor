@@ -208,7 +208,7 @@ if($pollingRateType == 'Seconds')
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
-
+		var runCheckCount = "<?php echo $runCheckCount; ?>";
 		$(document).ready(function()
 		{
 			resize();

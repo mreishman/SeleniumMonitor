@@ -179,7 +179,7 @@ function poll()
 				if(currentTestsRunning < maxTests)
 				{
 					//ajax check
-					if(false)
+					if(runCheckCount === "true")
 					{
 						pausePollAjaxDelay = true;
 
