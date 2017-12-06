@@ -192,9 +192,11 @@ function poll()
 				{
 					//end test icon change
 					var idOfTest = arrayOfTests[0]["name"];
-					document.getElementById("Test"+idOfTest+"StopButton").style.display = "none";
-					document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
-
+					if(document.getElementById("Test"+idOfTest+"StopButton"))
+					{
+						document.getElementById("Test"+idOfTest+"StopButton").style.display = "none";
+						document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
+					}
 					arrayOfTests.shift();
 				}
 			}
