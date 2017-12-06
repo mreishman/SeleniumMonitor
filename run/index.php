@@ -136,13 +136,15 @@ if($pollingRateType == 'Seconds')
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
-						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
 							<img style="display: none;" id="{{id}}RefreshButton" class="imageInHeaderContainer" onclick="reRunTestsPopup('{{id}}');" src="../core/img/Refresh.png">
 						</div>
 					</h3>
+					<div style="font-size: 200%;">
+						<span style="border: 1px solid black; padding: 5px;" id="{{id}}ProgressTxt" >--</span>
+					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
 					{{ProgressBlocks}}
