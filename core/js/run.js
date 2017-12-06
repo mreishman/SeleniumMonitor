@@ -178,13 +178,21 @@ function poll()
 			{
 				if(currentTestsRunning < maxTests)
 				{
-					pausePollAjaxDelay = true;
 					//ajax check
-					$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+					if(false)
 					{
-						pausePollAjaxDelay = false;
-						pollInner(data);
-					});
+						pausePollAjaxDelay = true;
+
+						$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+						{
+							pausePollAjaxDelay = false;
+							pollInner(data);
+						});
+					}
+					else
+					{
+						pollInner(false);
+					}
 				}
 			}
 			else
@@ -235,8 +243,13 @@ function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
 
 function pollInner(data)
 {
-	var maxTestsStatic = getMaxConcurrentTests(data);
-	var currentRunningTestCount = getCurrentRunningTestCount(data);
+	var maxTestsStatic = 10;
+	var currentRunningTestCount = 0;
+	if(data)
+	{
+		maxTestsStatic = getMaxConcurrentTests(data);
+		currentRunningTestCount = getCurrentRunningTestCount(data);
+	}
 	if(maxTestsStatic > currentRunningTestCount)
 	{
 		var testNumberLocal = arrayOfTests[0]["name"];
