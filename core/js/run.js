@@ -126,6 +126,7 @@ function runTests()
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{file}}/g, document.getElementById("fileListSelector").value);
 	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
+	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
 	$("#main").append(item);
 
@@ -566,6 +567,17 @@ function reRunTests(idOfTest)
 			testArray[j].classList.remove(testReRun[i]["name"]);
 			testArray[j].classList.add("blockEmpty");
 			document.getElementById(testArray[j].id+"popupSpan").innerHTML = "<p> Pending Re-Start </p>";
+		}
+
+		if(testReRun[i]["name"] === "blockError")
+		{
+			document.getElementById(idOfTest+"ErrorCount").innerHTML = "";
+			document.getElementById(idOfTest+"Errors").innerHTML = 0;
+		}
+		else if(testReRun[i]["name"] === "blockFail")
+		{
+			document.getElementById(idOfTest+"FailCount").innerHTML = "";
+			document.getElementById(idOfTest+"Fails").innerHTML = 0;
 		}
 	}
 

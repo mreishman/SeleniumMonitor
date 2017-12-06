@@ -143,7 +143,7 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</h3>
 					<div style="font-size: 200%;">
-						<span style="border: 1px solid black; padding: 5px;" id="{{id}}ProgressTxt" >--</span>
+						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}ProgressTxt" >--</span>
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
@@ -161,7 +161,7 @@ if($pollingRateType == 'Seconds')
 					<div class="block blockKey blockRisky"></div> - Risky
 				</div>
 				<div class="fontChange subTitleEF">
-					(<span id="{{id}}FailCount">0</span>)Fails:
+					(<span id="{{id}}FailCount">0</span>/{{totalCount}})Fails:
 					<div style="float: right;">
 						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png" style="display: none;">
 						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" >
@@ -172,7 +172,7 @@ if($pollingRateType == 'Seconds')
 					</span>
 				</div>
 				<div  class="fontChange subTitleEF">
-					(<span id="{{id}}ErrorCount">0</span>)Errors:
+					(<span id="{{id}}ErrorCount">0</span>/{{totalCount}})Errors:
 					<div style="float: right;">
 						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png"  style="display: none;" >
 						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png">
