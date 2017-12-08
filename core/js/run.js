@@ -584,13 +584,13 @@ function reRunTests(idOfTest)
 
 		if(testReRun[i]["name"] === "blockError")
 		{
-			document.getElementById(idOfTest+"ErrorCount").innerHTML = "";
-			document.getElementById(idOfTest+"Errors").innerHTML = 0;
+			document.getElementById(idOfTest+"ErrorCount").innerHTML = 0;
+			document.getElementById(idOfTest+"Errors").innerHTML = "";
 		}
 		else if(testReRun[i]["name"] === "blockFail")
 		{
-			document.getElementById(idOfTest+"FailCount").innerHTML = "";
-			document.getElementById(idOfTest+"Fails").innerHTML = 0;
+			document.getElementById(idOfTest+"FailCount").innerHTML = 0;
+			document.getElementById(idOfTest+"Fails").innerHTML = "";
 		}
 	}
 
