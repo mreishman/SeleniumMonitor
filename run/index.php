@@ -12,7 +12,7 @@ if(file_exists('../local/layout.php'))
 if(!file_exists($baseUrl.'conf/config.php'))
 {
 	$partOfUrl = clean_url($_SERVER['REQUEST_URI']);
-	$url = "http://" . $_SERVER['HTTP_HOST'] .$partOfUrl ."setup/welcome.php";
+	$url = "http://" . $_SERVER['HTTP_HOST'] .substr($partOfUrl,0,4) ."setup/welcome.php";
 	header('Location: ' . $url, true, 302);
 	exit();
 }
@@ -63,7 +63,7 @@ if($pollingRateType == 'Seconds')
 		<div class="newTestPopup">
 			<div id="{{id}}" class="runNewTest">
 				<div class="bannerPHP" style="display: none;">
-					PhpUnit id not detected. Please verify that PhpUnit is installed and configured. 
+					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
 				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>
@@ -89,13 +89,9 @@ if($pollingRateType == 'Seconds')
 				<div class="newTestPartTwo testSelectPart testSelectPartBorder">
 					<h1 class="title">2.</h1>
 					<br>
-					Set Base URL
+					Set Base URL <a href="../settings/faq.php#howSetupBaseUrl"><img src="../core/img/info.png" height="10px" width="10px"></a>
 					<br>
-					<input id="baseUrlInput" type="text" placeholder="https://test.website.com/" name="baseUrl">
-					<!--
-					<br>
-					<button onclick="changeBaseUrl('{{id}}BaseUrl')">Set Base Url</button>
-					-->
+					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
 				</div>
 				<div class="newTestPartFour testSelectPart">
 					<h1 class="title">3.</h1>
@@ -140,12 +136,15 @@ if($pollingRateType == 'Seconds')
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
-						<span id="{{id}}ProgressTxt" >--</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
+							<img style="display: none;" id="{{id}}RefreshButton" class="imageInHeaderContainer" onclick="reRunTestsPopup('{{id}}');" src="../core/img/Refresh.png">
 						</div>
 					</h3>
+					<div style="font-size: 200%;">
+						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}ProgressTxt" >--</span>
+					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
 					{{ProgressBlocks}}
@@ -162,7 +161,7 @@ if($pollingRateType == 'Seconds')
 					<div class="block blockKey blockRisky"></div> - Risky
 				</div>
 				<div class="fontChange subTitleEF">
-					(<span id="{{id}}FailCount">0</span>)Fails:
+					(<span id="{{id}}FailCount">0</span>/{{totalCount}})Fails:
 					<div style="float: right;">
 						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png" style="display: none;">
 						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" >
@@ -173,7 +172,7 @@ if($pollingRateType == 'Seconds')
 					</span>
 				</div>
 				<div  class="fontChange subTitleEF">
-					(<span id="{{id}}ErrorCount">0</span>)Errors:
+					(<span id="{{id}}ErrorCount">0</span>/{{totalCount}})Errors:
 					<div style="float: right;">
 						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png"  style="display: none;" >
 						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png">
@@ -185,7 +184,7 @@ if($pollingRateType == 'Seconds')
 				</div>
 				<div class="fontChange">
 					<input type="hidden" id="{{id}}File" value="{{file}}">
-					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}" disabled>
+					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
 				</div>
 			</div>
 		</div>
@@ -208,7 +207,8 @@ if($pollingRateType == 'Seconds')
 		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
-
+		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
+		var runCheckCount = "<?php echo $runCheckCount; ?>";
 		$(document).ready(function()
 		{
 			resize();

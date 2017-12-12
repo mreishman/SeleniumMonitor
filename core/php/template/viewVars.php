@@ -30,6 +30,9 @@ View Settings
 			</select>
 		</div>
 	</li>
+	<li>
+	<span class="settingsBuffer" > Timeout for get main data: </span>  <input type="text" name="timeoutViewMain" value="<?php echo $timeoutViewMain;?>" > Seconds
+	</li>
 </ul>
 </div>
 </form>

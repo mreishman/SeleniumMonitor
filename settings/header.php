@@ -16,6 +16,11 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 	<?php else: ?>	
 		<a id="aboutLink" onclick="goToUrl('about.php');">About</a>
 	<?php endif; ?>
+	<?php if(strpos($URI, 'faq.php') !== false): ?>
+		<a style="cursor: default;" class="active" id="faqLink" >FAQ</a>
+	<?php else: ?>	
+		<a id="faqLink" onclick="goToUrl('faq.php');">FAQ</a>
+	<?php endif; ?>
 	<?php if((strpos($URI, 'whatsNew.php') !== false) || (strpos($URI, 'update.php') !== false) || (strpos($URI, 'changeLog.php') !== false)): ?>
 		<a style="cursor: default;" class="active" id="updateLink">
 	<?php else: ?>

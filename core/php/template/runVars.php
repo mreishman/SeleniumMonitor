@@ -27,6 +27,18 @@ Run Settings
 	<li>
 		<span class="settingsBuffer" > Selenium Folder: </span>  <input style="width: 600px;" type="text" name="locationOfSelenium" value="<?php echo $locationOfSelenium;?>" >
 	</li>
+	<li>
+		<span class="settingsBuffer" > Default Base URL: </span>  <input style="width: 600px;" type="text" name="defaultBaseUrl" value="<?php echo $defaultBaseUrl;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > Enable Network Check: </span>
+		<select name="runCheckCount">
+			<option <?php if($runCheckCount == 'true'){echo "selected";} ?> value="true">True</option>
+			<option <?php if($runCheckCount == 'false'){echo "selected";} ?> value="false">False</option>
+		</select>
+		<br>
+		* This could limit the ammount of tests runnign at a time depending of the speed of the network / main node
+	</li>
 </ul>
 </div>
 </form>

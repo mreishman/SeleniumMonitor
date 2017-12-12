@@ -12,7 +12,7 @@ if(file_exists('../local/layout.php'))
 if(!file_exists($baseUrl.'conf/config.php'))
 {
 	$partOfUrl = clean_url($_SERVER['REQUEST_URI']);
-	$url = "http://" . $_SERVER['HTTP_HOST'] .$partOfUrl ."setup/welcome.php";
+	$url = "http://" . $_SERVER['HTTP_HOST'] .substr($partOfUrl,0,5) ."setup/welcome.php";
 	header('Location: ' . $url, true, 302);
 	exit();
 }
@@ -63,7 +63,10 @@ if($backgroundPollingRateType == 'Seconds')
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
-					<img src="../core/img/loading.gif" style="width: 75px; height: 75px; margin-left: 110px; margin-top: 75px; margin-bottom: 75px;">
+					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
+					<span id="{{id}}JumbotronImageSpan">
+						<img class='img-responsive' src="../core/img/static.gif">
+					</span>
 				</div>
 				<div style="border-bottom: 1px solid white;">
 					<ul class="menu">

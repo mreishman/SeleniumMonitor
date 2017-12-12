@@ -26,6 +26,7 @@ function filterPoll(data)
 		browsersContentDetail = browsersContentDetail[1].split("</div>");
 		browsersContentDetail = browsersContentDetail[0];
 		browsersContentDetail = browsersContentDetail.split('/grid/resources/org/openqa/grid/images/').join('../core/img/');
+		browsersContentDetail = browsersContentDetail.split('internet_explore').join('internet-explore');
 		var browserConfig = splitData[i].split("<div type='config' class='content_detail'>");
 		browserConfig = browserConfig[1].split("</div>");
 		browserConfig = browserConfig[0];
@@ -92,14 +93,28 @@ function pollInner(type)
 					type: "POST",
 					success(data)
 					{
+						var idForDisconnectMessage = _data["id"]+"Disconnected";
+						var idForJumbotronImage = _data["id"]+"JumbotronImage";
+						
 						if(data)
 						{
+							if(document.getElementById(idForDisconnectMessage).style.display !== "none")
+							{
+								document.getElementById(idForDisconnectMessage).style.display = "none";
+								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotronDisconnect");
+								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotron");
+							}
 							filterAndShow(data, _data);
 						}
 						else
 						{
-							document.getElementById(_data["id"]+"Jumbotron").classList.remove("jumbotron");
-							document.getElementById(_data["id"]+"Jumbotron").classList.add("jumbotronDisconnect");
+							if(document.getElementById(idForDisconnectMessage).style.display !== "block")
+							{
+								document.getElementById(idForDisconnectMessage).style.marginTop = ""+((heightBase/2)-13)+"px";
+								document.getElementById(idForDisconnectMessage).style.display = "block";
+								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotronDisconnect");
+								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotron");
+							}
 						}
 					},
 				});
@@ -121,33 +136,43 @@ function filterAndShow(data, dataExt)
 	var jumbotron = data.split("src='");
 	jumbotron = jumbotron[1].split("'>");
 	jumbotron = jumbotron[0];
-	var newImg = new Image();
+	//jumbotron = jumbotron.substring(jumbotron.indexOf(",") + 1);
+	//jumbotron = atob(jumbotron);
+	var idForImage = dataExt["id"]+"JumbotronImage";
+	if(!document.getElementById(idForImage))
+	{
+		var newImg = new Image();
+		
+		newImg.onload = function()
+	    {
+	    	var idOfNewImg = dataExt["id"]+"Jumbotron";
+	    	var ratio = newImg.height/newImg.width;
+	    	var marginBottom = 10;
+	    	var width = 312;
+	    	var height = width*ratio;
+	    	if(height > heightBase)
+	    	{
+	    		heightBase = height;
+	    	}
+	    	else if(height < heightBase)
+	    	{
+	    		marginBottom = heightBase - height + marginBottom;
+	    	}
+	    	document.getElementById(idOfNewImg).setAttribute("style","width:"+width+"px; height:"+height+"px; margin-bottom: "+marginBottom+"px;");
+	    }
 
-    newImg.onload = function()
-    {
-    	var idOfNewImg = dataExt["id"]+"Jumbotron";
-    	var ratio = newImg.height/newImg.width;
-    	var marginBottom = 10;
-    	var width = 312;
-    	var height = width*ratio;
-    	if(height > heightBase)
-    	{
-    		heightBase = height;
-    	}
-    	else if(height < heightBase)
-    	{
-    		marginBottom = heightBase - height + marginBottom;
-    	}
-    	document.getElementById(idOfNewImg).setAttribute("style","width:"+width+"px; height:"+height+"px; margin-bottom: "+marginBottom+"px;");
+	    newImg.src = jumbotron; 
+	    newImg.id = dataExt["id"];
     }
-
-    newImg.src = jumbotron; 
-    newImg.id = dataExt["id"];
-    jumbotron = data.split("class='jumbotron'>");
-	jumbotron = jumbotron[1].split(" <!-- jumbotron -->");
-	jumbotron = jumbotron[0];
-   
-	document.getElementById(dataExt["id"]+"Jumbotron").innerHTML = jumbotron;
+    else
+    {
+    	var marginBottom = heightBase - document.getElementById(idForImage).style.height + 10;
+    	if(document.getElementById(idForImage).style.marginBottom !== marginBottom)
+    	{
+    		document.getElementById(idForImage).style.marginBottom =  marginBottom;
+    	}
+    }
+	document.getElementById(dataExt["id"]+"JumbotronImageSpan").innerHTML = "<img id='"+idForImage+"' class='img-responsive' src='"+jumbotron+"'>";
 
 
 	var videos = data.split("<ul class='videos'>");
