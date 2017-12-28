@@ -155,12 +155,15 @@ function createNewTestPopup(data)
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	for (var i = 1; i <= maxTestsStatic; i++)
 	{
-		maxTestsHtml += "<li><input style=\"width: auto;\" ";
-		if(i === maxTests)
+		if(((i - (i - (i % 6))) % (((i - (i % 6))/6)+1)) === 0)
 		{
-			maxTestsHtml += " checked ";
+			maxTestsHtml += "<li><input style=\"width: auto;\" ";
+			if(i === maxTests)
+			{
+				maxTestsHtml += " checked ";
+			}
+			maxTestsHtml += " onclick=\"setMaxNumber("+i+");\" type=\"radio\" name=\"maxTests\" value=\""+i+"\">"+i+"</li>";
 		}
-		maxTestsHtml += " onclick=\"setMaxNumber("+i+");\" type=\"radio\" name=\"maxTests\" value=\""+i+"\">"+i+"</li>";
 	}
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);

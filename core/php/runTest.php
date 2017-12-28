@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 require_once("commonFunctions.php");
 
 $baseUrl = "../../core/";
@@ -22,7 +23,11 @@ $baseUrl = $_POST["baseUrl"];
 
 $arrayOfArrays = array();
 
-$output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl);
+$command = "cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl." 2>&1";
+$handle = popen($command, 'r');
+$output = stream_get_contents($handle);
+pclose($handle);
+
 $output = explode(PHP_EOL, $output);
 
 $arrayOfArrays["output"] = $output;
