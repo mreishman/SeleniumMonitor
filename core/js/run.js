@@ -162,7 +162,7 @@ function createNewTestPopup(data)
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
-	maxTestsHtml += "<li>Number Of Tests Per Request <input id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
+	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
 	/*
 	for (var i = 1; i <= maxTestsStatic; i++)
 	{
@@ -203,6 +203,43 @@ function adjustAjaxRequestValueFromInput()
 	adjustAjaxReuqestValueSub(sliderValue);
 }
 
+function adjustTestsPerRequestValueFromSlider()
+{
+	var sliderValue = document.getElementById("sliderForTestPerRequest").value;
+	document.getElementById("inputForTestPerRequest").value = sliderValue;
+	adjustTestsPerRequestValueSub(sliderValue);
+}
+
+function adjustTestsPerRequestValueFromInput()
+{
+	var sliderValue = document.getElementById("inputForTestPerRequest").value;
+	var maxValue = document.getElementById("sliderForTestPerRequest").max;
+	if(sliderValue > maxValue)
+	{
+		sliderValue = maxValue;
+		document.getElementById("inputForTestPerRequest").value = maxValue;
+	}
+	document.getElementById("sliderForTestPerRequest").value = sliderValue;
+	adjustTestsPerRequestValueSub(sliderValue);
+}
+
+function adjustTestsPerRequestValueSub(sliderValue)
+{
+	testsPerAjax = sliderValue;
+	var ajaxRequestNum = document.getElementById("inputForAjaxRequest").value;
+	var ajaxRequestNumStatic = ajaxRequestNum;
+	while(!checkIfAjaxRequestTestRequestIsSupported(sliderValue, ajaxRequestNum) && ajaxRequestNum > 1)
+	{
+		ajaxRequestNum--;
+	}
+	if(ajaxRequestNum !== ajaxRequestNumStatic)
+	{
+		document.getElementById("inputForAjaxRequest").value = ajaxRequestNum;
+		document.getElementById("sliderForAjaxRequest").value = ajaxRequestNum;
+		ajaxRequestValue = ajaxRequestNum;
+	}
+}
+
 function adjustAjaxReuqestValueSub(sliderValue)
 {
 	ajaxRequestValue = sliderValue;
@@ -216,6 +253,7 @@ function adjustAjaxReuqestValueSub(sliderValue)
 	{
 		document.getElementById("inputForTestPerRequest").value = testRequestValue;
 		document.getElementById("sliderForTestPerRequest").value = testRequestValue;
+		testsPerAjax = testRequestValue;
 	}
 }
 
