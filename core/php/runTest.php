@@ -42,10 +42,8 @@ if(isset($output[5]))
 {
 	$result = $output[5];
 }
-$resultString = "?";
+
 $message = "";
-
-
 $resultString = "Error";
 
 if(substr( $result, 0, 1 ) === ".")

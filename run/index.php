@@ -76,7 +76,7 @@ if($pollingRateType == 'Seconds')
 							foreach($files as $key => $value)
 							{
 								$path = realpath($locationOfTests.DIRECTORY_SEPARATOR.$value);
-						        if(!is_dir($path))
+						        if(!is_dir($path) && returnArrayOfTests(file($path)) !== array())
 						        {
 						        	echo "<option value='".$path."'' >".$value."</option>";
 						        }
