@@ -144,6 +144,7 @@ if($pollingRateType == 'Seconds')
 					</h3>
 					<div style="font-size: 200%;">
 						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}ProgressTxt" >--</span>
+						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}EtaTxt" >{{eta}}</span>
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">

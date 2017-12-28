@@ -8,6 +8,7 @@ var pausePollAjaxDelay = false;
 var maxTestsStatic = 1;
 var ajaxRequestValue = 3;
 var testsPerAjax = 1;
+var totalTimeOfAllTests = new Array();
 
 function getFileList()
 {
@@ -85,6 +86,15 @@ function getTestList()
 	});
 }
 
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
+
 function runTests()
 {
 	//get list of tests, add to array
@@ -123,6 +133,12 @@ function runTests()
 		};
 
 	arrayOfTests.push(arrayForNewTestArray);
+
+	var etaHtml = "ETA: ---";
+	if(totalTimeOfAllTests.length > 0)
+	{
+		etaHtml = "ETA: "+getMeanOfTotalTimeCount();
+	}
  	
 	//create display for thing 
 	var item = $("#storage .container").html();
@@ -131,11 +147,22 @@ function runTests()
 	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
 	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
+	item = item.replace(/{{eta}}/g, etaHtml);
 	$("#main").append(item);
 
 	//remove add stuff
 	$("#Test"+testNumber).remove();
 	showStartTestNewPopup();
+}
+
+function getMeanOfTotalTimeCount()
+{
+	var total = 0;
+	for (var i = totalTimeOfAllTests.length - 1; i >= 0; i--)
+	{
+		total += totalTimeOfAllTests[i];
+	}
+	return total/totalTimeOfAllTests.length;
 }
 
 function showStartTestNewPopup()
@@ -346,6 +373,7 @@ function pollInner(data)
 			var id = {};
 			var testName = {};
 			var valueForFile = {};
+			var timeStart = {};
 			for (var i = numberOfTestsToRun - 1; i >= 0; i--)
 			{
 				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).classList.remove("blockEmpty");
@@ -359,8 +387,9 @@ function pollInner(data)
 				valueForFile[i] = document.getElementById("Test"+testNumberLocal+"File").value;
 				id[i] = "Test"+testNumberLocal;
 				testName[i] = arrayOfTests[0]["tests"][i];
+				timeStart[i] = performance.now();
 			}
-			var data = {id , testName , numberOfTestsToRun};
+			var data = {id , testName , numberOfTestsToRun, timeStart};
 			var urlForSend = '../core/php/runTest.php?format=json';
 
 			(function(_data){
@@ -372,7 +401,6 @@ function pollInner(data)
 					type: "POST",
 					success(data)
 					{
-						console.log(data);
 						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
 							var result = data[i]["Result"];
@@ -489,6 +517,8 @@ function pollInner(data)
 					{
 						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
+							var currentTime = performance.now();
+							totalTimeOfAllTests.push(Math.round((currentTime - _data["timeStart"][i])/1000));
 							if(document.getElementById(_data["id"][i]))
 							{
 								//update percent
@@ -498,10 +528,13 @@ function pollInner(data)
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
 									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+(getMeanOfTotalTimeCount()*(arrayOfTests[0]["total"]-arrayOfTests[0]["count"]))+"s";
+									
 								}
 								else
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = "Finished";
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: 0s";
 									document.getElementById(_data["id"][i]+"Progress").value = 1;
 								}
 								

@@ -46,7 +46,7 @@ $defaultConfig = array(
 		'removeFolder'		=> 	'true',
 		'versionCheck'		=> 'true'
 		),
-	'runCheckCount'					=> 'false',
+	'runCheckCount'					=> 'true',
 	'sendCrashInfoJS'				=> 'true',
 	'sendCrashInfoPHP'				=> 'true',
 	'themeVersion'					=> 3,
