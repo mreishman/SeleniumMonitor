@@ -5,6 +5,9 @@ var currentTestsRunning = 0;
 var phpUnitVerify = false;
 var pausePoll = false;
 var pausePollAjaxDelay = false;
+var maxTestsStatic = 1;
+var ajaxRequestValue = 3;
+var testsPerAjax = 1;
 
 function getFileList()
 {
@@ -145,7 +148,12 @@ function showStartTestNewPopup()
 
 function createNewTestPopup(data)
 {
-	var maxTestsStatic = getMaxConcurrentTests(data);
+	maxTestsStatic = getMaxConcurrentTests(data);
+	var maxRequests = 5;
+	if (maxTestsStatic < 5)
+	{
+		maxRequests = maxTestsStatic;
+	}
 	testNumber++;
 	var targetWidthMargin = window.innerWidth;
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
@@ -153,6 +161,9 @@ function createNewTestPopup(data)
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
+	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
+	maxTestsHtml += "<li>Number Of Tests Per Request <input id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
+	/*
 	for (var i = 1; i <= maxTestsStatic; i++)
 	{
 		if(((i - (i - (i % 6))) % (((i - (i % 6))/6)+1)) === 0)
@@ -165,10 +176,56 @@ function createNewTestPopup(data)
 			maxTestsHtml += " onclick=\"setMaxNumber("+i+");\" type=\"radio\" name=\"maxTests\" value=\""+i+"\">"+i+"</li>";
 		}
 	}
+	*/
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
 	$("#main").append(item);
 	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
+}
+
+function adjustAjaxRequestValueFromSlider()
+{
+	var sliderValue = document.getElementById("sliderForAjaxRequest").value;
+	document.getElementById("inputForAjaxRequest").value = sliderValue;
+	adjustAjaxReuqestValueSub(sliderValue);
+}
+
+function adjustAjaxRequestValueFromInput()
+{
+	var sliderValue = document.getElementById("inputForAjaxRequest").value;
+	var maxValue = document.getElementById("sliderForAjaxRequest").max;
+	if(sliderValue > maxValue)
+	{
+		sliderValue = maxValue;
+		document.getElementById("inputForAjaxRequest").value = maxValue;
+	}
+	document.getElementById("sliderForAjaxRequest").value = sliderValue;
+	adjustAjaxReuqestValueSub(sliderValue);
+}
+
+function adjustAjaxReuqestValueSub(sliderValue)
+{
+	ajaxRequestValue = sliderValue;
+	var testRequestValue = document.getElementById("inputForTestPerRequest").value;
+	var testRequestValueStatic = testRequestValue;
+	while(!checkIfAjaxRequestTestRequestIsSupported(sliderValue, testRequestValue) && testRequestValue > 1)
+	{
+		testRequestValue--;
+	}
+	if(testRequestValue !== testRequestValueStatic)
+	{
+		document.getElementById("inputForTestPerRequest").value = testRequestValue;
+		document.getElementById("sliderForTestPerRequest").value = testRequestValue;
+	}
+}
+
+function checkIfAjaxRequestTestRequestIsSupported(ajaxRequestValueCheck, testRequestValueCheck)
+{
+	if((ajaxRequestValueCheck * testRequestValueCheck) > maxTestsStatic)
+	{
+		return false;
+	}
+	return true;
 }
 
 function poll()
@@ -179,7 +236,7 @@ function poll()
 		{
 			if(arrayOfTests[0]["tests"].length > 0)
 			{
-				if(currentTestsRunning < maxTests)
+				if(currentTestsRunning < ajaxRequestValue)
 				{
 					//ajax check
 					if(runCheckCount === "true")
@@ -246,7 +303,6 @@ function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
 
 function pollInner(data)
 {
-	var maxTestsStatic = 10;
 	var currentRunningTestCount = 0;
 	if(data)
 	{
