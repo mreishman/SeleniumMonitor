@@ -1,6 +1,8 @@
 var serverArray = new Array();
 var heightBase = 0;
 var firstLoad = true;
+var numberOfPollInnerRequestsFast = 0;
+var numberOfPollInnerRequestsSlow = 2;
 
 function poll()
 {
@@ -89,8 +91,16 @@ function pollInner(type)
 		}
 	}
 
-	if(data !== {})
+	if(data !== {} && ((type === "slow" && numberOfPollInnerRequestsSlow < 2) || (type === "fast" && numberOfPollInnerRequestsFast < 2)))
 	{
+		if(type === "slow")
+		{
+			numberOfPollInnerRequestsSlow++;
+		}
+		else
+		{
+			numberOfPollInnerRequestsFast++;
+		}
 		var data = {serverArray: data};
 		var urlForSend = "../core/php/getMainHostInfo.php?format=json";
 		(function(_data){
@@ -129,6 +139,18 @@ function pollInner(type)
 						}
 					}
 				},
+				complete(data)
+				{
+					var typeInner = _data["serverArray"][0]["type"];
+					if(typeInner === "slow")
+					{
+						numberOfPollInnerRequestsSlow--;
+					}
+					else
+					{
+						numberOfPollInnerRequestsFast--;
+					}
+				}
 			});
 		}(data));
 	}
