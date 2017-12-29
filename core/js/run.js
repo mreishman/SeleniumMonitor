@@ -137,7 +137,7 @@ function runTests()
 	var etaHtml = "ETA: ---";
 	if(totalTimeOfAllTests.length > 0)
 	{
-		etaHtml = "ETA: "+getMeanOfTotalTimeCount();
+		etaHtml = "ETA: "+getEta(innerArrayOfTests.length);
 	}
  	
 	//create display for thing 
