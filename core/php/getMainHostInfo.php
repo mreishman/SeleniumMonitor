@@ -1,51 +1,55 @@
 <?php
-$serverArray = $_POST["serverArray"];
-
-require_once('../../core/php/commonFunctions.php');
-
-$baseUrl = "../../core/";
-if(file_exists('../../local/layout.php'))
-{
-	$baseUrl = "../../local/";
-	//there is custom information, use this
-	require_once('../../local/layout.php');
-	$baseUrl .= $currentSelectedTheme."/";
-}
-require_once($baseUrl.'conf/config.php');
-require_once('../../core/conf/config.php');
-
-$timeoutMain = $defaultConfig['timeoutViewMain'];
-if(isset($config['timeoutViewMain']))
-{
-	$timeoutMain = $config['timeoutViewMain'];
-}
-
-$ctx = stream_context_create(array('http'=>
-    array(
-        'timeout' => $timeoutMain,
-    )
-));
-
-
 $objectToReturn = array();
-$counter = 0;
-$return = null;
-foreach ($serverArray as $key => $value)
+if(isset($_POST["serverArray"]))
 {
-	$ipAddressSend = $value["ip"];
-	if(strpos($ipAddressSend, "5555") !== false)
+	$serverArray = $_POST["serverArray"];
+
+	require_once('../../core/php/commonFunctions.php');
+
+	$baseUrl = "../../core/";
+	if(file_exists('../../local/layout.php'))
 	{
-		$ipAddressSend = str_replace("5555", "", $ipAddressSend);
+		$baseUrl = "../../local/";
+		//there is custom information, use this
+		require_once('../../local/layout.php');
+		$baseUrl .= $currentSelectedTheme."/";
 	}
-	$return = null;
-	try 
+	require_once($baseUrl.'conf/config.php');
+	require_once('../../core/conf/config.php');
+
+	$timeoutMain = $defaultConfig['timeoutViewMain'];
+	if(isset($config['timeoutViewMain']))
 	{
-		$return = 	@file_get_contents($ipAddressSend."3000", false, $ctx);
-	} catch (Exception $e) {
-		
+		$timeoutMain = $config['timeoutViewMain'];
 	}
-	$objectToReturn[$counter] = $return;
-	$counter++;
+
+	$ctx = stream_context_create(array('http'=>
+	    array(
+	        'timeout' => $timeoutMain,
+	    )
+	));
+
+
+	
+	$counter = 0;
+	
+	foreach ($serverArray as $key => $value)
+	{
+		$ipAddressSend = $value["ip"];
+		if(strpos($ipAddressSend, "5555") !== false)
+		{
+			$ipAddressSend = str_replace("5555", "", $ipAddressSend);
+		}
+		$return = null;
+		try 
+		{
+			$return = 	@file_get_contents($ipAddressSend."3000", false, $ctx);
+		} catch (Exception $e) {
+			
+		}
+		$objectToReturn[$counter] = $return;
+		$counter++;
+	}
 }
 
 echo json_encode($objectToReturn);

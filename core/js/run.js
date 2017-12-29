@@ -287,7 +287,7 @@ function poll()
 		{
 			if(arrayOfTests[0]["tests"].length > 0)
 			{
-				if(currentTestsRunning < ajaxRequestValue)
+				if(currentTestsRunning < (ajaxRequestValue * testsPerAjax))
 				{
 					//ajax check
 					if(runCheckCount === "true")
@@ -354,13 +354,15 @@ function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
 
 function pollInner(data)
 {
+	var check = false;
 	var currentRunningTestCount = 0;
 	if(data)
 	{
+		check = true;
 		maxTestsStatic = getMaxConcurrentTests(data);
 		currentRunningTestCount = getCurrentRunningTestCount(data);
 	}
-	if(maxTestsStatic > currentRunningTestCount)
+	if((maxTestsStatic > currentRunningTestCount && check) || !check)
 	{
 		var testNumberLocal = arrayOfTests[0]["name"];
 		if(document.getElementById("Test"+testNumberLocal))
