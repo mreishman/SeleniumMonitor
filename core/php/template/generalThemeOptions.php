@@ -33,13 +33,6 @@
 				</div>
 			</li>
 			<li>
-				<span class="settingsBuffer" > Log Font Color: </span>  <input type="text" name="logFontColor" value="<?php echo $logFontColor;?>" >
-			</li>
-			<li> 
-				<span class="settingsBuffer" > Header Background: </span> 
-				<input type="text" name="backgroundHeaderColor" value="<?php echo $backgroundHeaderColor;?>" >
-			</li>
-			<li>
 				<span class="settingsBuffer"> Invert Header Images: </span>
 				<div class="selectDiv">
 					<select name="invertMenuImages">
