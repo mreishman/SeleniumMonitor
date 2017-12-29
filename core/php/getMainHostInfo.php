@@ -1,5 +1,5 @@
 <?php
-$ipAddressSend = $_POST["ip"];
+$serverArray = $_POST["serverArray"];
 
 require_once('../../core/php/commonFunctions.php');
 
@@ -26,15 +26,26 @@ $ctx = stream_context_create(array('http'=>
     )
 ));
 
-if(strpos($ipAddressSend, "5555") !== false)
-{
-	$ipAddressSend = str_replace("5555", "", $ipAddressSend);
-}
+
+$objectToReturn = array();
+$counter = 0;
 $return = null;
-try 
+foreach ($serverArray as $key => $value)
 {
-	$return = 	@file_get_contents($ipAddressSend."3000", false, $ctx);
-} catch (Exception $e) {
-	
+	$ipAddressSend = $value["ip"];
+	if(strpos($ipAddressSend, "5555") !== false)
+	{
+		$ipAddressSend = str_replace("5555", "", $ipAddressSend);
+	}
+	$return = null;
+	try 
+	{
+		$return = 	@file_get_contents($ipAddressSend."3000", false, $ctx);
+	} catch (Exception $e) {
+		
+	}
+	$objectToReturn[$counter] = $return;
+	$counter++;
 }
-echo json_encode($return);
+
+echo json_encode($objectToReturn);

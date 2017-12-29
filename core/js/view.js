@@ -76,27 +76,38 @@ function pollTwo()
 
 function pollInner(type)
 {
+	var data = {};
 	var servers = Object.keys(serverArray);
 	var stop = servers.length;
+	var counter = 0;
 	for(var i = 0; i !== stop; ++i)
 	{
-		var data = serverArray[servers[i]];
-		if(data["poll"] === type)
+		if(serverArray[servers[i]]["poll"] == type)
 		{
-			var urlForSend = "../core/php/getMainHostInfo.php?format=json";
-			(function(_data){
-				$.ajax(
+			data[counter] = serverArray[servers[i]];
+			counter++;
+		}
+	}
+
+	if(data !== {})
+	{
+		var data = {serverArray: data};
+		var urlForSend = "../core/php/getMainHostInfo.php?format=json";
+		(function(_data){
+			$.ajax(
+			{
+				url: urlForSend,
+				dataType: "json",
+				data,
+				type: "POST",
+				success(data)
 				{
-					url: urlForSend,
-					dataType: "json",
-					data,
-					type: "POST",
-					success(data)
+					for (var i = data.length - 1; i >= 0; i--)
 					{
-						var idForDisconnectMessage = _data["id"]+"Disconnected";
-						var idForJumbotronImage = _data["id"]+"JumbotronImage";
+						var idForDisconnectMessage = _data["serverArray"][i]["id"]+"Disconnected";
+						var idForJumbotronImage = _data["serverArray"][i]["id"]+"JumbotronImage";
 						
-						if(data)
+						if(data[i])
 						{
 							if(document.getElementById(idForDisconnectMessage).style.display !== "none")
 							{
@@ -104,7 +115,7 @@ function pollInner(type)
 								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotronDisconnect");
 								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotron");
 							}
-							filterAndShow(data, _data);
+							filterAndShow(data[i], _data["serverArray"][i]);
 						}
 						else
 						{
@@ -116,10 +127,10 @@ function pollInner(type)
 								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotron");
 							}
 						}
-					},
-				});
-			}(data));
-		}
+					}
+				},
+			});
+		}(data));
 	}
 }
 
