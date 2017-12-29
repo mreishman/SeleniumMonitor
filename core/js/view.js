@@ -2,7 +2,7 @@ var serverArray = new Array();
 var heightBase = 0;
 var firstLoad = true;
 var numberOfPollInnerRequestsFast = 0;
-var numberOfPollInnerRequestsSlow = 2;
+var numberOfPollInnerRequestsSlow = 0;
 
 function poll()
 {
@@ -78,6 +78,7 @@ function pollTwo()
 
 function pollInner(type)
 {
+
 	var data = {};
 	var servers = Object.keys(serverArray);
 	var stop = servers.length;
