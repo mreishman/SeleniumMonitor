@@ -528,13 +528,13 @@ function pollInner(data)
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
 									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
-									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+(getMeanOfTotalTimeCount()*(arrayOfTests[0]["total"]-arrayOfTests[0]["count"]))+"s";
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta((arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
 									
 								}
 								else
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = "Finished";
-									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: 0s";
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: --";
 									document.getElementById(_data["id"][i]+"Progress").value = 1;
 								}
 								
@@ -559,6 +559,27 @@ function pollInner(data)
 			}
 		}
 	}
+}
+
+function getEta(testsLeft)
+{
+	var currentTimePerTest = getMeanOfTotalTimeCount();
+	var currentTestsAtATime = testsPerAjax * ajaxRequestValue;
+	var timeLeft = currentTimePerTest * testsLeft / currentTestsAtATime;
+	var days = 0;
+	while(timeLeft > 86400)
+	{
+		days++;
+		timeLeft -= 86400;
+	}
+	var date = new Date(null);
+	date.setSeconds(timeLeft);
+	var result = date.toISOString().substr(11, 8);
+	if(days > 0)
+	{
+		result = ""+days+":"+result;
+	}
+	return result;
 }
 
 function setMaxNumber(newValue)
