@@ -1,8 +1,8 @@
 var serverArray = new Array();
 var heightBase = 0;
 var firstLoad = true;
-var numberOfPollInnerRequestsFast = 0;
-var numberOfPollInnerRequestsSlow = 0;
+var numberOfPollInnerRequests = 0;
+var pollOffset = 1;
 
 function poll()
 {
@@ -64,44 +64,49 @@ function filterPoll(data)
 		firstLoad = false;
 		pollTwo();
 	}
-	else
-	{
-		pollInner("fast");
-	}
 }
 
 
 function pollTwo()
 {
-	pollInner("slow");
+	pollInner();
 }
 
-function pollInner(type)
+function pollInner()
 {
 
 	var data = {};
 	var servers = Object.keys(serverArray);
 	var stop = servers.length;
+	var half = (stop - (stop % 2))/2;
+	var endOffset = pollOffset + half;
+	var startOffset = pollOffset;
+	if(endOffset > stop)
+	{
+		endOffset -= stop;
+		startOffset = endOffset;
+		endOffset = pollOffset;
+	}
 	var counter = 0;
 	for(var i = 0; i !== stop; ++i)
 	{
-		if(serverArray[servers[i]]["poll"] == type)
+		if((i+1) >= startOffset || (i+1) <= endOffset)
 		{
 			data[counter] = serverArray[servers[i]];
 			counter++;
 		}
 	}
 
-	if(data !== {} && ((type === "slow" && numberOfPollInnerRequestsSlow < 2) || (type === "fast" && numberOfPollInnerRequestsFast < 2)))
+	pollOffset++;
+	if(pollOffset > stop)
 	{
-		if(type === "slow")
-		{
-			numberOfPollInnerRequestsSlow++;
-		}
-		else
-		{
-			numberOfPollInnerRequestsFast++;
-		}
+		pollOffset = 1;
+	}
+
+	if(data !== {} && numberOfPollInnerRequests < 4)
+	{
+		numberOfPollInnerRequests++;
+
 		var data = {serverArray: data};
 		var urlForSend = "../core/php/getMainHostInfo.php?format=json";
 		(function(_data){
@@ -139,18 +144,8 @@ function pollInner(type)
 							}
 						}
 					}
-				},
-				complete(data)
-				{
-					var typeInner = _data["serverArray"][0]["type"];
-					if(typeInner === "slow")
-					{
-						numberOfPollInnerRequestsSlow--;
-					}
-					else
-					{
-						numberOfPollInnerRequestsFast--;
-					}
+
+					numberOfPollInnerRequests--;
 				}
 			});
 		}(data));
