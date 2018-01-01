@@ -1,4 +1,5 @@
 <?php
+
 $objectToReturn = array();
 if(isset($_POST["serverArray"]))
 {
@@ -25,7 +26,7 @@ if(isset($_POST["serverArray"]))
 
 	$ctx = stream_context_create(array('http'=>
 	    array(
-	        'timeout' => $timeoutMain,
+	        'timeout' => $timeoutMain/count($serverArray),
 	    )
 	));
 
@@ -50,6 +51,11 @@ if(isset($_POST["serverArray"]))
 		$objectToReturn[$counter] = $return;
 		$counter++;
 	}
+}
+
+if (extension_loaded('zlib') && !ini_get('zlib.output_compression')){
+    header('Content-Encoding: gzip');
+    ob_start('ob_gzhandler');
 }
 
 echo json_encode($objectToReturn);
