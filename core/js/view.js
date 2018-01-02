@@ -62,8 +62,9 @@ function filterPoll(data)
 
 			if(currentPopupWindow === proxyIdId)
 			{
-				document.getElementById(proxyIdId+"PopupTitle").innerHTML = proxyId.replace(":5555","")
+				document.getElementById(proxyIdId+"PopupTitle").innerHTML = "<h2 style=\"font-size: 150%;\">"+proxyId.replace(":5555","")+"</h2>";
 				document.getElementById(proxyIdId+"PopupActivity").innerHTML = browsersContentDetail;
+				document.getElementById(proxyIdId+"PopupConfig").innerHTML = browserConfig;
 			}
 		}
 	}
@@ -242,12 +243,24 @@ function filterAndShow(data, dataExt)
 			//base new size off width
 			newWidth = popupWidthPic;
 			newHeight = newWidth * (heightOrg/widthOrg);
+
+			if(newHeight > popupHeightPic)
+			{
+				newHeight = popupHeightPic;
+				newWidth = newHeight * (widthOrg/heightOrg);
+			}
 		}
 		else
 		{
 			//base new size off height
 			newHeight = popupHeightPic;
 			newWidth = newHeight * (widthOrg/heightOrg);
+
+			if(newWidth > popupWidthPic)
+			{
+				newWidth = popupWidthPic;
+				newHeight = newWidth * (heightOrg/widthOrg);
+			}
 		}
 		document.getElementById(dataExt["id"]+"PopupJumbotronImageSpan").innerHTML = "<img id='"+idForImage+"Popup' width=\""+newWidth+"px\" height=\""+newHeight+"px\"  src='"+jumbotron+"'>";
 	}
@@ -258,9 +271,9 @@ function showPopup(id)
 	currentPopupWindow = id;
 	var item = $("#storage .popup").html();
 	item = item.replace(/{{id}}/g, id+"Popup");
-	//item = item.replace(/{{title}}/g, (proxyId.replace(":5555","")));
-	//item = item.replace(/{{activity}}/g, browsersContentDetail);
-	//item = item.replace(/{{config}}/g, browserConfig);
+	item = item.replace(/{{title}}/g, $("#"+id+"Title").text());
+	item = item.replace(/{{activity}}/g, $("#"+id+"Activity").html());
+	item = item.replace(/{{config}}/g, $("#"+id+"Config").html());
 	//item = item.replace(/{{linkOne}}/g, (proxyId.replace("5555","3000")));
 	//item = item.replace(/{{linkTwo}}/g, ((proxyId.replace("5555","4444"))+"/grid/console"));
 	//item = item.replace(/{{linkThree}}/g, (proxyId+"/wd/hub/static/resource/hub.html"));

@@ -59,7 +59,7 @@ if($backgroundPollingRateType == 'Seconds')
 	<div id="storage">
 		<div class="server">
 			<div id="{{id}}" class="mainBox">
-				<div>
+				<div id="{{id}}Title">
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
@@ -127,14 +127,37 @@ if($backgroundPollingRateType == 'Seconds')
 								</span>
 							</div>
 						</td>
-						<td width="200px" style="vertical-align: top;">
-							<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center;" >Close Popup</div>
-							<br>
-							<div  id="{{id}}Title">
-								<h2 style="font-size: 150%;">{{title}}</h2>
-							</div>
-							<div class="conainerSub" id="{{id}}Activity">
-								{{activity}}
+						<td width="240px" style="vertical-align: top;">
+							<span id="popupSpanLeftHeight">
+								<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center; margin-bottom: 10px;" >Close Popup</div>
+								<br>
+								<div  id="{{id}}Title">
+									<h2 style="font-size: 150%;">{{title}}</h2>
+								</div>
+								<div class="conainerSub" id="{{id}}Activity">
+									{{activity}}
+								</div>
+								<!--
+								<div style="border-bottom: 1px solid white;">
+									<ul class="menu">
+										<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
+											Stats
+										</li>
+										<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');">
+											Videos
+										</li>
+										<li id="{{id}}ConfigMenu" class="active" onclick="toggleTab('{{id}}', 'Config');">
+											Config
+										</li>
+										<li id="{{id}}ActionsMenu" onclick="toggleTab('{{id}}', 'Actions');">
+											Actions
+										</li>
+									</ul>
+								</div>
+								-->
+							</span>
+							<div class="conainerSub" id="{{id}}Config">
+								{{config}}
 							</div>
 						</td>
 					</tr>
