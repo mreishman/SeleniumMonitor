@@ -64,7 +64,7 @@ if($backgroundPollingRateType == 'Seconds')
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
 					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
-					<span id="{{id}}JumbotronImageSpan">
+					<span onclick="showPopup('{{id}}')" style="cursor: pointer;" id="{{id}}JumbotronImageSpan">
 						<img class='img-responsive' src="../core/img/static.gif">
 					</span>
 				</div>
@@ -113,6 +113,32 @@ if($backgroundPollingRateType == 'Seconds')
 						</li>
 					</ul>
 				</div>
+			</div>
+		</div>
+		<div class="popup">
+			<div id="popup" class="mainBoxPopup">
+				<table style="width: 100%; height: 100%;">
+					<tr>
+						<td id="{{id}}JumbotronHolder">
+							<div id="{{id}}Jumbotron" class="jumbotron">
+								<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
+								<span id="{{id}}JumbotronImageSpan">
+									<img src="../core/img/static.gif">
+								</span>
+							</div>
+						</td>
+						<td width="200px" style="vertical-align: top;">
+							<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center;" >Close Popup</div>
+							<br>
+							<div  id="{{id}}Title">
+								<h2 style="font-size: 150%;">{{title}}</h2>
+							</div>
+							<div class="conainerSub" id="{{id}}Activity">
+								{{activity}}
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

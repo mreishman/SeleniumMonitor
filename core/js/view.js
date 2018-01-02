@@ -3,6 +3,7 @@ var heightBase = 0;
 var firstLoad = true;
 var numberOfPollInnerRequests = 0;
 var pollOffset = 1;
+var currentPopupWindow = null;
 
 function poll()
 {
@@ -56,6 +57,12 @@ function filterPoll(data)
 			serverArray[proxyIdId]["poll"] = pollType;
 			document.getElementById(proxyIdId+"Activity").innerHTML = browsersContentDetail;
 			document.getElementById(proxyIdId+"Config").innerHTML = browserConfig;
+
+			if(currentPopupWindow === proxyIdId)
+			{
+				document.getElementById(proxyIdId+"PopupTitle").innerHTML = proxyId.replace(":5555","")
+				document.getElementById(proxyIdId+"PopupActivity").innerHTML = browsersContentDetail;
+			}
 		}
 	}
 
@@ -218,6 +225,49 @@ function filterAndShow(data, dataExt)
 	stats = stats[0];
 
 	document.getElementById(dataExt["id"]+"Stats").innerHTML = stats;
+
+
+	if(currentPopupWindow === dataExt["id"])
+	{
+		var heightOrg = parseInt(document.getElementById(idForImage).style.height);
+		var widthOrg = parseInt(document.getElementById(idForImage).style.width);
+		var newWidth = 0;
+		var newHeight = 0;
+		if(widthOrg > heightOrg)
+		{
+			//base new size off width
+			newWidth = parseInt(document.getElementById(dataExt["id"]+"PopupJumbotronHolder").style.width) * 0.95;
+			newHeight = newWidth * (widthOrg/heightOrg);
+		}
+		else
+		{
+			//base new size off height
+			newHeight = parseInt(document.getElementById(dataExt["id"]+"PopupJumbotronHolder").style.height) * 0.95;
+			newWidth = newHeight * (heightOrg/widthOrg);
+		}
+		document.getElementById(dataExt["id"]+"PopupJumbotronImageSpan").innerHTML = "<img id='"+idForImage+"Popup' width=\""+newWidth+"px\" height=\""+newHeight+"px\"  src='"+jumbotron+"'>";
+	}
+}
+
+function showPopup(id)
+{
+	currentPopupWindow = id;
+	var item = $("#storage .popup").html();
+	item = item.replace(/{{id}}/g, id+"Popup");
+	//item = item.replace(/{{title}}/g, (proxyId.replace(":5555","")));
+	//item = item.replace(/{{activity}}/g, browsersContentDetail);
+	//item = item.replace(/{{config}}/g, browserConfig);
+	//item = item.replace(/{{linkOne}}/g, (proxyId.replace("5555","3000")));
+	//item = item.replace(/{{linkTwo}}/g, ((proxyId.replace("5555","4444"))+"/grid/console"));
+	//item = item.replace(/{{linkThree}}/g, (proxyId+"/wd/hub/static/resource/hub.html"));
+	$("#main").append(item);
+	firstLoad = true;
+}
+
+function hidePopupWindow()
+{
+	currentPopupWindow = null;
+	$("#popup").remove();
 }
 
 function toggleTab(currentId, tabIdToShow)
