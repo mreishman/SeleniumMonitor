@@ -4,6 +4,8 @@ var firstLoad = true;
 var numberOfPollInnerRequests = 0;
 var pollOffset = 1;
 var currentPopupWindow = null;
+var popupWidthPic = 0;
+var popupHeightPic = 0;
 
 function poll()
 {
@@ -238,13 +240,13 @@ function filterAndShow(data, dataExt)
 		if(widthOrg > heightOrg)
 		{
 			//base new size off width
-			newWidth = parseInt(document.getElementById(dataExt["id"]+"PopupJumbotronHolder").offsetWidth);
+			newWidth = popupWidthPic;
 			newHeight = newWidth * (heightOrg/widthOrg);
 		}
 		else
 		{
 			//base new size off height
-			newHeight = parseInt(document.getElementById(dataExt["id"]+"PopupJumbotronHolder").offsetHeight);
+			newHeight = popupHeightPic;
 			newWidth = newHeight * (widthOrg/heightOrg);
 		}
 		document.getElementById(dataExt["id"]+"PopupJumbotronImageSpan").innerHTML = "<img id='"+idForImage+"Popup' width=\""+newWidth+"px\" height=\""+newHeight+"px\"  src='"+jumbotron+"'>";
@@ -263,13 +265,16 @@ function showPopup(id)
 	//item = item.replace(/{{linkTwo}}/g, ((proxyId.replace("5555","4444"))+"/grid/console"));
 	//item = item.replace(/{{linkThree}}/g, (proxyId+"/wd/hub/static/resource/hub.html"));
 	$("#main").append(item);
-	firstLoad = true;
+	popupWidthPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetWidth);
+	popupHeightPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetHeight);
 }
 
 function hidePopupWindow()
 {
 	currentPopupWindow = null;
 	$("#popup").remove();
+	popupWidthPic = 0;
+	popupHeightPic = 0;
 }
 
 function toggleTab(currentId, tabIdToShow)
