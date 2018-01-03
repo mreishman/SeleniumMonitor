@@ -133,7 +133,7 @@ if($backgroundPollingRateType == 'Seconds')
 								<div  id="{{id}}Title">
 									<h2 style="font-size: 150%;">{{title}}</h2>
 								</div>
-								<div class="jumboTronNoVideo" style="display: none; width:240px;" id="{{id}}Disconnected">
+								<div class="jumboTronNoVideo" style="display: none; width:240px; margin-top: 0; position: relative;" id="{{id}}Disconnected">
 								No Video Feed / Disconnected
 								</div>
 								<div id="{{id}}Activity">
