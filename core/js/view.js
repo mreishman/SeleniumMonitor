@@ -246,38 +246,43 @@ function filterAndShow(data, dataExt)
 		document.getElementById(dataExt["id"]+"PopupVideos").innerHTML = videos;
 		document.getElementById(dataExt["id"]+"PopupStats").innerHTML = stats;
 
-		var heightOrg = document.getElementById(dataExt["id"]+"Jumbotron").style.height;
-		var widthOrg = document.getElementById(dataExt["id"]+"Jumbotron").style.width;
-		heightOrg = parseInt(heightOrg.substring(0, heightOrg.length - 2));
-		widthOrg = parseInt(widthOrg.substring(0, widthOrg.length - 2));
-		var newWidth = 0;
-		var newHeight = 0;
-		if(widthOrg > heightOrg)
-		{
-			//base new size off width
-			newWidth = popupWidthPic;
-			newHeight = newWidth * (heightOrg/widthOrg);
+		popupImageLogic(dataExt["id"], jumbotron);
+	}
+}
 
-			if(newHeight > popupHeightPic)
-			{
-				newHeight = popupHeightPic;
-				newWidth = newHeight * (widthOrg/heightOrg);
-			}
-		}
-		else
+function popupImageLogic(idForLogic, src)
+{
+	var heightOrg = document.getElementById(idForLogic+"Jumbotron").style.height;
+	var widthOrg = document.getElementById(idForLogic+"Jumbotron").style.width;
+	heightOrg = parseInt(heightOrg.substring(0, heightOrg.length - 2));
+	widthOrg = parseInt(widthOrg.substring(0, widthOrg.length - 2));
+	var newWidth = 0;
+	var newHeight = 0;
+	if(widthOrg > heightOrg)
+	{
+		//base new size off width
+		newWidth = popupWidthPic;
+		newHeight = newWidth * (heightOrg/widthOrg);
+
+		if(newHeight > popupHeightPic)
 		{
-			//base new size off height
 			newHeight = popupHeightPic;
 			newWidth = newHeight * (widthOrg/heightOrg);
-
-			if(newWidth > popupWidthPic)
-			{
-				newWidth = popupWidthPic;
-				newHeight = newWidth * (heightOrg/widthOrg);
-			}
 		}
-		document.getElementById(dataExt["id"]+"PopupJumbotronImageSpan").innerHTML = "<img id='"+idForImage+"Popup' width=\""+newWidth+"px\" height=\""+newHeight+"px\"  src='"+jumbotron+"'>";
 	}
+	else
+	{
+		//base new size off height
+		newHeight = popupHeightPic;
+		newWidth = newHeight * (widthOrg/heightOrg);
+
+		if(newWidth > popupWidthPic)
+		{
+			newWidth = popupWidthPic;
+			newHeight = newWidth * (heightOrg/widthOrg);
+		}
+	}
+	document.getElementById(idForLogic+"PopupJumbotronImageSpan").innerHTML = "<img id='"+idForLogic+"JumbotronImagePopup' width=\""+newWidth+"px\" height=\""+newHeight+"px\"  src='"+src+"'>";
 }
 
 function showPopup(id)
@@ -300,7 +305,7 @@ function showPopup(id)
 	document.getElementById(id+"PopupVideos").style.height = containerHeight+"px";
 	document.getElementById(id+"PopupStats").style.height = containerHeight+"px";
 	document.getElementById(id+"PopupConfig").style.height = containerHeight+"px";
-	
+	popupImageLogic(id, document.getElementById(id+"JumbotronImage").src);
 }
 
 function hidePopupWindow()
