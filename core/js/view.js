@@ -274,9 +274,7 @@ function showPopup(id)
 	item = item.replace(/{{title}}/g, $("#"+id+"Title").text());
 	item = item.replace(/{{activity}}/g, $("#"+id+"Activity").html());
 	item = item.replace(/{{config}}/g, $("#"+id+"Config").html());
-	//item = item.replace(/{{linkOne}}/g, (proxyId.replace("5555","3000")));
-	//item = item.replace(/{{linkTwo}}/g, ((proxyId.replace("5555","4444"))+"/grid/console"));
-	//item = item.replace(/{{linkThree}}/g, (proxyId+"/wd/hub/static/resource/hub.html"));
+	item = item.replace(/{{linkAction}}/g, $("#"+id+"Actions").html() );
 	$("#main").append(item);
 	popupWidthPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetWidth);
 	popupHeightPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetHeight);
@@ -286,6 +284,7 @@ function hidePopupWindow()
 {
 	currentPopupWindow = null;
 	$("#popup").remove();
+	$("#popupBackground").remove();
 	popupWidthPic = 0;
 	popupHeightPic = 0;
 }

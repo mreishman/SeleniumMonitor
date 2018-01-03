@@ -117,11 +117,10 @@ if($backgroundPollingRateType == 'Seconds')
 		</div>
 		<div class="popup">
 			<div id="popup" class="mainBoxPopup">
-				<table style="width: 100%; height: 100%;">
+				<table id="{{id}}" style="width: 100%; height: 100%;">
 					<tr>
 						<td id="{{id}}JumbotronHolder">
 							<div id="{{id}}Jumbotron" class="jumbotron">
-								<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
 								<span id="{{id}}JumbotronImageSpan">
 									<img src="../core/img/static.gif">
 								</span>
@@ -134,10 +133,12 @@ if($backgroundPollingRateType == 'Seconds')
 								<div  id="{{id}}Title">
 									<h2 style="font-size: 150%;">{{title}}</h2>
 								</div>
-								<div class="conainerSub" id="{{id}}Activity">
+								<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">
+								No Video Feed / Disconnected
+								</div>
+								<div id="{{id}}Activity">
 									{{activity}}
 								</div>
-								<!--
 								<div style="border-bottom: 1px solid white;">
 									<ul class="menu">
 										<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
@@ -154,14 +155,22 @@ if($backgroundPollingRateType == 'Seconds')
 										</li>
 									</ul>
 								</div>
-								-->
 							</span>
 							<div class="conainerSub" id="{{id}}Config">
 								{{config}}
 							</div>
+							<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
+								{{linkAction}}
+							</div>
+							<div class="conainerSub" id="{{id}}Videos" style="display: none;">
+							</div>
+							<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
+							</div>
 						</td>
 					</tr>
 				</table>
+			</div>
+			<div id="popupBackground" class="popupBackground">
 			</div>
 		</div>
 	</div>
