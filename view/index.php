@@ -117,7 +117,7 @@ if($backgroundPollingRateType == 'Seconds')
 		</div>
 		<div class="popup">
 			<div id="popup" class="mainBoxPopup">
-				<table id="{{id}}" style="width: 100%; height: 100%;">
+				<table style="width: 100%; height: 100%;">
 					<tr>
 						<td id="{{id}}JumbotronHolder">
 							<div id="{{id}}Jumbotron" class="jumbotron">
@@ -126,8 +126,8 @@ if($backgroundPollingRateType == 'Seconds')
 								</span>
 							</div>
 						</td>
-						<td width="240px" style="vertical-align: top;">
-							<span id="popupSpanLeftHeight">
+						<td id="{{id}}" width="240px" style="vertical-align: top;">
+							<span id="popupSpanLeftHeight" style="display: block;">
 								<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center; margin-bottom: 10px;" >Close Popup</div>
 								<br>
 								<div  id="{{id}}Title">
@@ -163,8 +163,10 @@ if($backgroundPollingRateType == 'Seconds')
 								{{linkAction}}
 							</div>
 							<div class="conainerSub" id="{{id}}Videos" style="display: none;">
+								{{videos}}
 							</div>
 							<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
+								{{stats}}
 							</div>
 						</td>
 					</tr>

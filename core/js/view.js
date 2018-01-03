@@ -140,6 +140,11 @@ function pollInner()
 								document.getElementById(idForDisconnectMessage).style.display = "none";
 								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotronDisconnect");
 								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotron");
+
+								if(currentPopupWindow === _data["serverArray"][i]["id"])
+								{
+									document.getElementById(_data["serverArray"][i]["id"]+"PopupDisconnected").style.display = "none";
+								}
 							}
 							filterAndShow(data[i], _data["serverArray"][i]);
 						}
@@ -151,6 +156,11 @@ function pollInner()
 								document.getElementById(idForDisconnectMessage).style.display = "block";
 								document.getElementById(idForJumbotronImage+"Span").classList.add("jumbotronDisconnect");
 								document.getElementById(idForJumbotronImage+"Span").classList.remove("jumbotron");
+
+								if(currentPopupWindow === _data["serverArray"][i]["id"])
+								{
+									document.getElementById(_data["serverArray"][i]["id"]+"PopupDisconnected").style.display = "block";
+								}
 							}
 						}
 					}
@@ -232,6 +242,10 @@ function filterAndShow(data, dataExt)
 
 	if(currentPopupWindow === dataExt["id"])
 	{
+
+		document.getElementById(dataExt["id"]+"PopupVideos").innerHTML = videos;
+		document.getElementById(dataExt["id"]+"PopupStats").innerHTML = stats;
+
 		var heightOrg = document.getElementById(dataExt["id"]+"Jumbotron").style.height;
 		var widthOrg = document.getElementById(dataExt["id"]+"Jumbotron").style.width;
 		heightOrg = parseInt(heightOrg.substring(0, heightOrg.length - 2));
@@ -274,10 +288,19 @@ function showPopup(id)
 	item = item.replace(/{{title}}/g, $("#"+id+"Title").text());
 	item = item.replace(/{{activity}}/g, $("#"+id+"Activity").html());
 	item = item.replace(/{{config}}/g, $("#"+id+"Config").html());
-	item = item.replace(/{{linkAction}}/g, $("#"+id+"Actions").html() );
+	item = item.replace(/{{linkAction}}/g, $("#"+id+"Actions").html());
+	item = item.replace(/{{videos}}/g, $("#"+id+"Videos").html());
+	item = item.replace(/{{stats}}/g, $("#"+id+"Stats").html());
+
 	$("#main").append(item);
 	popupWidthPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetWidth);
 	popupHeightPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetHeight);
+	var containerHeight = parseInt(document.getElementById(id+"Popup").offsetHeight) - (parseInt(document.getElementById("popupSpanLeftHeight").offsetHeight));
+	document.getElementById(id+"PopupActions").style.height = containerHeight+"px";
+	document.getElementById(id+"PopupVideos").style.height = containerHeight+"px";
+	document.getElementById(id+"PopupStats").style.height = containerHeight+"px";
+	document.getElementById(id+"PopupConfig").style.height = containerHeight+"px";
+	
 }
 
 function hidePopupWindow()
