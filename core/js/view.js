@@ -305,7 +305,10 @@ function showPopup(id)
 	document.getElementById(id+"PopupVideos").style.height = containerHeight+"px";
 	document.getElementById(id+"PopupStats").style.height = containerHeight+"px";
 	document.getElementById(id+"PopupConfig").style.height = containerHeight+"px";
-	popupImageLogic(id, document.getElementById(id+"JumbotronImage").src);
+	if(document.getElementById(id+"JumbotronImage"))
+	{
+		popupImageLogic(id, document.getElementById(id+"JumbotronImage").src);
+	}
 }
 
 function hidePopupWindow()
