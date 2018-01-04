@@ -4,8 +4,7 @@ require_once("../core/php/customCSS.php");
 echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 <script src="../core/js/settings.js?v=<?php echo $cssVersion?>"></script>
 <div id="menu">
-	<a href="../view/">View</a>
-	<a href="../run/">Run</a>
+	<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="15px"> </a>
 	<?php if(strpos($URI, 'main.php') !== false): ?>
 		<a style="cursor: default;" class="active" id="MainLink" >Main</a>
 	<?php else: ?>

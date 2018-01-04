@@ -45,9 +45,7 @@ if($backgroundPollingRateType == 'Seconds')
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
 	<div id="menu">
-		<a class="active">View</a>
-		<a href="../run/">Run</a>
-		<a href="../settings/"> Settings </a>
+		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="30px"> </a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 

@@ -44,9 +44,7 @@ if($pollingRateType == 'Seconds')
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
 	<div id="menu">
-		<a href="../view/">View</a>
-		<a class="active">Run</a>
-		<a href="../settings/"> Settings </a>
+		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="30px"> </a>
 		<div onclick="pausePollAction();" class="menuImageDiv">
 			<img id="playImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Play.png" style="display: none;" height="30px">
 			<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
