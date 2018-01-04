@@ -39,6 +39,14 @@ Run Settings
 		<br>
 		* This could limit the ammount of tests runnign at a time depending of the speed of the network / main node
 	</li>
+	<li>
+		<span class="settingsBuffer" > Default progress indicator: </span>
+		<select name="defaultShowProgressType">
+			<option <?php if($defaultShowProgressType == 'percent'){echo "selected";} ?> value="percent">Percent</option>
+			<option <?php if($defaultShowProgressType == 'fraction'){echo "selected";} ?> value="fraction">Fraction</option>
+		</select>
+	</li>
+	
 </ul>
 </div>
 </form>

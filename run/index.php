@@ -143,8 +143,8 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</h3>
 					<div style="font-size: 200%;">
-						<span onclick="togglePercent('{{id}}')" class="infoBox" id="{{id}}ProgressTxt" >--</span>
-						<span onclick="togglePercent('{{id}}')" class="infoBox"   style="display: none;" id="{{id}}ProgressCount" >--</span>
+						<span onclick="togglePercent('{{id}}')" class="infoBox"  <?php if($defaultShowProgressType !== "percent"): ?> style="display: none;" <?php endif; ?>  id="{{id}}ProgressTxt" >--</span>
+						<span onclick="togglePercent('{{id}}')" class="infoBox" <?php if($defaultShowProgressType !== "fraction"): ?> style="display: none;" <?php endif; ?> id="{{id}}ProgressCount" >--</span>
 						<span class="infoBox" id="{{id}}EtaTxt" >{{eta}}</span>
 					</div>
 				</div>

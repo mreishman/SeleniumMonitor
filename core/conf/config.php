@@ -16,6 +16,7 @@ $defaultConfig = array(
 	'cssVersion'					=> 1,
 	'currentTheme'					=> 'Default',
 	'defaultBaseUrl'				=> '',
+	'defaultShowProgressType'		=> 'percent',
 	'developmentTabEnabled'			=> 'false',
 	'dontNotifyVersion'				=> '0',
 	'enableDevBranchDownload' 		=> 'false',
