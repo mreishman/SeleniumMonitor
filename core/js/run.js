@@ -529,6 +529,7 @@ function pollInner(data)
 								if(percentValue !== 1)
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = ""+arrayOfTests[0]["count"]+"/"+arrayOfTests[0]["total"];
 									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
 									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta((arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
 									
@@ -536,6 +537,7 @@ function pollInner(data)
 								else
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = "Finished";
+									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = "Finished";
 									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: --";
 									document.getElementById(_data["id"][i]+"Progress").value = 1;
 								}
@@ -766,6 +768,7 @@ function reRunTests(idOfTest)
 
 	var percentValue = (newStart/totalTestCount);
 	document.getElementById(idOfTest+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+	document.getElementById(idOfTest+"ProgressCount").innerHTML = ""+newStart+"/"+totalTestCount;
 	document.getElementById(idOfTest+"Progress").value = (percentValue.toFixed(5));
 
 	var arrayForNewTestArray = {
@@ -783,9 +786,30 @@ function reRunTests(idOfTest)
 
 	arrayOfTests.push(arrayForNewTestArray);
 
+	var etaHtml = "ETA: ---";
+	if(totalTimeOfAllTests.length > 0)
+	{
+		etaHtml = "ETA: "+getEta(arrayOfTestsToBeReRun.length);
+	}
+	document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
+
 	hidePopup();
 
 	//hide re-run button, show stop button
 	document.getElementById(idOfTest+"StopButton").style.display = "inline-block";
 	document.getElementById(idOfTest+"RefreshButton").style.display = "none";
+}
+
+function togglePercent(idOfTest)
+{
+	if(document.getElementById(idOfTest+"ProgressTxt").style.display === "none")
+	{
+		document.getElementById(idOfTest+"ProgressTxt").style.display = "inline-block";
+		document.getElementById(idOfTest+"ProgressCount").style.display = "none";
+	}
+	else
+	{
+		document.getElementById(idOfTest+"ProgressTxt").style.display = "none";
+		document.getElementById(idOfTest+"ProgressCount").style.display = "inline-block";
+	}
 }

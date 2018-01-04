@@ -143,8 +143,9 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</h3>
 					<div style="font-size: 200%;">
-						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}ProgressTxt" >--</span>
-						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}EtaTxt" >{{eta}}</span>
+						<span onclick="togglePercent('{{id}}')" class="infoBox" id="{{id}}ProgressTxt" >--</span>
+						<span onclick="togglePercent('{{id}}')" class="infoBox"   style="display: none;" id="{{id}}ProgressCount" >--</span>
+						<span class="infoBox" id="{{id}}EtaTxt" >{{eta}}</span>
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
