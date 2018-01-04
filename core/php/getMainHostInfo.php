@@ -53,8 +53,8 @@ if(isset($_POST["serverArray"]))
 	            CURLOPT_FOLLOWLOCATION => true,     // follow redirects
 	            CURLOPT_ENCODING       => "",       // handle all encodings
 	            CURLOPT_AUTOREFERER    => true,     // set referer on redirect
-	            CURLOPT_CONNECTTIMEOUT => $timeoutMain/count($serverArray),      // timeout on connect
-	            CURLOPT_TIMEOUT        => $timeoutMain/count($serverArray),      // timeout on response
+	            CURLOPT_CONNECTTIMEOUT => $timeoutMain/(count($serverArray)*2),      // timeout on connect
+	            CURLOPT_TIMEOUT        => $timeoutMain/(count($serverArray)*2),      // timeout on response
 	            CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
 	        );
 
