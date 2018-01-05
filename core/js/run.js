@@ -2,6 +2,7 @@ var testNumber = 0;
 var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
+var currentAjaxRequestNum = 0;
 var phpUnitVerify = false;
 var pausePoll = false;
 var pausePollAjaxDelay = false;
@@ -137,7 +138,7 @@ function runTests()
 	var etaHtml = "ETA: ---";
 	if(totalTimeOfAllTests.length > 0)
 	{
-		etaHtml = "ETA: "+getEta(innerArrayOfTests.length);
+		etaHtml = "ETA: "+getEta("Test"+testNumber, innerArrayOfTests.length);
 	}
  	
 	//create display for thing 
@@ -289,20 +290,23 @@ function poll()
 			{
 				if(currentTestsRunning < (ajaxRequestValue * testsPerAjax))
 				{
-					//ajax check
-					if(runCheckCount === "true")
+					if(currentAjaxRequestNum < ajaxRequestValue)
 					{
-						pausePollAjaxDelay = true;
-
-						$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+						//ajax check
+						if(runCheckCount === "true")
 						{
-							pausePollAjaxDelay = false;
-							pollInner(data);
-						});
-					}
-					else
-					{
-						pollInner(false);
+							pausePollAjaxDelay = true;
+
+							$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+							{
+								pausePollAjaxDelay = false;
+								pollInner(data);
+							});
+						}
+						else
+						{
+							pollInner(false);
+						}
 					}
 				}
 			}
@@ -531,7 +535,7 @@ function pollInner(data)
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
 									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = ""+arrayOfTests[0]["count"]+"/"+arrayOfTests[0]["total"];
 									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
-									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta((arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta(_data["id"][i], (arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
 									
 								}
 								else
@@ -545,6 +549,7 @@ function pollInner(data)
 							}
 							currentTestsRunning--;
 						}
+						currentAjaxRequestNum--;
 					}
 				});
 			}(data));
@@ -554,6 +559,7 @@ function pollInner(data)
 				arrayOfTests[0]["tests"].shift();
 				currentTestsRunning++;
 			}
+			currentAjaxRequestNum++;
 		}
 		else
 		{
@@ -565,11 +571,20 @@ function pollInner(data)
 	}
 }
 
-function getEta(testsLeft)
+function getEta(idOfTest, testsLeft)
 {
 	var currentTimePerTest = getMeanOfTotalTimeCount();
 	var currentTestsAtATime = testsPerAjax * ajaxRequestValue;
 	var timeLeft = currentTimePerTest * testsLeft / currentTestsAtATime;
+	return convertSecToCorrectFormat(idOfTest, timeLeft);
+}
+
+function convertSecToCorrectFormat(idOfTest, timeLeft)
+{
+	if(document.getElementById(idOfTest))
+	{
+		document.getElementById(idOfTest+"EtaSec").value = timeLeft;
+	}
 	var days = 0;
 	while(timeLeft > 86400)
 	{
@@ -692,6 +707,9 @@ function stopTestById(idOfTest)
 		}
 	}
 	document.getElementById(idOfTest+"StopButton").style.display = "none";
+	document.getElementById(idOfTest+"EtaTxt").innerHTML = "ETA: --";
+	document.getElementById(idOfTest+"EtaSec").value = 0;
+	document.getElementById(idOfTest+"RefreshButton").style.display = "inline-block";
 }
 
 function showTestPopup(idOfTest)
@@ -789,7 +807,7 @@ function reRunTests(idOfTest)
 	var etaHtml = "ETA: ---";
 	if(totalTimeOfAllTests.length > 0)
 	{
-		etaHtml = "ETA: "+getEta(arrayOfTestsToBeReRun.length);
+		etaHtml = "ETA: "+getEta(idOfTest, arrayOfTestsToBeReRun.length);
 	}
 	document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
 
@@ -811,5 +829,22 @@ function togglePercent(idOfTest)
 	{
 		document.getElementById(idOfTest+"ProgressTxt").style.display = "none";
 		document.getElementById(idOfTest+"ProgressCount").style.display = "inline-block";
+	}
+}
+
+function decreaseEtaByOne()
+{
+	if(arrayOfTests.length > 0 && currentTestsRunning > 0)
+	{
+		var idOfTest = "Test"+arrayOfTests[0]["name"];
+		if(document.getElementById(idOfTest))
+		{
+			valueOfInput = parseInt(document.getElementById(idOfTest+"EtaSec").value);
+			if(valueOfInput !== 0)
+			{
+				var etaHtml = "ETA: "+convertSecToCorrectFormat(idOfTest, valueOfInput - 1);
+				document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
+			}
+		}
 	}
 }

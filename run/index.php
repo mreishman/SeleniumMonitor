@@ -144,6 +144,7 @@ if($pollingRateType == 'Seconds')
 						<span onclick="togglePercent('{{id}}')" class="infoBox"  <?php if($defaultShowProgressType !== "percent"): ?> style="display: none;" <?php endif; ?>  id="{{id}}ProgressTxt" >--</span>
 						<span onclick="togglePercent('{{id}}')" class="infoBox" <?php if($defaultShowProgressType !== "fraction"): ?> style="display: none;" <?php endif; ?> id="{{id}}ProgressCount" >--</span>
 						<span class="infoBox" id="{{id}}EtaTxt" >{{eta}}</span>
+						<input type="hidden" name="etaSec" id="{{id}}EtaSec" value="0" >
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
@@ -217,6 +218,8 @@ if($pollingRateType == 'Seconds')
 			showStartTestNewPopup();
 
 			setInterval(function(){poll();},pollingRate);
+
+			setInterval(function(){decreaseEtaByOne();},1000);
 		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>
