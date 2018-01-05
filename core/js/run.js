@@ -840,7 +840,7 @@ function decreaseEtaByOne()
 		if(document.getElementById(idOfTest))
 		{
 			valueOfInput = parseInt(document.getElementById(idOfTest+"EtaSec").value);
-			if(valueOfInput !== 0)
+			if(valueOfInput > 1)
 			{
 				var etaHtml = "ETA: "+convertSecToCorrectFormat(idOfTest, valueOfInput - 1);
 				document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
