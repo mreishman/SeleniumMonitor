@@ -141,10 +141,12 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</h3>
 					<div style="font-size: 200%;">
-						<span onclick="togglePercent('{{id}}')" class="infoBox"  <?php if($defaultShowProgressType !== "percent"): ?> style="display: none;" <?php endif; ?>  id="{{id}}ProgressTxt" >--</span>
-						<span onclick="togglePercent('{{id}}')" class="infoBox" <?php if($defaultShowProgressType !== "fraction"): ?> style="display: none;" <?php endif; ?> id="{{id}}ProgressCount" >--</span>
-						<span class="infoBox" id="{{id}}EtaTxt" >{{eta}}</span>
+						<span onclick="togglePercent('{{id}}');" class="infoBox"  <?php if($defaultShowProgressType !== "percent"): ?> style="display: none;" <?php endif; ?>  id="{{id}}ProgressTxt" >--</span>
+						<span onclick="togglePercent('{{id}}');" class="infoBox" <?php if($defaultShowProgressType !== "fraction"): ?> style="display: none;" <?php endif; ?> id="{{id}}ProgressCount" >--</span>
+						<span onclick="toggleEta('{{id}}');"  class="infoBox"  <?php if($defaultShowEta !== "eta"): ?> style="display: none;" <?php endif; ?>   id="{{id}}EtaTxt" >{{eta}}</span>
 						<input type="hidden" name="etaSec" id="{{id}}EtaSec" value="0" >
+						<span onclick="toggleEta('{{id}}');" class="infoBox"  <?php if($defaultShowEta !== "elapsed"): ?> style="display: none;" <?php endif; ?>   id="{{id}}ElapsedTxt" >{{eta}}</span>
+						<input type="hidden" name="etaSec" id="{{id}}ElapsedSec" value="0" >
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
@@ -219,7 +221,7 @@ if($pollingRateType == 'Seconds')
 
 			setInterval(function(){poll();},pollingRate);
 
-			setInterval(function(){decreaseEtaByOne();},1000);
+			setInterval(function(){timerStuff();},1000);
 		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>

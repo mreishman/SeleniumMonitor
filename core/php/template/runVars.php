@@ -46,7 +46,13 @@ Run Settings
 			<option <?php if($defaultShowProgressType == 'fraction'){echo "selected";} ?> value="fraction">Fraction</option>
 		</select>
 	</li>
-	
+	<li>
+		<span class="settingsBuffer" > Default ETA: </span>
+		<select name="defaultShowEta">
+			<option <?php if($defaultShowEta == 'eta'){echo "selected";} ?> value="percent">ETA</option>
+			<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="fraction">Elapsed</option>
+		</select>
+	</li>
 </ul>
 </div>
 </form>

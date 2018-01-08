@@ -576,14 +576,14 @@ function getEta(idOfTest, testsLeft)
 	var currentTimePerTest = getMeanOfTotalTimeCount();
 	var currentTestsAtATime = testsPerAjax * ajaxRequestValue;
 	var timeLeft = currentTimePerTest * testsLeft / currentTestsAtATime;
-	return convertSecToCorrectFormat(idOfTest, timeLeft);
+	return convertSecToCorrectFormat(idOfTest, timeLeft, "EtaSec");
 }
 
-function convertSecToCorrectFormat(idOfTest, timeLeft)
+function convertSecToCorrectFormat(idOfTest, timeLeft, type)
 {
 	if(document.getElementById(idOfTest))
 	{
-		document.getElementById(idOfTest+"EtaSec").value = timeLeft;
+		document.getElementById(idOfTest+type).value = timeLeft;
 	}
 	var days = 0;
 	while(timeLeft > 86400)
@@ -820,31 +820,55 @@ function reRunTests(idOfTest)
 
 function togglePercent(idOfTest)
 {
-	if(document.getElementById(idOfTest+"ProgressTxt").style.display === "none")
+	toggleBase(idOfTest+"ProgressTxt", idOfTest+"ProgressCount");
+}
+
+function toggleEta(idOfTest)
+{
+	toggleBase(idOfTest+"EtaTxt", idOfTest+"ElapsedTxt");
+}
+
+function toggleBase(hideOne, showOther)
+{
+	if(document.getElementById(hideOne).style.display === "none")
 	{
-		document.getElementById(idOfTest+"ProgressTxt").style.display = "inline-block";
-		document.getElementById(idOfTest+"ProgressCount").style.display = "none";
+		document.getElementById(hideOne).style.display = "inline-block";
+		document.getElementById(showOther).style.display = "none";
 	}
 	else
 	{
-		document.getElementById(idOfTest+"ProgressTxt").style.display = "none";
-		document.getElementById(idOfTest+"ProgressCount").style.display = "inline-block";
+		document.getElementById(hideOne).style.display = "none";
+		document.getElementById(showOther).style.display = "inline-block";
 	}
 }
 
-function decreaseEtaByOne()
+function timerStuff()
 {
 	if(arrayOfTests.length > 0 && currentTestsRunning > 0)
 	{
 		var idOfTest = "Test"+arrayOfTests[0]["name"];
 		if(document.getElementById(idOfTest))
 		{
-			valueOfInput = parseInt(document.getElementById(idOfTest+"EtaSec").value);
-			if(valueOfInput > 1)
-			{
-				var etaHtml = "ETA: "+convertSecToCorrectFormat(idOfTest, valueOfInput - 1);
-				document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
-			}
+			decreaseEtaByOne(idOfTest);
+			increaseElapsedTimeByOne(idOfTest);
 		}
 	}
+}
+
+function decreaseEtaByOne(idOfTest)
+{
+	valueOfInput = parseInt(document.getElementById(idOfTest+"EtaSec").value);
+	if(valueOfInput > 1)
+	{
+		var etaHtml = "ETA: "+convertSecToCorrectFormat(idOfTest, valueOfInput - 1, "EtaSec");
+		document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
+	}
+}
+
+function increaseElapsedTimeByOne(idOfTest)
+{
+	var idOfTest = "Test"+arrayOfTests[0]["name"];
+	valueOfInput = parseInt(document.getElementById(idOfTest+"ElapsedSec").value);
+	var elapsedHtml = "Time Elapsed: "+convertSecToCorrectFormat(idOfTest, valueOfInput + 1, "ElapsedSec");
+	document.getElementById(idOfTest+"ElapsedTxt").innerHTML = elapsedHtml;
 }
