@@ -101,16 +101,20 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 							var htmlForOutput = "";
 							var files = Object.keys(data);
 							var stop = files.length;
+							var counter = 0;
 							for(var i = 0; i !== stop; i++)
 							{
+								counter++;
 								htmlForOutput += "<h2>"+files[i]+"</h2> <ul>"
 								var stopInner = data[files[i]].length;
 								for(var j = 0; j !== stopInner; j++)
 								{
 									htmlForOutput += "<li>"+data[files[i]][j]+"</li>";
+									counter++;
 								}
 								htmlForOutput += "</ul>";
 							}
+							htmlForOutput += "<h2>"+counter+"</h2>"
 							document.getElementById("scanResults").innerHTML = htmlForOutput;
 						}
 					}
