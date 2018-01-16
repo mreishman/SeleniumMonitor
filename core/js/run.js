@@ -581,7 +581,7 @@ function getEta(idOfTest, testsLeft)
 
 function convertSecToCorrectFormat(idOfTest, timeLeft, type)
 {
-	if(document.getElementById(idOfTest))
+	if(document.getElementById(idOfTest+type))
 	{
 		document.getElementById(idOfTest+type).value = timeLeft;
 	}
