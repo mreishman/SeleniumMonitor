@@ -16,6 +16,36 @@
 	box-shadow: 5px 5px 5px black;
 }
 
+.mainBoxPopup
+{
+	width: 90%;
+	height: 90%;
+	display: inline-table;
+	background-color: #777;
+	padding: 10px;
+	margin: 20px;
+	border: 2px solid white;
+	border-radius: 15px;
+	box-shadow: 5px 5px 5px black;
+	left: 5%;
+	right: 5%;
+	top: 5%;
+	bottom: 5%;
+	position: fixed;
+	z-index: 10;
+}
+
+.popupBackground
+{
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,.7);
+	z-index: 9;
+}
+
 .jumbotron
 {
 	border: 1px solid white;

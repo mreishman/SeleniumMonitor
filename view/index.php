@@ -45,9 +45,7 @@ if($backgroundPollingRateType == 'Seconds')
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
 	<div id="menu">
-		<a class="active">View</a>
-		<a href="../run/">Run</a>
-		<a href="../settings/"> Settings </a>
+		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 
@@ -59,12 +57,12 @@ if($backgroundPollingRateType == 'Seconds')
 	<div id="storage">
 		<div class="server">
 			<div id="{{id}}" class="mainBox">
-				<div>
+				<div id="{{id}}Title">
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
 					<div class="jumboTronNoVideo" style="display: none;" id="{{id}}Disconnected">No Video Feed / Disconnected</div>
-					<span id="{{id}}JumbotronImageSpan">
+					<span onclick="showPopup('{{id}}')" style="cursor: pointer;" id="{{id}}JumbotronImageSpan">
 						<img class='img-responsive' src="../core/img/static.gif">
 					</span>
 				</div>
@@ -113,6 +111,66 @@ if($backgroundPollingRateType == 'Seconds')
 						</li>
 					</ul>
 				</div>
+			</div>
+		</div>
+		<div class="popup">
+			<div id="popup" class="mainBoxPopup">
+				<table style="width: 100%; height: 100%;">
+					<tr>
+						<td id="{{id}}JumbotronHolder">
+							<div id="{{id}}Jumbotron" class="jumbotron">
+								<span id="{{id}}JumbotronImageSpan">
+									<img src="../core/img/static.gif">
+								</span>
+							</div>
+						</td>
+						<td id="{{id}}" width="240px" style="vertical-align: top;">
+							<span id="popupSpanLeftHeight" style="display: block;">
+								<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center; margin-bottom: 10px;" >Close Popup</div>
+								<br>
+								<div  id="{{id}}Title">
+									<h2 style="font-size: 150%;">{{title}}</h2>
+								</div>
+								<div class="jumboTronNoVideo" style="display: none; width:240px; margin-top: 0; position: relative;" id="{{id}}Disconnected">
+								No Video Feed / Disconnected
+								</div>
+								<div id="{{id}}Activity">
+									{{activity}}
+								</div>
+								<div style="border-bottom: 1px solid white;">
+									<ul class="menu">
+										<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
+											Stats
+										</li>
+										<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');">
+											Videos
+										</li>
+										<li id="{{id}}ConfigMenu" class="active" onclick="toggleTab('{{id}}', 'Config');">
+											Config
+										</li>
+										<li id="{{id}}ActionsMenu" onclick="toggleTab('{{id}}', 'Actions');">
+											Actions
+										</li>
+									</ul>
+								</div>
+							</span>
+							<div class="conainerSub" id="{{id}}Config">
+								{{config}}
+							</div>
+							<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
+								{{linkAction}}
+							</div>
+							<div class="conainerSub" id="{{id}}Videos" style="display: none;">
+								{{videos}}
+							</div>
+							<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
+								{{stats}}
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="popupBackground" class="popupBackground">
 			</div>
 		</div>
 	</div>

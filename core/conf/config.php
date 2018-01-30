@@ -16,6 +16,8 @@ $defaultConfig = array(
 	'cssVersion'					=> 1,
 	'currentTheme'					=> 'Default',
 	'defaultBaseUrl'				=> '',
+	'defaultShowEta'				=> 'eta',
+	'defaultShowProgressType'		=> 'percent',
 	'developmentTabEnabled'			=> 'false',
 	'dontNotifyVersion'				=> '0',
 	'enableDevBranchDownload' 		=> 'false',
@@ -46,7 +48,7 @@ $defaultConfig = array(
 		'removeFolder'		=> 	'true',
 		'versionCheck'		=> 'true'
 		),
-	'runCheckCount'					=> 'false',
+	'runCheckCount'					=> 'true',
 	'sendCrashInfoJS'				=> 'true',
 	'sendCrashInfoPHP'				=> 'true',
 	'themeVersion'					=> 3,

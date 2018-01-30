@@ -31,7 +31,10 @@ View Settings
 		</div>
 	</li>
 	<li>
-	<span class="settingsBuffer" > Timeout for get main data: </span>  <input type="text" name="timeoutViewMain" value="<?php echo $timeoutViewMain;?>" > Seconds
+		<span class="settingsBuffer" > Timeout for get main data: </span>  <input type="text" name="timeoutViewMain" value="<?php echo $timeoutViewMain;?>" > Seconds
+	</li>
+	<li>
+		<span class="settingsBuffer" > IP of main server: </span>  <input type="text" name="mainServerIP" value="<?php echo $mainServerIP;?>" >
 	</li>
 </ul>
 </div>

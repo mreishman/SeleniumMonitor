@@ -2,9 +2,14 @@ var testNumber = 0;
 var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
+var currentAjaxRequestNum = 0;
 var phpUnitVerify = false;
 var pausePoll = false;
 var pausePollAjaxDelay = false;
+var maxTestsStatic = 1;
+var ajaxRequestValue = 3;
+var testsPerAjax = 1;
+var totalTimeOfAllTests = new Array();
 
 function getFileList()
 {
@@ -82,6 +87,15 @@ function getTestList()
 	});
 }
 
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
+
 function runTests()
 {
 	//get list of tests, add to array
@@ -120,6 +134,12 @@ function runTests()
 		};
 
 	arrayOfTests.push(arrayForNewTestArray);
+
+	var etaHtml = "ETA: ---";
+	if(totalTimeOfAllTests.length > 0)
+	{
+		etaHtml = "ETA: "+getEta("Test"+testNumber, innerArrayOfTests.length);
+	}
  	
 	//create display for thing 
 	var item = $("#storage .container").html();
@@ -128,11 +148,22 @@ function runTests()
 	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
 	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
+	item = item.replace(/{{eta}}/g, etaHtml);
 	$("#main").append(item);
 
 	//remove add stuff
 	$("#Test"+testNumber).remove();
 	showStartTestNewPopup();
+}
+
+function getMeanOfTotalTimeCount()
+{
+	var total = 0;
+	for (var i = totalTimeOfAllTests.length - 1; i >= 0; i--)
+	{
+		total += totalTimeOfAllTests[i];
+	}
+	return total/totalTimeOfAllTests.length;
 }
 
 function showStartTestNewPopup()
@@ -145,7 +176,12 @@ function showStartTestNewPopup()
 
 function createNewTestPopup(data)
 {
-	var maxTestsStatic = getMaxConcurrentTests(data);
+	maxTestsStatic = getMaxConcurrentTests(data);
+	var maxRequests = 5;
+	if (maxTestsStatic < 5)
+	{
+		maxRequests = maxTestsStatic;
+	}
 	testNumber++;
 	var targetWidthMargin = window.innerWidth;
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
@@ -153,19 +189,95 @@ function createNewTestPopup(data)
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
-	for (var i = 1; i <= maxTestsStatic; i++)
-	{
-		maxTestsHtml += "<li><input style=\"width: auto;\" ";
-		if(i === maxTests)
-		{
-			maxTestsHtml += " checked ";
-		}
-		maxTestsHtml += " onclick=\"setMaxNumber("+i+");\" type=\"radio\" name=\"maxTests\" value=\""+i+"\">"+i+"</li>";
-	}
+	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
+	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
 	$("#main").append(item);
 	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
+}
+
+function adjustAjaxRequestValueFromSlider()
+{
+	var sliderValue = document.getElementById("sliderForAjaxRequest").value;
+	document.getElementById("inputForAjaxRequest").value = sliderValue;
+	adjustAjaxReuqestValueSub(sliderValue);
+}
+
+function adjustAjaxRequestValueFromInput()
+{
+	var sliderValue = document.getElementById("inputForAjaxRequest").value;
+	var maxValue = document.getElementById("sliderForAjaxRequest").max;
+	if(sliderValue > maxValue)
+	{
+		sliderValue = maxValue;
+		document.getElementById("inputForAjaxRequest").value = maxValue;
+	}
+	document.getElementById("sliderForAjaxRequest").value = sliderValue;
+	adjustAjaxReuqestValueSub(sliderValue);
+}
+
+function adjustTestsPerRequestValueFromSlider()
+{
+	var sliderValue = document.getElementById("sliderForTestPerRequest").value;
+	document.getElementById("inputForTestPerRequest").value = sliderValue;
+	adjustTestsPerRequestValueSub(sliderValue);
+}
+
+function adjustTestsPerRequestValueFromInput()
+{
+	var sliderValue = document.getElementById("inputForTestPerRequest").value;
+	var maxValue = document.getElementById("sliderForTestPerRequest").max;
+	if(sliderValue > maxValue)
+	{
+		sliderValue = maxValue;
+		document.getElementById("inputForTestPerRequest").value = maxValue;
+	}
+	document.getElementById("sliderForTestPerRequest").value = sliderValue;
+	adjustTestsPerRequestValueSub(sliderValue);
+}
+
+function adjustTestsPerRequestValueSub(sliderValue)
+{
+	testsPerAjax = sliderValue;
+	var ajaxRequestNum = document.getElementById("inputForAjaxRequest").value;
+	var ajaxRequestNumStatic = ajaxRequestNum;
+	while(!checkIfAjaxRequestTestRequestIsSupported(sliderValue, ajaxRequestNum) && ajaxRequestNum > 1)
+	{
+		ajaxRequestNum--;
+	}
+	if(ajaxRequestNum !== ajaxRequestNumStatic)
+	{
+		document.getElementById("inputForAjaxRequest").value = ajaxRequestNum;
+		document.getElementById("sliderForAjaxRequest").value = ajaxRequestNum;
+		ajaxRequestValue = ajaxRequestNum;
+	}
+}
+
+function adjustAjaxReuqestValueSub(sliderValue)
+{
+	ajaxRequestValue = sliderValue;
+	var testRequestValue = document.getElementById("inputForTestPerRequest").value;
+	var testRequestValueStatic = testRequestValue;
+	while(!checkIfAjaxRequestTestRequestIsSupported(sliderValue, testRequestValue) && testRequestValue > 1)
+	{
+		testRequestValue--;
+	}
+	if(testRequestValue !== testRequestValueStatic)
+	{
+		document.getElementById("inputForTestPerRequest").value = testRequestValue;
+		document.getElementById("sliderForTestPerRequest").value = testRequestValue;
+		testsPerAjax = testRequestValue;
+	}
+}
+
+function checkIfAjaxRequestTestRequestIsSupported(ajaxRequestValueCheck, testRequestValueCheck)
+{
+	if((ajaxRequestValueCheck * testRequestValueCheck) > maxTestsStatic)
+	{
+		return false;
+	}
+	return true;
 }
 
 function poll()
@@ -176,22 +288,25 @@ function poll()
 		{
 			if(arrayOfTests[0]["tests"].length > 0)
 			{
-				if(currentTestsRunning < maxTests)
+				if(currentTestsRunning < (ajaxRequestValue * testsPerAjax))
 				{
-					//ajax check
-					if(runCheckCount === "true")
+					if(currentAjaxRequestNum < ajaxRequestValue)
 					{
-						pausePollAjaxDelay = true;
-
-						$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+						//ajax check
+						if(runCheckCount === "true")
 						{
-							pausePollAjaxDelay = false;
-							pollInner(data);
-						});
-					}
-					else
-					{
-						pollInner(false);
+							pausePollAjaxDelay = true;
+
+							$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+							{
+								pausePollAjaxDelay = false;
+								pollInner(data);
+							});
+						}
+						else
+						{
+							pollInner(false);
+						}
 					}
 				}
 			}
@@ -243,28 +358,44 @@ function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
 
 function pollInner(data)
 {
-	var maxTestsStatic = 10;
+	var check = false;
 	var currentRunningTestCount = 0;
 	if(data)
 	{
+		check = true;
 		maxTestsStatic = getMaxConcurrentTests(data);
 		currentRunningTestCount = getCurrentRunningTestCount(data);
 	}
-	if(maxTestsStatic > currentRunningTestCount)
+	if((maxTestsStatic > currentRunningTestCount && check) || !check)
 	{
 		var testNumberLocal = arrayOfTests[0]["name"];
 		if(document.getElementById("Test"+testNumberLocal))
 		{
-			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.remove("blockEmpty");
-			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).classList.add("blockInProgress");
-			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]).title = arrayOfTests[0]["tests"][0]+" Test In Progress";
-			document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][0]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
+			var numberOfTestsToRun = testsPerAjax;
+			if(testsPerAjax > arrayOfTests[0]["tests"].length)
+			{
+				numberOfTestsToRun = arrayOfTests[0]["tests"].length;
+			}
+			var id = {};
+			var testName = {};
+			var valueForFile = {};
+			var timeStart = {};
+			for (var i = numberOfTestsToRun - 1; i >= 0; i--)
+			{
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).classList.remove("blockEmpty");
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).classList.add("blockInProgress");
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).title = arrayOfTests[0]["tests"][0]+" Test In Progress";
+				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
 
-			arrayOfTests[0]["startCount"]++;
-			updateProgressBarStart("Test"+testNumberLocal, arrayOfTests[0]["startCount"], arrayOfTests[0]["total"]);
+				arrayOfTests[0]["startCount"]++;
+				updateProgressBarStart("Test"+testNumberLocal, arrayOfTests[0]["startCount"], arrayOfTests[0]["total"]);
 
-			var valueForFile = document.getElementById("Test"+testNumberLocal+"File").value;
-			var data = {id: "Test"+testNumberLocal, testName: arrayOfTests[0]["tests"][0]};
+				valueForFile[i] = document.getElementById("Test"+testNumberLocal+"File").value;
+				id[i] = "Test"+testNumberLocal;
+				testName[i] = arrayOfTests[0]["tests"][i];
+				timeStart[i] = performance.now();
+			}
+			var data = {id , testName , numberOfTestsToRun, timeStart};
 			var urlForSend = '../core/php/runTest.php?format=json';
 
 			(function(_data){
@@ -272,142 +403,163 @@ function pollInner(data)
 				{
 					url: urlForSend,
 					dataType: "json",
-					data: {filter: arrayOfTests[0]["tests"][0], file: valueForFile, baseUrl: document.getElementById("Test"+testNumberLocal+"BaseUrl").value},
+					data: {filter: testName, file: valueForFile, baseUrl: document.getElementById("Test"+testNumberLocal+"BaseUrl").value, numberOfTestsToRun},
 					type: "POST",
 					success(data)
 					{
-						var result = data["Result"];
-						if(document.getElementById(_data["id"]))
+						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
-							document.getElementById(_data["id"]+_data["testName"]).title = _data['testName']+" "+data['timeMem'];
-
-							var arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
-							var endFound = false;
-							if(data['output'].length > 11)
+							var result = data[i]["Result"];
+							if(document.getElementById(_data["id"][i]))
 							{
-								for (var i = 11; i < data['output'].length; i++)
+								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.remove("blockInProgress");
+								document.getElementById(_data["id"][i]+_data["testName"][i]).title = _data['testName'][i]+" "+data[i]['timeMem'];
+
+								var arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
+								var endFound = false;
+								if(data[i]['output'].length > 11)
 								{
-									if(i === 11)
+									for (var j = 11; j < data[i]['output'].length; j++)
 									{
-										data['output'][i] = data['output'][i].substring(3);
-									}
-									if(!endFound)
-									{
-										if(data['output'][i] === "FAILURES!" || data['output'][i] === "ERRORS!")
+										if(j === 11)
 										{
-											endFound = true;
+											data[i]['output'][j] = data[i]['output'][j].substring(3);
+										}
+										if(!endFound)
+										{
+											if(data[i]['output'][j] === "FAILURES!" || data[i]['output'][j] === "ERRORS!")
+											{
+												endFound = true;
+											}
+										}
+										if(!endFound)
+										{
+											arrayForOutput += "<tr><td>"+(data[i]['output'][j])+"</td><tr>";
 										}
 									}
-									if(!endFound)
+								}
+								else
+								{
+									arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
+									for (var j = 0; j < data[i]['output'].length; j++)
 									{
-										arrayForOutput += "<tr><td>"+(data['output'][i])+"</td><tr>";
+										arrayForOutput += "<tr><td>"+(data[i]['output'][j])+"</td><tr>";
 									}
 								}
-							}
-							else
-							{
-								arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
-								for (var i = 0; i < data['output'].length; i++)
+								arrayForOutput += "</table>";
+
+								var arrayForPopup = "<table>";
+								for (var j = 0; j < data[i]['output'].length; j++)
 								{
-									arrayForOutput += "<tr><td>"+(data['output'][i])+"</td><tr>";
+									arrayForPopup += "<tr><td>"+(data[i]['output'][j])+"</td><tr>";
 								}
-							}
-							arrayForOutput += "</table>";
+								arrayForPopup += "</table>";
 
-							var arrayForPopup = "<table>";
-							for (var i = 0; i < data['output'].length; i++)
-							{
-								arrayForPopup += "<tr><td>"+(data['output'][i])+"</td><tr>";
-							}
-							arrayForPopup += "</table>";
+								document.getElementById(_data["id"][i]+_data["testName"][i]+"popupSpan").innerHTML = arrayForPopup;
 
-							document.getElementById(_data["id"]+_data["testName"]+"popupSpan").innerHTML = arrayForPopup;
-
-							if(result === "Passed")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockPass");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Passed";
-								arrayOfTests[0]["passedCount"]++;
-							}
-							else if(result === "Error")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
-								arrayOfTests[0]["errorCount"]++;
-								document.getElementById(_data["id"]+"ErrorCount").innerHTML = arrayOfTests[0]["errorCount"];
-								document.getElementById(_data["id"]+"Errors").innerHTML += arrayForOutput;
-							}
-							else if(result === "Failed")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockFail");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Failed";
-								arrayOfTests[0]["failCount"]++;
-								document.getElementById(_data["id"]+"FailCount").innerHTML = arrayOfTests[0]["failCount"];
-								document.getElementById(_data["id"]+"Fails").innerHTML += arrayForOutput;
-							}
-							else if(result === "Skipped")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockSkip");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Skipped";
-								arrayOfTests[0]["skipCount"]++;
-							}
-							else if(result === "Risky")
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockRisky");
-								document.getElementById(_data["id"]+_data["testName"]).title += " Risky";
-								arrayOfTests[0]["riskyCount"]++;
-							}
-							else
-							{
-								document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
+								if(result === "Passed")
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockPass");
+									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Passed";
+									arrayOfTests[0]["passedCount"]++;
+								}
+								else if(result === "Error")
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
+									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Errored";
+									arrayOfTests[0]["errorCount"]++;
+									document.getElementById(_data["id"][i]+"ErrorCount").innerHTML = arrayOfTests[0]["errorCount"];
+									document.getElementById(_data["id"][i]+"Errors").innerHTML += arrayForOutput;
+								}
+								else if(result === "Failed")
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockFail");
+									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Failed";
+									arrayOfTests[0]["failCount"]++;
+									document.getElementById(_data["id"][i]+"FailCount").innerHTML = arrayOfTests[0]["failCount"];
+									document.getElementById(_data["id"][i]+"Fails").innerHTML += arrayForOutput;
+								}
+								else if(result === "Skipped")
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockSkip");
+									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Skipped";
+									arrayOfTests[0]["skipCount"]++;
+								}
+								else if(result === "Risky")
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockRisky");
+									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Risky";
+									arrayOfTests[0]["riskyCount"]++;
+								}
+								else
+								{
+									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
+								}
 							}
 						}
 					},
 					error(xhr, error)
 					{
-						if(document.getElementById(_data["id"]))
+						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
-							document.getElementById(_data["id"]+_data["testName"]).classList.remove("blockInProgress");
-							document.getElementById(_data["id"]+_data["testName"]).title = _data['testName'];
+							if(document.getElementById(_data["id"][i]))
+							{
+								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.remove("blockInProgress");
+								document.getElementById(_data["id"][i]+_data["testName"][i]).title = _data['testName'][i];
 
-							var arrayForPopup = "<table>";
-							arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
-							arrayForPopup += "<tr><td>"+JSON.stringify(error)+"</td><tr>";
-							arrayForPopup += "</table>";
-							document.getElementById(_data["id"]+_data["testName"]+"popupSpan").innerHTML = arrayForPopup;
+								var arrayForPopup = "<table>";
+								arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
+								arrayForPopup += "<tr><td>"+JSON.stringify(error)+"</td><tr>";
+								arrayForPopup += "</table>";
+								document.getElementById(_data["id"][i]+_data["testName"][i]+"popupSpan").innerHTML = arrayForPopup;
 
-							document.getElementById(_data["id"]+_data["testName"]).classList.add("blockError");
-							document.getElementById(_data["id"]+_data["testName"]).title += " Errored";
-							arrayOfTests[0]["errorCount"]++;
+								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
+								document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Errored";
+								arrayOfTests[0]["errorCount"]++;
+							}
 						}
 					},
 					complete(data)
 					{
-						if(document.getElementById(_data["id"]))
+						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
-							//update percent
-							arrayOfTests[0]["count"]++;
-							var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
-							if(percentValue !== 1)
+							var currentTime = performance.now();
+							totalTimeOfAllTests.push(Math.round((currentTime - _data["timeStart"][i])/1000));
+							if(document.getElementById(_data["id"][i]))
 							{
-								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
-								document.getElementById(_data["id"]+"Progress").value = (percentValue.toFixed(5));
+								//update percent
+								arrayOfTests[0]["count"]++;
+								var percentValue = (arrayOfTests[0]["count"]/arrayOfTests[0]["total"]);
+								if(percentValue !== 1)
+								{
+									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = ""+arrayOfTests[0]["count"]+"/"+arrayOfTests[0]["total"];
+									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta(_data["id"][i], (arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
+									
+								}
+								else
+								{
+									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = "Finished";
+									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = "Finished";
+									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: --";
+									document.getElementById(_data["id"][i]+"Progress").value = 1;
+								}
+								
 							}
-							else
-							{
-								document.getElementById(_data["id"]+"ProgressTxt").innerHTML = "Finished";
-								document.getElementById(_data["id"]+"Progress").value = 1;
-							}
-							
+							currentTestsRunning--;
 						}
-						currentTestsRunning--;
+						currentAjaxRequestNum--;
 					}
 				});
 			}(data));
 
-			currentTestsRunning++;
-			arrayOfTests[0]["tests"].shift();
+			for (var i = numberOfTestsToRun - 1; i >= 0; i--)
+			{
+				arrayOfTests[0]["tests"].shift();
+				currentTestsRunning++;
+			}
+			currentAjaxRequestNum++;
 		}
 		else
 		{
@@ -417,6 +569,36 @@ function pollInner(data)
 			}
 		}
 	}
+}
+
+function getEta(idOfTest, testsLeft)
+{
+	var currentTimePerTest = getMeanOfTotalTimeCount();
+	var currentTestsAtATime = testsPerAjax * ajaxRequestValue;
+	var timeLeft = currentTimePerTest * testsLeft / currentTestsAtATime;
+	return convertSecToCorrectFormat(idOfTest, timeLeft, "EtaSec");
+}
+
+function convertSecToCorrectFormat(idOfTest, timeLeft, type)
+{
+	if(document.getElementById(idOfTest+type))
+	{
+		document.getElementById(idOfTest+type).value = timeLeft;
+	}
+	var days = 0;
+	while(timeLeft > 86400)
+	{
+		days++;
+		timeLeft -= 86400;
+	}
+	var date = new Date(null);
+	date.setSeconds(timeLeft);
+	var result = date.toISOString().substr(11, 8);
+	if(days > 0)
+	{
+		result = ""+days+":"+result;
+	}
+	return result;
 }
 
 function setMaxNumber(newValue)
@@ -525,6 +707,9 @@ function stopTestById(idOfTest)
 		}
 	}
 	document.getElementById(idOfTest+"StopButton").style.display = "none";
+	document.getElementById(idOfTest+"EtaTxt").innerHTML = "ETA: --";
+	document.getElementById(idOfTest+"EtaSec").value = 0;
+	document.getElementById(idOfTest+"RefreshButton").style.display = "inline-block";
 }
 
 function showTestPopup(idOfTest)
@@ -601,6 +786,7 @@ function reRunTests(idOfTest)
 
 	var percentValue = (newStart/totalTestCount);
 	document.getElementById(idOfTest+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
+	document.getElementById(idOfTest+"ProgressCount").innerHTML = ""+newStart+"/"+totalTestCount;
 	document.getElementById(idOfTest+"Progress").value = (percentValue.toFixed(5));
 
 	var arrayForNewTestArray = {
@@ -618,9 +804,71 @@ function reRunTests(idOfTest)
 
 	arrayOfTests.push(arrayForNewTestArray);
 
+	var etaHtml = "ETA: ---";
+	if(totalTimeOfAllTests.length > 0)
+	{
+		etaHtml = "ETA: "+getEta(idOfTest, arrayOfTestsToBeReRun.length);
+	}
+	document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
+
 	hidePopup();
 
 	//hide re-run button, show stop button
 	document.getElementById(idOfTest+"StopButton").style.display = "inline-block";
 	document.getElementById(idOfTest+"RefreshButton").style.display = "none";
+}
+
+function togglePercent(idOfTest)
+{
+	toggleBase(idOfTest+"ProgressTxt", idOfTest+"ProgressCount");
+}
+
+function toggleEta(idOfTest)
+{
+	toggleBase(idOfTest+"EtaTxt", idOfTest+"ElapsedTxt");
+}
+
+function toggleBase(hideOne, showOther)
+{
+	if(document.getElementById(hideOne).style.display === "none")
+	{
+		document.getElementById(hideOne).style.display = "inline-block";
+		document.getElementById(showOther).style.display = "none";
+	}
+	else
+	{
+		document.getElementById(hideOne).style.display = "none";
+		document.getElementById(showOther).style.display = "inline-block";
+	}
+}
+
+function timerStuff()
+{
+	if(arrayOfTests.length > 0 && currentTestsRunning > 0)
+	{
+		var idOfTest = "Test"+arrayOfTests[0]["name"];
+		if(document.getElementById(idOfTest))
+		{
+			decreaseEtaByOne(idOfTest);
+			increaseElapsedTimeByOne(idOfTest);
+		}
+	}
+}
+
+function decreaseEtaByOne(idOfTest)
+{
+	valueOfInput = parseInt(document.getElementById(idOfTest+"EtaSec").value);
+	if(valueOfInput > 1)
+	{
+		var etaHtml = "ETA: "+convertSecToCorrectFormat(idOfTest, valueOfInput - 1, "EtaSec");
+		document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
+	}
+}
+
+function increaseElapsedTimeByOne(idOfTest)
+{
+	var idOfTest = "Test"+arrayOfTests[0]["name"];
+	valueOfInput = parseInt(document.getElementById(idOfTest+"ElapsedSec").value);
+	var elapsedHtml = "Time Elapsed: "+convertSecToCorrectFormat(idOfTest, valueOfInput + 1, "ElapsedSec");
+	document.getElementById(idOfTest+"ElapsedTxt").innerHTML = elapsedHtml;
 }

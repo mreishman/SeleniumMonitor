@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 require_once("commonFunctions.php");
 
 $baseUrl = "../../core/";
@@ -16,55 +17,71 @@ require_once('../../core/php/configStatic.php');
 require_once('../../core/php/loadVars.php');
 
 
-$filter = $_POST["filter"];
-$file = $_POST["file"];
+$filterBase = $_POST["filter"];
+$fileBase = $_POST["file"];
 $baseUrl = $_POST["baseUrl"];
+$numberOfTestsToRun = $_POST["numberOfTestsToRun"];
 
-$arrayOfArrays = array();
+$arrayOfArraysOfArrays = array();
 
-$output = shell_exec("cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl);
-$output = explode(PHP_EOL, $output);
-
-$arrayOfArrays["output"] = $output;
-$arrayOfArrays["timeMem"] = "?";
-if(isset($output[7]))
-{
-	$arrayOfArrays["timeMem"] = $output[7];
+$handleObject = array();
+for ($i=0; $i < $numberOfTestsToRun; $i++)
+{ 
+	$file = $fileBase[$i];
+	$filter = $filterBase[$i];
+	$command = "cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl." 2>&1";
+	$handleObject[$i] = popen($command, 'r');
 }
 
-$result = "E";
-if(isset($output[5]))
+for ($i=0; $i < $numberOfTestsToRun; $i++)
 {
-	$result = $output[5];
-}
-$resultString = "?";
-$message = "";
+	$output = stream_get_contents($handleObject[$i]);
+	$output = explode(PHP_EOL, $output);
 
+	$arrayOfArraysOfArrays[$i]["output"] = $output;
+	$arrayOfArraysOfArrays[$i]["timeMem"] = "?";
+	if(isset($output[7]))
+	{
+		$arrayOfArraysOfArrays[$i]["timeMem"] = $output[7];
+	}
 
-$resultString = "Error";
+	$result = "E";
+	if(isset($output[5]))
+	{
+		$result = $output[5];
+	}
 
-if(substr( $result, 0, 1 ) === ".")
-{
-	$resultString = "Passed";
-}
-elseif(substr( $result, 0, 1 ) === "E")
-{
+	$message = "";
 	$resultString = "Error";
-}
-elseif(substr( $result, 0, 1 ) === "F")
-{
-	$resultString = "Failed";
-}
-elseif(substr( $result, 0, 1 ) === "I")
-{
-	$resultString = "Skipped";
-}
-elseif(substr( $result, 0, 1 ) === "R")
-{
-	$resultString = "Risky";
+	if(substr( $result, 0, 1 ) === ".")
+	{
+		$resultString = "Passed";
+	}
+	elseif(substr( $result, 0, 1 ) === "E")
+	{
+		$resultString = "Error";
+	}
+	elseif(substr( $result, 0, 1 ) === "F")
+	{
+		$resultString = "Failed";
+	}
+	elseif(substr( $result, 0, 1 ) === "I")
+	{
+		$resultString = "Skipped";
+	}
+	elseif(substr( $result, 0, 1 ) === "R")
+	{
+		$resultString = "Risky";
+	}
+
+	$arrayOfArraysOfArrays[$i]["Result"] = $resultString;
 }
 
-$arrayOfArrays["Result"] = $resultString;
+for ($i=0; $i < $numberOfTestsToRun; $i++)
+{ 
+	$file = $fileBase[$i];
+	$filter = $filterBase[$i];
+	pclose($handleObject[$i]);
+}
 
-
-echo json_encode($arrayOfArrays);
+echo json_encode($arrayOfArraysOfArrays);

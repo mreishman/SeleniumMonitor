@@ -7,11 +7,20 @@
     border: 1px solid white;
     padding: 25px;
     border-radius: 20px;
+    word-break: break-word;
 }
 
 .testSelectPartBorder
 {
 	border-right: 1px solid white;
+}
+
+.infoBox
+{
+	border: 1px solid black;
+	padding: 5px;
+	background-color: #ddd;
+	display: inline-block;
 }
 
 .testSelectPart

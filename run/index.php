@@ -44,9 +44,7 @@ if($pollingRateType == 'Seconds')
 <body>
 	<?php require_once("../core/php/customCSS.php");?>
 	<div id="menu">
-		<a href="../view/">View</a>
-		<a class="active">Run</a>
-		<a href="../settings/"> Settings </a>
+		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<div onclick="pausePollAction();" class="menuImageDiv">
 			<img id="playImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Play.png" style="display: none;" height="30px">
 			<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
@@ -76,7 +74,7 @@ if($pollingRateType == 'Seconds')
 							foreach($files as $key => $value)
 							{
 								$path = realpath($locationOfTests.DIRECTORY_SEPARATOR.$value);
-						        if(!is_dir($path))
+						        if(!is_dir($path) && returnArrayOfTests(file($path)) !== array())
 						        {
 						        	echo "<option value='".$path."'' >".$value."</option>";
 						        }
@@ -143,7 +141,12 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</h3>
 					<div style="font-size: 200%;">
-						<span style="border: 1px solid black; padding: 5px; background-color: #ddd;" id="{{id}}ProgressTxt" >--</span>
+						<span onclick="togglePercent('{{id}}');" class="infoBox"  <?php if($defaultShowProgressType !== "percent"): ?> style="display: none;" <?php endif; ?>  id="{{id}}ProgressTxt" >--</span>
+						<span onclick="togglePercent('{{id}}');" class="infoBox" <?php if($defaultShowProgressType !== "fraction"): ?> style="display: none;" <?php endif; ?> id="{{id}}ProgressCount" >--</span>
+						<span onclick="toggleEta('{{id}}');"  class="infoBox"  <?php if($defaultShowEta !== "eta"): ?> style="display: none;" <?php endif; ?>   id="{{id}}EtaTxt" >{{eta}}</span>
+						<input type="hidden" name="etaSec" id="{{id}}EtaSec" value="0" >
+						<span onclick="toggleEta('{{id}}');" class="infoBox"  <?php if($defaultShowEta !== "elapsed"): ?> style="display: none;" <?php endif; ?>   id="{{id}}ElapsedTxt" >{{eta}}</span>
+						<input type="hidden" name="etaSec" id="{{id}}ElapsedSec" value="0" >
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">
@@ -217,6 +220,8 @@ if($pollingRateType == 'Seconds')
 			showStartTestNewPopup();
 
 			setInterval(function(){poll();},pollingRate);
+
+			setInterval(function(){timerStuff();},1000);
 		});
 	</script>
 	<?php readfile('../core/html/popup.html') ?>

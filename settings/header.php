@@ -4,8 +4,7 @@ require_once("../core/php/customCSS.php");
 echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 <script src="../core/js/settings.js?v=<?php echo $cssVersion?>"></script>
 <div id="menu">
-	<a href="../view/">View</a>
-	<a href="../run/">Run</a>
+	<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="15px"> </a>
 	<?php if(strpos($URI, 'main.php') !== false): ?>
 		<a style="cursor: default;" class="active" id="MainLink" >Main</a>
 	<?php else: ?>
@@ -44,6 +43,11 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 	<?php else: ?>	
 		<a id="AdvancedLink" onclick="goToUrl('advanced.php');">Advanced</a>
 	<?php endif; ?>
+	<?php if(strpos($URI, 'themes.php') !== false): ?>
+		<a style="cursor: default;" class="active" id="themesLink">Themes</a>
+	<?php else: ?>	
+		<a id="themesLink" onclick="goToUrl('themes.php');">Themes</a>
+	<?php endif; ?>
 	<a id="DevLink"
 		<?php if(!(($developmentTabEnabled == 'true') || (strpos($URI, 'devTools.php') !== false))):?>
 			style="display: none;
@@ -59,9 +63,6 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 <?php if((strpos($URI, 'whatsNew.php') !== false) || (strpos($URI, 'update.php') !== false) || (strpos($URI, 'changeLog.php') !== false)): ?>
 	<div id="menu2">
 		<a <?php if(strpos($URI, 'update.php') !== false): ?> class='active' <?php else: ?>  onclick="goToUrl('./update.php');"  <?php endif;?> > Update </a>
-		<!-- 
-		<a <?php if(strpos($URI, 'whatsNew.php') !== false): ?> class='active' <?php else: ?>  onclick="goToUrl('./whatsNew.php');"  <?php endif;?> > What's New? </a>
-		-->
 		<a <?php if(strpos($URI, 'changeLog.php') !== false): ?> class='active' <?php else: ?>  onclick="goToUrl('./changeLog.php');"  <?php endif;?> > Changelog </a>
 	</div>
 <?php endif;
