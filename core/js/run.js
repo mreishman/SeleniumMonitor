@@ -888,14 +888,18 @@ function generateExportInfo(idOfTest)
 	var resultArray = $("#"+idOfTest+" .testPopupBlock");
 	var blockArray = $("#"+idOfTest+" .block");
 	/* test: {result: ____, notes: ____, title: ____} */
-	var exportInfo = {};
+	var exportInfo = {
+		file: $("#"+idOfTest+"Folder").html(),
+		website: $("#"+idOfTest+"BaseUrl").val(),
+		info: {}
+	};
 	var lengthOfArray = testArray.length;
 	for (var i = 0; i < lengthOfArray; i++)
 	{
 		var testName = testArray[i].id.replace(idOfTest, "");
 		var result = blockArray[i].className.split(/\s+/);
 		var title = blockArray[i].title;
-		exportInfo[testName] = {
+		exportInfo["info"][testName] = {
 			result: result,
 			notes: resultArray[i].innerHTML,
 			title: title

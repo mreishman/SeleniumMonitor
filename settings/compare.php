@@ -47,16 +47,58 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				<th width="50%">
 					<h2>Test Results 1 (Master)</h2>
 					<br>
-					<input type="text"> <button>Render</button>
+					<input type="text" id="testResultInputOne"> <button onclick="showRenderStart('testResultDisplayOne','testResultInputOne');">Render</button>
 				</th>
 				<th width="50%">
 					<h2>Test Results 2 (Changes)</h2>
 					<br>
-					<input type="text"> <button>Render</button>
+					<input type="text" id="testResultInputTwo"> <button  onclick="showRenderStart('testResultDisplayTwo','testResultInputTwo');">Render</button>
+				</th>
+			</tr>
+			<tr>
+				<th id="testResultDisplayOne">
+				</th>
+				<th id="testResultDisplayTwo">
 				</th>
 			</tr>
 		</table>
 	</div>
+
+	<div id="storage">
+		<div class="container">
+			<div style="background-color: white; border: 1px solid black; width: 100%; margin-left: 0; " id="{{id}}" class="scanBar containerMain">
+				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
+					<h3>
+						<span id="{{id}}Folder">{{file}}</span>
+					</h3>
+					<div style="font-size: 200%;">
+					</div>
+				</div>
+				<div id="{{id}}ProgressBlocks" class="containerBox">
+					{{ProgressBlocks}}
+				</div>
+				<div class="key fontChange">
+					Key:
+					<br>
+					<div class="block blockKey blockEmpty"></div> - Waiting
+					<div class="block blockKey blockInProgress"></div> - Running
+					<div class="block blockKey blockPass"></div> - Passed
+					<div class="block blockKey blockError"></div> - Error
+					<div class="block blockKey blockFail"></div> - Fail
+					<div class="block blockKey blockSkip"></div> - Skipped
+					<div class="block blockKey blockRisky"></div> - Risky
+				</div>
+				<div class="fontChange subTitleEF">
+					<span id="{{id}}FailCount">{{failCount}}</span>/{{totalCount}} Fails
+					<br>
+					<span id="{{id}}ErrorCount">{{errorCount}}</span>/{{totalCount}} Errors
+					<br>
+					{{website}}
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script type="text/javascript">
 		$(document).ready(function()
 		{
@@ -64,6 +106,14 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			window.onresize = resize;
 		});
 
+		function showRenderStart(divId, renderId)
+		{
+			var renderInfo = document.getElementById(renderId).value;
+			renderInfo = JSON.parse(renderInfo);
+			showRender(divId, renderInfo);
+		}
+
 	</script> 
 	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
+	<script src="../core/js/rend.js?v=<?php echo $cssVersion?>"></script>
 </body>
