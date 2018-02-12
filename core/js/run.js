@@ -872,3 +872,34 @@ function increaseElapsedTimeByOne(idOfTest)
 	var elapsedHtml = "Time Elapsed: "+convertSecToCorrectFormat(idOfTest, valueOfInput + 1, "ElapsedSec");
 	document.getElementById(idOfTest+"ElapsedTxt").innerHTML = elapsedHtml;
 }
+
+function exportResults(idOfTest)
+{
+	var testArray = $("#"+idOfTest+"ProgressBlocks input");
+	var resultArray = $("#"+idOfTest+" .testPopupBlock");
+	var blockArray = $("#"+idOfTest+" .block");
+	/* test: {result: ____, notes: ____, title: ____} */
+	var exportInfo = {};
+	var lengthOfArray = testArray.length;
+	for (var i = 0; i < lengthOfArray; i++)
+	{
+		var testName = testArray[i].id.replace(idOfTest, "");
+		var result = blockArray[i].className.split(/\s+/);
+		var title = blockArray[i].title;
+		exportInfo[testName] = {
+			result: result,
+			notes: resultArray[i].innerHTML,
+			title: title
+		}
+	}
+	copyToClipBoard(JSON.stringify(exportInfo));
+}
+
+function copyToClipBoard(whatToCopy)
+{
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(whatToCopy).select();
+	document.execCommand("copy");
+	$temp.remove();
+}

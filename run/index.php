@@ -135,7 +135,7 @@ if($pollingRateType == 'Seconds')
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
 						<div style="float: right;">
-							<img class="imageInHeaderContainer" onclick="exportTest('{{id}}');" src="../core/img/save.png">
+							<img class="imageInHeaderContainer" onclick="exportResults('{{id}}');" src="../core/img/save.png">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
 							<img style="display: none;" id="{{id}}RefreshButton" class="imageInHeaderContainer" onclick="reRunTestsPopup('{{id}}');" src="../core/img/Refresh.png">
