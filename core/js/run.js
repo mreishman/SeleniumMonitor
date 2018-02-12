@@ -875,6 +875,15 @@ function increaseElapsedTimeByOne(idOfTest)
 
 function exportResults(idOfTest)
 {
+	copyToClipBoard(JSON.stringify(generateExportInfo(idOfTest)));
+	showPopup();
+	document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Success</div><br><br><div style='width:100%;text-align:center;'> <img src='../core/img/greenCheck.png' height='50' width='50'> <br> Copied to clipboard!  </div>";
+	setTimeout(hidePopup, 1000);
+
+}
+
+function generateExportInfo(idOfTest)
+{
 	var testArray = $("#"+idOfTest+"ProgressBlocks input");
 	var resultArray = $("#"+idOfTest+" .testPopupBlock");
 	var blockArray = $("#"+idOfTest+" .block");
@@ -892,7 +901,7 @@ function exportResults(idOfTest)
 			title: title
 		}
 	}
-	copyToClipBoard(JSON.stringify(exportInfo));
+	return exportInfo;
 }
 
 function copyToClipBoard(whatToCopy)
