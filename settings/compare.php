@@ -108,9 +108,12 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 		function showRenderStart(divId, renderId)
 		{
+			displayLoadingPopup();
 			var renderInfo = document.getElementById(renderId).value;
 			renderInfo = JSON.parse(renderInfo);
 			showRender(divId, renderInfo);
+			document.getElementById(renderId).value = "";
+			hidePopup();
 		}
 
 	</script> 
