@@ -712,18 +712,6 @@ function stopTestById(idOfTest)
 	document.getElementById(idOfTest+"RefreshButton").style.display = "inline-block";
 }
 
-function showTestPopup(idOfTest)
-{
-	if(document.getElementById(idOfTest).style.display === "block")
-	{
-		document.getElementById(idOfTest).style.display = "none";
-	}
-	else
-	{
-		document.getElementById(idOfTest).style.display = "block";
-	}
-}
-
 function reRunTestsPopup(idOfTest)
 {
 	//show popup with checkbox of types
@@ -875,17 +863,16 @@ function increaseElapsedTimeByOne(idOfTest)
 
 function exportResults(idOfTest)
 {
-	copyToClipBoard(JSON.stringify(generateExportInfo(idOfTest)));
+	var stuff = JSON.stringify(generateExportInfo(idOfTest));
 	showPopup();
-	document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Success</div><br><br><div style='width:100%;text-align:center;'> <img src='../core/img/greenCheck.png' height='50' width='50'> <br> Copied to clipboard!  </div>";
-	setTimeout(hidePopup, 1000);
+	document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Success</div><br><br><div style='width:100%;text-align:center;'> <img src='../core/img/greenCheck.png' height='50' width='50'> <br> <input type='text' value='"+escapeHtml(stuff)+"' >  </div>";
 
 }
 
 function generateExportInfo(idOfTest)
 {
 	var testArray = $("#"+idOfTest+"ProgressBlocks input");
-	var resultArray = $("#"+idOfTest+" .testPopupBlock");
+	var resultArray = $("#"+idOfTest+" .testPopupBlock span");
 	var blockArray = $("#"+idOfTest+" .block");
 	/* test: {result: ____, notes: ____, title: ____} */
 	var exportInfo = {
@@ -906,13 +893,4 @@ function generateExportInfo(idOfTest)
 		}
 	}
 	return exportInfo;
-}
-
-function copyToClipBoard(whatToCopy)
-{
-	var $temp = $("<input>");
-	$("body").append($temp);
-	$temp.val(whatToCopy).select();
-	document.execCommand("copy");
-	$temp.remove();
 }

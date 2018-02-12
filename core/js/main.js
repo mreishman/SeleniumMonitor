@@ -34,3 +34,49 @@ function getCurrentRunningTestCount(data)
 	var splitData = data.split("class='busy'");
 	return (splitData.length - 1);
 }
+
+function showTestPopup(idOfTest)
+{
+	if(document.getElementById(idOfTest).style.display === "block")
+	{
+		document.getElementById(idOfTest).style.display = "none";
+	}
+	else
+	{
+		document.getElementById(idOfTest).style.display = "block";
+	}
+}
+
+function copyToClipBoard(whatToCopy)
+{
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(whatToCopy).select();
+	document.execCommand("copy");
+	$temp.remove();
+}
+
+
+function escapeHtml(text) {
+  var map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+function unEscapeHtml(text) {
+  var map = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    "&#039;": "'"
+  };
+
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}

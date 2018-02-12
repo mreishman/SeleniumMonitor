@@ -56,9 +56,9 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</th>
 			</tr>
 			<tr>
-				<th id="testResultDisplayOne">
+				<th style="vertical-align: top;" id="testResultDisplayOne">
 				</th>
-				<th id="testResultDisplayTwo">
+				<th style="vertical-align: top;" id="testResultDisplayTwo">
 				</th>
 			</tr>
 		</table>
@@ -74,7 +74,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<div style="font-size: 200%;">
 					</div>
 				</div>
-				<div id="{{id}}ProgressBlocks" class="containerBox">
+				<div id="{{id}}ProgressBlocks" class="containerBox" style="text-align: left;">
 					{{ProgressBlocks}}
 				</div>
 				<div class="key fontChange">
