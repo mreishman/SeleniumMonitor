@@ -27,7 +27,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 ?>
 <!doctype html>
 <head>
-	<title>SeleniumMonitor | Scan</title>
+	<title>SeleniumMonitor | Compare</title>
 	<?php echo loadCSS($baseUrl, $cssVersion);?>
 	<link rel="icon" type="image/png" href="<?php echo $baseUrl; ?>img/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="../core/template/runcss.css?v=<?php echo $cssVersion; ?>">
@@ -125,4 +125,5 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 	</script> 
 	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script src="../core/js/rend.js?v=<?php echo $cssVersion?>"></script>
+	<?php readfile('../core/html/popup.html') ?>
 </body>
