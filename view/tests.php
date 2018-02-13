@@ -47,7 +47,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 	<div id="storage">
 		<div class="container">
-			<div style="background-color: white; border: 1px solid black; width: 100%; margin-left: 0; " id="{{id}}" class="scanBar containerMain">
+			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
@@ -117,12 +117,14 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 							{
 								//file is new, update
 								arrayOfFiles[keysInfo[i]] = data[keysInfo[i]];
+								getLogData(keysInfo[i]);
 							}
 						}
 						else
 						{
 							//not there, add it
 							arrayOfFiles[keysInfo[i]] = data[keysInfo[i]];
+							getLogData(keysInfo[i]);
 						}
 					}
 
@@ -134,10 +136,38 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						if(!(keysInfo[i] in data))
 						{
 							//not in data anymore, it was deleted from folder... delete from screen & array
+							delete arrayOfFiles.keysInfo[i];
 						}
 					}
 				}
 			});
+		}
+
+		function getLogData(path)
+		{
+			var urlForSendInner = '../core/php/getLogInfo.php?format=json';
+			var dataSend = {path: "../../tmp/tests/"+path};
+			if(document.getElementById(path))
+			{
+				document.getElementById(path).outerHTML = "";
+			}
+			
+			(function(_path){
+				$.ajax(
+				{
+					url: urlForSendInner,
+					dataType: "json",
+					data: dataSend,
+					type: "POST",
+					success(data)
+					{
+						renderInfo = JSON.parse(data);
+						showRender("main", _path, renderInfo);
+						resize();
+					}
+				});
+			}(path));
+
 		}
 
 	</script> 

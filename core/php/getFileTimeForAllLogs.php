@@ -19,7 +19,7 @@ if($files)
 		}
 		elseif(is_file($fullPath))
 		{
-			$response[$fullPath] = filemtime($fullPath);
+			$response[$filename] = filemtime($fullPath);
 		}
 	}
 }

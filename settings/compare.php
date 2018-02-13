@@ -40,6 +40,20 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 
+	<?php
+	$path = "../tmp/tests";
+	$scannedDir = scandir($path);
+	if(!is_array($scannedDir))
+	{
+		$scannedDir = array($scannedDir);
+	}
+	$files = array_diff($scannedDir, array('..', '.'));
+	if(!$files)
+	{
+		$files = array();
+	}
+	?>
+
 
 	<div id="main" style="background-color: #333;">
 		<table width="100%">
@@ -48,11 +62,35 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<h2>Test Results 1 (Master)</h2>
 					<br>
 					<input type="text" id="testResultInputOne"> <button onclick="showRenderStart('testResultDisplayOne','testResultInputOne');">Render</button>
+					<br>
+					OR
+					<br>
+					<select id="testResultSelectOne">
+						<?php
+						foreach ($files as $k => $fileName)
+						{
+							echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
+						}
+						?>
+					</select>
+					<button onclick="showRenderFromFile('testResultDisplayOne','testResultSelectOne')" >Render</button>
 				</th>
 				<th width="50%">
 					<h2>Test Results 2 (Changes)</h2>
 					<br>
 					<input type="text" id="testResultInputTwo"> <button  onclick="showRenderStart('testResultDisplayTwo','testResultInputTwo');">Render</button>
+					<br>
+					OR
+					<br>
+					<select id="testResultSelectTwo" >
+						<?php
+						foreach ($files as $k => $fileName)
+						{
+							echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
+						}
+						?>
+					</select>
+					<button onclick="showRenderFromFile('testResultDisplayTwo','testResultSelectTwo')" >Render</button>
 				</th>
 			</tr>
 			<tr>
@@ -115,6 +153,26 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			showRender(divId, renderInfo);
 			document.getElementById(renderId).value = "";
 			hidePopup();
+		}
+
+		function showRenderFromFile(divId, renderId)
+		{
+			displayLoadingPopup();
+			var urlForSendInner = '../core/php/getLogInfo.php?format=json';
+			var dataSend = {path: "../"+document.getElementById(renderId).value};
+			$.ajax(
+			{
+				url: urlForSendInner,
+				dataType: "json",
+				data: dataSend,
+				type: "POST",
+				success(data)
+				{
+					renderInfo = JSON.parse(data);
+					showRender(divId, divId ,renderInfo);
+					hidePopup();
+				}
+			});
 		}
 
 		function removeCompare(id)

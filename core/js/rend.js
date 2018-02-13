@@ -1,7 +1,7 @@
-function showRender(divId, renderInfo)
+function showRender(divId, id, renderInfo)
 {
 	var item = $("#storage .container").html();
-	item = item.replace(/{{id}}/g, divId);
+	item = item.replace(/{{id}}/g, id);
 	item = item.replace(/{{file}}/g, renderInfo["file"]);
 	item = item.replace(/{{website}}/g, renderInfo["website"]);
 	item = item.replace(/{{totalCount}}/g, getCountOfBlockType(renderInfo["info"], "block"));
