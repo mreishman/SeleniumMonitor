@@ -72,6 +72,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						<span id="{{id}}Folder">{{file}}</span>
 					</h3>
 					<div style="font-size: 200%;">
+						<img class="imageInHeaderContainer" onclick="removeCompare('{{id}}');" src="../core/img/trashCan.png">
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox" style="text-align: left;">
@@ -114,6 +115,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			showRender(divId, renderInfo);
 			document.getElementById(renderId).value = "";
 			hidePopup();
+		}
+
+		function removeCompare(id)
+		{
+			document.getElementById(id).innerHTML = "";
 		}
 
 	</script> 
