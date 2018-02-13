@@ -1,4 +1,4 @@
-var testNumber = 0;
+var testNumber = new Date().getTime();
 var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
@@ -182,7 +182,7 @@ function createNewTestPopup(data)
 	{
 		maxRequests = maxTestsStatic;
 	}
-	testNumber++;
+	testNumber = new Date().getTime();
 	var targetWidthMargin = window.innerWidth;
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
 	var item = $("#storage .newTestPopup").html();
@@ -550,6 +550,20 @@ function pollInner(data)
 							currentTestsRunning--;
 						}
 						currentAjaxRequestNum--;
+						//make ajax request to save current data
+						var urlForSendInner = '../core/php/saveTestObject.php?format=json';
+						var dataSend = {testName: _data["id"][0], data: JSON.stringify(generateExportInfo(_data["id"][0]))};
+						$.ajax(
+						{
+							url: urlForSendInner,
+							dataType: "json",
+							data: dataSend,
+							type: "POST",
+							success(data)
+							{
+
+							}
+						});
 					}
 				});
 			}(data));
