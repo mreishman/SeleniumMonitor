@@ -147,10 +147,6 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 		{
 			var urlForSendInner = '../core/php/getLogInfo.php?format=json';
 			var dataSend = {path: "../../tmp/tests/"+path};
-			if(document.getElementById(path))
-			{
-				document.getElementById(path).outerHTML = "";
-			}
 			
 			(function(_path){
 				$.ajax(
@@ -161,6 +157,10 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					type: "POST",
 					success(data)
 					{
+						if(document.getElementById(_path))
+						{
+							document.getElementById(_path).outerHTML = "";
+						}
 						renderInfo = JSON.parse(data);
 						showRender("main", _path, renderInfo);
 						resize();
