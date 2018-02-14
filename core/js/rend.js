@@ -8,7 +8,7 @@ function showRender(divId, id, renderInfo)
 	item = item.replace(/{{failCount}}/g, getCountOfBlockType(renderInfo["info"], "blockFail"));
 	item = item.replace(/{{errorCount}}/g, getCountOfBlockType(renderInfo["info"], "blockError"));
 	item = item.replace(/{{ProgressBlocks}}/g, generateProgressBlocks(renderInfo["info"],divId));
-	$("#"+divId).append(item);
+	$("#"+divId).prepend(item);
 }
 
 function generateProgressBlocks(info, divId)
