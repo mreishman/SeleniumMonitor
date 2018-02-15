@@ -133,7 +133,7 @@ function generateProgressBlocks($info, $divId)
 
 
 	<div id="main" style="background-color: #333;">
-		<div id="testSidebar" style="position: fixed; bottom: 0; left: 0; background-color: #CCC; overflow: auto; width: 200px;">
+		<div id="testSidebar" style="display: none; position: fixed; bottom: 0; left: 0; background-color: #CCC; overflow: auto; width: 200px;">
 			<ul id="testSidebarUL" style="list-style: none; padding: 0;">
 				<?php foreach ($logTimeArray as $key => $value)
 				{
@@ -142,7 +142,7 @@ function generateProgressBlocks($info, $divId)
 				?>
 			</ul>
 		</div>
-		<div id="subMain" style="margin-left: 200px;">
+		<div id="subMain" style="margin-left: 200px; display: none;">
 			<?php foreach ($logTimeArray as $key => $value)
 			{
 				$dataForTest = (array)json_decode(file_get_contents("../tmp/tests/".$value));
@@ -158,6 +158,9 @@ function generateProgressBlocks($info, $divId)
 				));
 			}
 			?>
+		</div>
+		<div id="loadingThing" style="width: 100%; text-align: center;">
+			<img src="../core/img/loading.gif" width="50px;">
 		</div>
 	</div>
 
@@ -181,6 +184,9 @@ function generateProgressBlocks($info, $divId)
 	<script type="text/javascript">
 		$(document).ready(function()
 		{
+			document.getElementById("testSidebar").style.display = "block";
+			document.getElementById("subMain").style.display = "block";
+			document.getElementById("loadingThing").style.display = "none";
 			resize();
 			window.onresize = resize;
 
