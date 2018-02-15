@@ -551,19 +551,22 @@ function pollInner(data)
 						}
 						currentAjaxRequestNum--;
 						//make ajax request to save current data
-						var urlForSendInner = '../core/php/saveTestObject.php?format=json';
-						var dataSend = {testName: _data["id"][0], data: JSON.stringify(generateExportInfo(_data["id"][0]))};
-						$.ajax(
+						if(cacheTestEnable === "true")
 						{
-							url: urlForSendInner,
-							dataType: "json",
-							data: dataSend,
-							type: "POST",
-							success(data)
+							var urlForSendInner = '../core/php/saveTestObject.php?format=json';
+							var dataSend = {testName: _data["id"][0], data: JSON.stringify(generateExportInfo(_data["id"][0]))};
+							$.ajax(
 							{
+								url: urlForSendInner,
+								dataType: "json",
+								data: dataSend,
+								type: "POST",
+								success(data)
+								{
 
-							}
-						});
+								}
+							});
+						}
 					}
 				});
 			}(data));

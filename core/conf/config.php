@@ -12,6 +12,7 @@ $defaultConfig = array(
 	'baseUrlUpdate'					=> 'https://github.com/mreishman/SeleniumMonitor/archive/',
 	'branchSelected'				=> 'default',
 	'buffer'						=> 500,
+	'cacheTestEnable'				=> 'true',
 	'configVersion'					=> 2,
 	'cssVersion'					=> 1,
 	'currentTheme'					=> 'Default',

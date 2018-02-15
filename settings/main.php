@@ -31,6 +31,7 @@ require_once('../core/php/commonFunctions.php');
 		require_once('../core/php/template/mainVars.php');
 		require_once('../core/php/template/runVars.php'); 
 		require_once('../core/php/template/viewVars.php');
+		require_once('../core/php/template/settingsCacheVars.php');
 		?>
 	</div>
 	<?php readfile('../core/html/popup.html') ?>	

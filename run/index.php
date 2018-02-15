@@ -213,6 +213,7 @@ if($pollingRateType == 'Seconds')
 		var baseUrl = "<?php echo $baseUrl;?>";
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
 		var runCheckCount = "<?php echo $runCheckCount; ?>";
+		var cacheTestEnable = "<?php echo $cacheTestEnable; ?>";
 		$(document).ready(function()
 		{
 			resize();

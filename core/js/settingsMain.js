@@ -47,7 +47,7 @@ function showOrHideSubWindow(valueForPopupInner, valueForVarsInner)
 
 function checkIfChanges()
 {
-	if(	checkForChangesArray(["settingsMainVars","settingsRunVars","settingsViewVars"]))
+	if(	checkForChangesArray(["settingsMainVars","settingsRunVars","settingsViewVars","settingsCacheVars"]))
 	{
 		return true;
 	}
@@ -59,6 +59,6 @@ $( document ).ready(function()
 	document.getElementById("popupSelect").addEventListener("change", showOrHidePopupSubWindow, false);
 	document.getElementById("settingsSelect").addEventListener("change", showOrHideUpdateSubWindow, false);
 
-	refreshArrayObjectOfArrays(["settingsMainVars","settingsRunVars","settingsViewVars"]);
+	refreshArrayObjectOfArrays(["settingsMainVars","settingsRunVars","settingsViewVars","settingsCacheVars"]);
 	setInterval(poll, 100);
 });
