@@ -39,6 +39,82 @@ foreach ($logTimes as $key => $value)
 	}
 }
 
+function genContainer($dataForContainer)
+{
+	$stringGen = "<div style=\"background-color: white; border: 1px solid black;\" id=\"".$dataForContainer["id"]."\" class=\"scanBar containerMain\">";
+	$stringGen .= "<div class=\"fontChange\" style=\"width: 100%; text-align: left;\" id=\"".$dataForContainer["id"]."Title\">";
+	$stringGen .= "<h3>".$dataForContainer["logFile"]."</h3>";
+	$stringGen .= "<div style=\"font-size: 200%;\">";
+	$stringGen .= "<img class=\"imageInHeaderContainer\" onclick=\"removeCompare('".$dataForContainer["id"]."');\" src=\"../core/img/trashCan.png\">";
+	$stringGen .= "</div>";
+	$stringGen .= "</div>";
+	$stringGen .= "<div id=\"".$dataForContainer["id"]."ProgressBlocks\" class=\"containerBox\" style=\"text-align: left;\">";
+	$stringGen .= $dataForContainer["ProgressBlocks"];
+	$stringGen .= "</div>";
+	$stringGen .= "<div class=\"key fontChange\"> Key: <br>";
+	$stringGen .= "		<div class=\"block blockKey blockEmpty\"></div> - Waiting";
+	$stringGen .= "		<div class=\"block blockKey blockInProgress\"></div> - Running";
+	$stringGen .= "		<div class=\"block blockKey blockPass\"></div> - Passed";
+	$stringGen .= "		<div class=\"block blockKey blockError\"></div> - Error";
+	$stringGen .= "		<div class=\"block blockKey blockFail\"></div> - Fail";
+	$stringGen .= "		<div class=\"block blockKey blockSkip\"></div> - Skipped";
+	$stringGen .= "		<div class=\"block blockKey blockRisky\"></div> - Risky";
+	$stringGen .= "</div>";
+	$stringGen .= "<div class=\"fontChange subTitleEF\">";
+	$stringGen .= "<span id=\"".$dataForContainer["id"]."FailCount\">".$dataForContainer["failCount"]."</span>/".$dataForContainer["totalCount"]." Fails";
+	$stringGen .= "<br>";
+	$stringGen .= "<span id=\"".$dataForContainer["id"]."ErrorCount\">".$dataForContainer["errorCount"]."</span>/".$dataForContainer["totalCount"]." Errors";
+	$stringGen .= "<br>";
+	$stringGen .= $dataForContainer["website"];
+	$stringGen .= "<br>";
+	$stringGen .= $dataForContainer["file"];
+	$stringGen .= "</div>";
+	$stringGen .= "</div>";
+	return $stringGen;
+}
+
+function getCountOfBlockType($info, $typefind)
+{
+	$count = 0;
+	foreach ($info as $value)
+	{
+		$value = get_object_vars($value);
+		$result = $value["result"];
+		if(in_array($typefind, $result))
+		{
+			$count++;
+		}
+	}
+	return $count;
+}
+
+function generateProgressBlocks($info, $divId)
+{
+
+	$progressBlocksHtml = "";
+	foreach ($info as $key => $value)
+	{
+		$value = get_object_vars($value);
+		$progressBlocksHtml .= "<div onclick=\"showTestPopup('Test".$divId.$key."popup');\" title='".$value["title"]."' id='Test".$divId.$key."' ";
+		$classArray = $value["result"];
+		$classArrayLength = count($classArray);
+		if($classArrayLength > 0)
+		{
+			$progressBlocksHtml .= "class = '";
+			for($j = 0; $j < $classArrayLength; $j++)
+			{
+				$progressBlocksHtml .= " ".$classArray[$j]." ";
+			}
+			$progressBlocksHtml .= "'";
+		}
+		$progressBlocksHtml .= ">";
+		$progressBlocksHtml .= "</div>";
+		$progressBlocksHtml .= "<div class=\"testPopupBlock\" id='Test".$divId.$key."popup'> <h3> Test: ".$key." </h3> <br> <span id='Test".$divId.$key."popupSpan' >".$value["notes"]."</span>";
+		$progressBlocksHtml .= " </div>";
+	}
+	return $progressBlocksHtml;
+}
+
 ?>
 <!doctype html>
 <head>
@@ -69,7 +145,17 @@ foreach ($logTimes as $key => $value)
 		<div id="subMain" style="margin-left: 200px;">
 			<?php foreach ($logTimeArray as $key => $value)
 			{
-
+				$dataForTest = (array)json_decode(file_get_contents("../tmp/tests/".$value));
+				echo genContainer(array(
+					"id"				=>	$value,
+					"logFile"			=>	$value,
+					"ProgressBlocks"	=>	generateProgressBlocks($dataForTest["info"], $value),
+					"failCount"			=>	getCountOfBlockType($dataForTest["info"],"blockFail"),
+					"totalCount"		=>	getCountOfBlockType($dataForTest["info"],"block"),
+					"errorCount"		=>	getCountOfBlockType($dataForTest["info"],"blockError"),
+					"website"			=>	$dataForTest["website"],
+					"file"				=>	$dataForTest["file"]
+				));
 			}
 			?>
 		</div>
@@ -77,39 +163,18 @@ foreach ($logTimes as $key => $value)
 
 	<div id="storage">
 		<div class="container">
-			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
-				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
-					<h3>
-						{{logFile}}
-					</h3>
-					<div style="font-size: 200%;">
-						<img class="imageInHeaderContainer" onclick="removeCompare('{{id}}');" src="../core/img/trashCan.png">
-					</div>
-				</div>
-				<div id="{{id}}ProgressBlocks" class="containerBox" style="text-align: left;">
-					{{ProgressBlocks}}
-				</div>
-				<div class="key fontChange">
-					Key:
-					<br>
-					<div class="block blockKey blockEmpty"></div> - Waiting
-					<div class="block blockKey blockInProgress"></div> - Running
-					<div class="block blockKey blockPass"></div> - Passed
-					<div class="block blockKey blockError"></div> - Error
-					<div class="block blockKey blockFail"></div> - Fail
-					<div class="block blockKey blockSkip"></div> - Skipped
-					<div class="block blockKey blockRisky"></div> - Risky
-				</div>
-				<div class="fontChange subTitleEF">
-					<span id="{{id}}FailCount">{{failCount}}</span>/{{totalCount}} Fails
-					<br>
-					<span id="{{id}}ErrorCount">{{errorCount}}</span>/{{totalCount}} Errors
-					<br>
-					{{website}}
-					<br>
-					{{file}}
-				</div>
-			</div>
+			<?php
+			echo genContainer(array(
+					"id"				=>	"{{id}}",
+					"logFile"			=>	"{{logFile}}",
+					"ProgressBlocks"	=>	"{{ProgressBlocks}}",
+					"failCount"			=>	"{{failCount}}",
+					"totalCount"		=>	"{{totalCount}}",
+					"errorCount"		=>	"{{errorCount}}",
+					"website"			=>	"{{website}}",
+					"file"				=>	"{{file}}"
+				));
+			?>
 		</div>
 	</div>
 
@@ -123,7 +188,7 @@ foreach ($logTimes as $key => $value)
 
 		});
 
-		var arrayOfFiles = {};
+		var arrayOfFiles = <?php echo json_encode($logTimes);?>;
 
 		function poll()
 		{

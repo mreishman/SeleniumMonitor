@@ -21,7 +21,7 @@ function generateProgressBlocks(info, divId)
 	{
 		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+divId+keysInfo[i]+"popup');\" title='"+info[keysInfo[i]]["title"]+"' id='Test"+divId+keysInfo[i]+"' ";
 		var classArray = info[keysInfo[i]]["result"];
-		var classArrayLength = info[keysInfo[i]]["result"].length;
+		var classArrayLength = classArray.length;
 		if(info[keysInfo[i]]["result"].length > 0)
 		{
 			progressBlocksHtml += "class = '";
