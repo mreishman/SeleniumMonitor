@@ -38,6 +38,7 @@ foreach ($logTimes as $key => $value)
 		$logTimeArray[$value.random_int(1, 256)] = $key;
 	}
 }
+$logTimeArray = array_reverse($logTimeArray);
 
 function genContainer($dataForContainer)
 {
