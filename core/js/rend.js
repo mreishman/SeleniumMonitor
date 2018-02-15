@@ -1,4 +1,4 @@
-function showRender(divId, id, renderInfo)
+function showRender(divId, id, renderInfo, logFile)
 {
 	var item = $("#storage .container").html();
 	item = item.replace(/{{id}}/g, id);
@@ -8,6 +8,7 @@ function showRender(divId, id, renderInfo)
 	item = item.replace(/{{failCount}}/g, getCountOfBlockType(renderInfo["info"], "blockFail"));
 	item = item.replace(/{{errorCount}}/g, getCountOfBlockType(renderInfo["info"], "blockError"));
 	item = item.replace(/{{ProgressBlocks}}/g, generateProgressBlocks(renderInfo["info"],divId));
+	item = item.replace(/{{logFile}}/g, logFile);
 	$("#"+divId).prepend(item);
 }
 

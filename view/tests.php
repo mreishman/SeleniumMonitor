@@ -24,6 +24,21 @@ require_once('../core/php/updateCheck.php');
 
 $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
+$logTimes = getAllTestLogFileTimes("../tmp/tests/");
+
+$logTimeArray = array();
+foreach ($logTimes as $key => $value)
+{
+	if(!isset($logTimeArray[$value]))
+	{
+		$logTimeArray[$value] = $key;
+	}
+	else
+	{
+		$logTimeArray[$value.random_int(1, 256)] = $key;
+	}
+}
+
 ?>
 <!doctype html>
 <head>
@@ -42,7 +57,22 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 
 	<div id="main" style="background-color: #333;">
-		
+		<div id="testSidebar" style="position: fixed; bottom: 0; left: 0; background-color: #CCC; overflow: auto; width: 200px;">
+			<ul style="list-style: none; padding: 0;">
+				<?php foreach ($logTimeArray as $key => $value)
+				{
+					echo "<li style=\"padding: 5px;\"><a href=\"#".$value."\" class=\"link\" >".$value."</a></li>";
+				}
+				?>
+			</ul>
+		</div>
+		<div id="subMain" style="margin-left: 200px;">
+			<?php foreach ($logTimeArray as $key => $value)
+			{
+
+			}
+			?>
+		</div>
 	</div>
 
 	<div id="storage">
@@ -50,7 +80,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
-						<span id="{{id}}Folder">{{file}}</span>
+						{{logFile}}
 					</h3>
 					<div style="font-size: 200%;">
 						<img class="imageInHeaderContainer" onclick="removeCompare('{{id}}');" src="../core/img/trashCan.png">
@@ -76,6 +106,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<span id="{{id}}ErrorCount">{{errorCount}}</span>/{{totalCount}} Errors
 					<br>
 					{{website}}
+					<br>
+					{{file}}
 				</div>
 			</div>
 		</div>
@@ -87,7 +119,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			resize();
 			window.onresize = resize;
 
-			setInterval(function(){poll();},1000);
+			setInterval(function(){poll();},10000);
 
 		});
 
@@ -137,6 +169,11 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 						{
 							//not in data anymore, it was deleted from folder... delete from screen & array
 							delete arrayOfFiles.keysInfo[i];
+							if(document.getElementById(keysInfo[i]))
+							{
+								document.getElementById(keysInfo[i]).outerHTML = "";
+							}
+
 						}
 					}
 				}
@@ -162,7 +199,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 							document.getElementById(_path).outerHTML = "";
 						}
 						renderInfo = JSON.parse(data);
-						showRender("main", _path, renderInfo);
+						showRender("subMain", _path, renderInfo, _path);
 						resize();
 					}
 				});

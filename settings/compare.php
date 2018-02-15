@@ -104,10 +104,10 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 	<div id="storage">
 		<div class="container">
-			<div style="background-color: white; border: 1px solid black; width: 100%; margin-left: 0; " id="{{id}}" class="scanBar containerMain">
+			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
-						<span id="{{id}}Folder">{{file}}</span>
+						{{logFile}}
 					</h3>
 					<div style="font-size: 200%;">
 						<img class="imageInHeaderContainer" onclick="removeCompare('{{id}}');" src="../core/img/trashCan.png">
@@ -133,6 +133,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<span id="{{id}}ErrorCount">{{errorCount}}</span>/{{totalCount}} Errors
 					<br>
 					{{website}}
+					<br>
+					{{file}}
 				</div>
 			</div>
 		</div>
@@ -150,7 +152,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			displayLoadingPopup();
 			var renderInfo = document.getElementById(renderId).value;
 			renderInfo = JSON.parse(renderInfo);
-			showRender(divId, renderInfo);
+			showRender(divId, divId, renderInfo, "" );
 			document.getElementById(renderId).value = "";
 			hidePopup();
 		}
@@ -169,7 +171,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				success(data)
 				{
 					renderInfo = JSON.parse(data);
-					showRender(divId, divId ,renderInfo);
+					showRender(divId, divId ,renderInfo, document.getElementById(renderId).value);
 					hidePopup();
 				}
 			});

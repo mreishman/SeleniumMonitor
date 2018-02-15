@@ -10,6 +10,13 @@ function resize()
 	{
 		$("#main").outerHeight(targetHeight);
 	}
+	if($("#testSidebar"))
+	{
+		if($("#testSidebar").outerHeight() !== targetHeight)
+	{
+		$("#testSidebar").outerHeight(targetHeight);
+	}
+	}
 }
 
 function getMaxConcurrentTests(data)
