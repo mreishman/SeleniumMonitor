@@ -903,9 +903,14 @@ function generateExportInfo(idOfTest)
 		var testName = testArray[i].id.replace(idOfTest, "");
 		var result = blockArray[i].className.split(/\s+/);
 		var title = blockArray[i].title;
+		var notes = "Error in generating export of notes";
+		if(typeof(resultArray[i]) !== "undefined")
+		{
+			notes = resultArray[i].innerHTML;
+		}
 		exportInfo["info"][testName] = {
 			result: result,
-			notes: resultArray[i].innerHTML,
+			notes: notes,
 			title: title
 		}
 	}

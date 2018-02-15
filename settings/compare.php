@@ -152,7 +152,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			displayLoadingPopup();
 			var renderInfo = document.getElementById(renderId).value;
 			renderInfo = JSON.parse(renderInfo);
-			showRender(divId, divId, renderInfo, "" );
+			$("#"+divId).prepend(showRender(divId, divId, renderInfo, "" ));
 			document.getElementById(renderId).value = "";
 			hidePopup();
 		}
@@ -171,7 +171,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				success(data)
 				{
 					renderInfo = JSON.parse(data);
-					showRender(divId, divId ,renderInfo, document.getElementById(renderId).value);
+					$("#"+divId).prepend(showRender(divId, divId ,renderInfo, document.getElementById(renderId).value));
 					hidePopup();
 				}
 			});

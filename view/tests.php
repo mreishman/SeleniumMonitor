@@ -38,7 +38,6 @@ foreach ($logTimes as $key => $value)
 		$logTimeArray[$value.random_int(1, 256)] = $key;
 	}
 }
-$logTimeArray = array_reverse($logTimeArray);
 
 function genContainer($dataForContainer)
 {
@@ -135,7 +134,7 @@ function generateProgressBlocks($info, $divId)
 
 	<div id="main" style="background-color: #333;">
 		<div id="testSidebar" style="position: fixed; bottom: 0; left: 0; background-color: #CCC; overflow: auto; width: 200px;">
-			<ul style="list-style: none; padding: 0;">
+			<ul id="testSidebarUL" style="list-style: none; padding: 0;">
 				<?php foreach ($logTimeArray as $key => $value)
 				{
 					echo "<li style=\"padding: 5px;\"><a href=\"#".$value."\" class=\"link\" >".$value."</a></li>";
@@ -260,17 +259,28 @@ function generateProgressBlocks($info, $divId)
 					type: "POST",
 					success(data)
 					{
+						renderInfo = JSON.parse(data);
+						var item = showRender("subMain", _path, renderInfo, _path);
 						if(document.getElementById(_path))
 						{
-							document.getElementById(_path).outerHTML = "";
+							document.getElementById(_path).outerHTML = item;
 						}
-						renderInfo = JSON.parse(data);
-						showRender("subMain", _path, renderInfo, _path);
+						else
+						{
+							$("#subMain").prepend(item);
+							$("#testSidebarUL").prepend("<li style=\"padding: 5px;\"><a href=\"#"+_path+"\" class=\"link\" >"+_path+"</a></li>");
+						}
 						resize();
 					}
 				});
 			}(path));
 
+		}
+
+		function removeCompare(fileName)
+		{
+			//this function removes file from tmp storage
+			//show popup first to confirm
 		}
 
 	</script> 
