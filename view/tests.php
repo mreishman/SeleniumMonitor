@@ -26,6 +26,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 
 $logTimes = getAllTestLogFileTimes("../tmp/tests/");
 
+$counter = 0;
 $logTimeArray = array();
 foreach ($logTimes as $key => $value)
 {
@@ -37,6 +38,7 @@ foreach ($logTimes as $key => $value)
 	{
 		$logTimeArray[$value.random_int(1, 256)] = $key;
 	}
+	$counter++;
 }
 
 function genContainer($dataForContainer)
@@ -162,6 +164,9 @@ function generateProgressBlocks($info, $divId)
 		<div id="loadingThing" style="width: 100%; text-align: center;">
 			<img src="../core/img/loading.gif" width="50px;">
 		</div>
+		<div id="noCachedTests" style="width: 100%; text-align: center; <?php if($counter !== 0){ echo"display: none;";} ?>">
+			There are no current tests saved in cache.
+		</div>
 	</div>
 
 	<div id="storage">
@@ -244,7 +249,10 @@ function generateProgressBlocks($info, $divId)
 							{
 								document.getElementById(keysInfo[i]).outerHTML = "";
 							}
-
+							if(arrayOfFiles.length === 0)
+							{
+								document.getElementById("noCachedTests").style.display = "block";
+							}
 						}
 					}
 				}
@@ -275,6 +283,10 @@ function generateProgressBlocks($info, $divId)
 						{
 							$("#subMain").prepend(item);
 							$("#testSidebarUL").prepend("<li style=\"padding: 5px;\"><a href=\"#"+_path+"\" class=\"link\" >"+_path+"</a></li>");
+						}
+						if(document.getElementById("noCachedTests").style.display !== "none")
+						{
+							document.getElementById("noCachedTests").style.display = "none";
 						}
 						resize();
 					}
