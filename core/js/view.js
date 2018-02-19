@@ -227,7 +227,22 @@ function filterAndShow(data, dataExt)
 	var videos = data.split("<ul class='videos'>");
 	videos = videos[1].split("</ul>");
 	videos = videos[0];
-	videos = "<ul class='videos'>"+videos+"</ul>";
+	videos = videos.split("<li>");
+	var videosInner = "";
+	var videosCount = videos.length;
+	for(var i = 1; i < videosCount; i++)
+	{
+		if(videos[i].indexOf(".temp") === -1)
+		{
+			var videoSave = videos[i];
+			var front = videos[i];
+			front = front.substring(0, front.indexOf(".mp4") + 4)+"'>";
+			videoSave = videoSave.substring(videoSave.indexOf("(") + 1);
+			videoSave = videoSave.substring(0, videoSave.indexOf(')'));
+			videosInner += "<li style='padding: 3px;' >"+front+videoSave+"</a></li>";
+		}
+	}
+	videos = "<ul class='videos'>"+videosInner+"</ul>";
 
 	document.getElementById(dataExt["id"]+"Videos").innerHTML = videos;
 
