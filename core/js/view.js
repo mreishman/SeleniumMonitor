@@ -244,8 +244,41 @@ function filterAndShow(data, dataExt)
 	}
 	videos = "<ul class='videos'>"+videosInner+"</ul>";
 
-	document.getElementById(dataExt["id"]+"Videos").innerHTML = videos;
+	document.getElementById(dataExt["id"]+"VideosTime").innerHTML = videos;
 
+
+	if(currentPopupWindow === dataExt["id"])
+	{
+		document.getElementById(dataExt["id"]+"PopupVideosTime").innerHTML = videos;
+	}
+
+
+	videos = data.split("<ul class='videos'>");
+	videos = videos[1].split("</ul>");
+	videos = videos[0];
+	videos = videos.split("<li>");
+	videosInner = "";
+	videosCount = videos.length;
+	for(var i = 1; i < videosCount; i++)
+	{
+		if(videos[i].indexOf(".temp") === -1)
+		{
+			var videoSave = videos[i];
+			var front = videos[i];
+			front = front.substring(0, front.indexOf(".mp4") + 4)+"'>";
+			videoSave = videoSave.split(">");
+			videoSave = videoSave[1].substring(0, videoSave[1].indexOf('('));
+			videosInner += "<li style='padding: 3px;' >"+front+videoSave+"</a></li>";
+		}
+	}
+	videos = "<ul class='videos'>"+videosInner+"</ul>";
+
+	document.getElementById(dataExt["id"]+"VideosSession").innerHTML = videos;
+
+	if(currentPopupWindow === dataExt["id"])
+	{
+		document.getElementById(dataExt["id"]+"PopupVideosSession").innerHTML = videos;
+	}
 
 	var stats = data.split("<!-- videos -->");
 	stats = stats[1].split("<div class='col-lg-6'>");
@@ -257,10 +290,7 @@ function filterAndShow(data, dataExt)
 
 	if(currentPopupWindow === dataExt["id"])
 	{
-
-		document.getElementById(dataExt["id"]+"PopupVideos").innerHTML = videos;
 		document.getElementById(dataExt["id"]+"PopupStats").innerHTML = stats;
-
 		popupImageLogic(dataExt["id"], jumbotron);
 	}
 }
@@ -309,7 +339,8 @@ function showPopup(id)
 	item = item.replace(/{{activity}}/g, $("#"+id+"Activity").html());
 	item = item.replace(/{{config}}/g, $("#"+id+"Config").html());
 	item = item.replace(/{{linkAction}}/g, $("#"+id+"Actions").html());
-	item = item.replace(/{{videos}}/g, $("#"+id+"Videos").html());
+	item = item.replace(/{{videosTime}}/g, $("#"+id+"VideosTime").html());
+	item = item.replace(/{{videosSession}}/g, $("#"+id+"videosSession").html());
 	item = item.replace(/{{stats}}/g, $("#"+id+"Stats").html());
 
 	$("#main").append(item);
@@ -317,7 +348,8 @@ function showPopup(id)
 	popupHeightPic = parseInt(document.getElementById(id+"PopupJumbotronHolder").offsetHeight);
 	var containerHeight = parseInt(document.getElementById(id+"Popup").offsetHeight) - (parseInt(document.getElementById("popupSpanLeftHeight").offsetHeight));
 	document.getElementById(id+"PopupActions").style.height = containerHeight+"px";
-	document.getElementById(id+"PopupVideos").style.height = containerHeight+"px";
+	document.getElementById(id+"PopupVideosTime").style.height = (containerHeight - 30)+"px";
+	document.getElementById(id+"PopupVideosSession").style.height = (containerHeight - 30)+"px";
 	document.getElementById(id+"PopupStats").style.height = containerHeight+"px";
 	document.getElementById(id+"PopupConfig").style.height = containerHeight+"px";
 	if(document.getElementById(id+"JumbotronImage"))
@@ -338,9 +370,19 @@ function hidePopupWindow()
 function toggleTab(currentId, tabIdToShow)
 {
 	$("#"+currentId+" .menu li").removeClass("active");
+	$("#"+currentId+" .menu th").removeClass("active");
 	$("#"+currentId+" .conainerSub").hide();
 
 	$("#"+currentId+tabIdToShow).show();
+	if(tabIdToShow === "VideosTime" || tabIdToShow === "VideosSession")
+	{
+		$("#"+currentId+"Videos"+"Menu").addClass("active");
+		$("#"+currentId+"VideoSubMenu").show();
+	}
+	else
+	{
+		$("#"+currentId+"VideoSubMenu").hide();
+	}
 	$("#"+currentId+tabIdToShow+"Menu").addClass("active");
 }
 
