@@ -139,7 +139,7 @@ function generateProgressBlocks($info, $divId)
 			<ul id="testSidebarUL" style="list-style: none; padding: 0;">
 				<?php foreach ($logTimeArray as $key => $value)
 				{
-					echo "<li style=\"padding: 5px;\"><a href=\"#".$value."\" class=\"link\" >".$value."</a></li>";
+					echo "<li id=\"".$value."HotLink\" style=\"padding: 5px;\"><a href=\"#".$value."\" class=\"link\" >".$value."</a></li>";
 				}
 				?>
 			</ul>
@@ -244,10 +244,14 @@ function generateProgressBlocks($info, $divId)
 						if(!(keysInfo[i] in data))
 						{
 							//not in data anymore, it was deleted from folder... delete from screen & array
-							delete arrayOfFiles.keysInfo[i];
+							delete arrayOfFiles[keysInfo[i]];
 							if(document.getElementById(keysInfo[i]))
 							{
 								document.getElementById(keysInfo[i]).outerHTML = "";
+							}
+							if(document.getElementById(keysInfo[i]+"HotLink"))
+							{
+								document.getElementById(keysInfo[i]+"HotLink").outerHTML = "";
 							}
 							if(arrayOfFiles.length === 0)
 							{
@@ -282,7 +286,7 @@ function generateProgressBlocks($info, $divId)
 						else
 						{
 							$("#subMain").prepend(item);
-							$("#testSidebarUL").prepend("<li style=\"padding: 5px;\"><a href=\"#"+_path+"\" class=\"link\" >"+_path+"</a></li>");
+							$("#testSidebarUL").prepend("<li id=\""+_path+"HotLink\" style=\"padding: 5px;\"><a href=\"#"+_path+"\" class=\"link\" >"+_path+"</a></li>");
 						}
 						if(document.getElementById("noCachedTests").style.display !== "none")
 						{
@@ -299,6 +303,25 @@ function generateProgressBlocks($info, $divId)
 		{
 			//this function removes file from tmp storage
 			//show popup first to confirm
+			showPopup();
+			document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Remove Cache File?</div><br><div style='width:100%;text-align:center;padding-left:10px;padding-right:10px;'>Are you sure you want to remove the file "+fileName+"?</div><div class='link' onclick='actuallyRemoveFile(\""+fileName+"\")' style='margin-left:125px; margin-right:50px;margin-top:25px;'>Yes</div><div onclick='hidePopup();' class='link'>No</div></div>";
+		}
+
+		function actuallyRemoveFile(fileName)
+		{
+			var urlForSendInner = '../core/php/removeFile.php?format=json';
+			var dataSend = {file: "../../tmp/tests/"+fileName};
+			$.ajax(
+				{
+					url: urlForSendInner,
+					dataType: "json",
+					data: dataSend,
+					type: "POST",
+					success(data)
+					{
+						hidePopup();
+					}
+				});
 		}
 
 	</script> 
