@@ -279,7 +279,7 @@ function generateProgressBlocks($info, $divId)
 					success(data)
 					{
 						renderInfo = JSON.parse(data);
-						var item = showRender("subMain", _path, renderInfo, _path);
+						var item = showRender("subMain", _path, renderInfo, _path, "container");
 						if(document.getElementById(_path))
 						{
 							document.getElementById(_path).outerHTML = item;

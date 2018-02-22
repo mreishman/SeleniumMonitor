@@ -98,9 +98,18 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</th>
 			</tr>
 			<tr>
+				<th colspan="2">
+					<button onclick="showDiffRender();" >Render Difference</button>
+				</th>
+			</tr>
+			<tr id="compareRend">
 				<th style="vertical-align: top;" id="testResultDisplayOne">
 				</th>
 				<th style="vertical-align: top;" id="testResultDisplayTwo">
+				</th>
+			</tr>
+			<tr id="diffRend">
+				<th colspan="2" id="diffRendTH" >
 				</th>
 			</tr>
 		</table>
@@ -142,6 +151,37 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				</div>
 			</div>
 		</div>
+		<div class="containerTwo">
+			<div style="background-color: white; border: 1px solid black;" id="{{id}}" class="scanBar containerMain">
+				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
+					<h3>
+						{{logFile}}
+					</h3>
+					<div style="font-size: 200%;">
+						<img class="imageInHeaderContainer" onclick="removeCompare('{{id}}');" src="../core/img/trashCan.png">
+					</div>
+				</div>
+				<div id="{{id}}ProgressBlocks" class="containerBox" style="text-align: left;">
+					{{ProgressBlocks}}
+				</div>
+				<div class="key fontChange">
+					Key:
+					<br>
+					<div class="block blockKey blockPass"></div> - Error/Fail -> Pass
+					<div class="block blockKey blockError"></div> - No Change
+					<div class="block blockKey blockFail"></div> - Pass -> Fail/Error
+					<div class="block blockKey blockRisky"></div> - Not in base
+					<div class="block blockKey blockSkip"></div> - other
+				</div>
+				<div class="fontChange subTitleEF">
+					<span id="{{id}}FailCount">{{failCount}}</span>/{{totalCount}} + Change
+					<br>
+					<span id="{{id}}ErrorCount">{{errorCount}}</span>/{{totalCount}} - Change
+					<br>
+					{{file}}
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -151,18 +191,122 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 			window.onresize = resize;
 		});
 
+		function showDiffRender()
+		{
+			document.getElementById("compareRend").style.display = "none";
+			document.getElementById("diffRend").style.display = "table-row";
+			displayLoadingPopup();
+			//ajax request for first, then second file
+			var urlForSendInner = '../core/php/getLogInfo.php?format=json';
+			var dataSend = {path: "../"+document.getElementById("testResultSelectOne").value};
+			$.ajax(
+			{
+				url: urlForSendInner,
+				dataType: "json",
+				data: dataSend,
+				type: "POST",
+				success(data)
+				{
+					//now second file
+					(function(_data){
+						$.ajax(
+						{
+							url: urlForSendInner,
+							dataType: "json",
+							data: dataSend,
+							type: "POST",
+							success(dataTwo)
+							{
+								var renderFirst = JSON.parse(_data);
+								var renderSecond = JSON.parse(dataTwo);
+								renderFirst["info"] = getDifference(renderFirst["info"], renderSecond["info"]);
+								var divId = "diffRendTH";
+								$("#"+divId).prepend(showRender(divId, divId ,renderFirst, "", "containerTwo"));
+								hidePopup();
+							}
+						});
+					}(data));
+				}
+			});
+		}
+
+		function getDifference(first, second)
+		{
+			var keysInfo = Object.keys(first);
+			var keysInfoLength = keysInfo.length;
+			for (var i = 0; i < keysInfoLength; i++)
+			{
+				var classArray = first[keysInfo[i]]["result"];
+				if(keysInfo[i] in second)
+				{
+					if(first[keysInfo[i]]["result"] === second[keysInfo[i]]["result"])
+					{
+						first[keysInfo[i]]["result"] = ["block","blockError"];
+					}
+					else
+					{
+						if(first[keysInfo[i]]["result"].indexOf("blockPass") > -1)
+						{
+							//first test passed
+							if(second[keysInfo[i]]["result"].indexOf("blockPass") > -1)
+							{
+								//second test also passed
+								first[keysInfo[i]]["result"] = ["block","blockError"];
+							}
+							else if((second[keysInfo[i]]["result"].indexOf("blockError") > -1) || (second[keysInfo[i]]["result"].indexOf("blockFail") > -1))
+							{
+								//second test error or fail
+								first[keysInfo[i]]["result"] = ["block","blockFail"];
+							}
+							else
+							{
+								//?????
+								first[keysInfo[i]]["result"] = ["block","blockSkip"];
+							}
+						}
+						else
+						{
+							//first test didn't pass
+							if(second[keysInfo[i]]["result"].indexOf("blockPass") > -1)
+							{
+								//second test did though
+								first[keysInfo[i]]["result"] = ["block","blockPass"];
+							}
+							else if((second[keysInfo[i]]["result"].indexOf("blockError") > -1) || (second[keysInfo[i]]["result"].indexOf("blockFail") > -1))
+							{
+								//second test error or fail
+								first[keysInfo[i]]["result"] = ["block","blockError"];
+							}
+							else
+							{
+								//?????
+								first[keysInfo[i]]["result"] = ["block","blockSkip"];
+							}
+						}
+					}
+				}
+				else
+				{
+					first[keysInfo[i]]["result"] = ["block","blockRisky"];
+				}
+			}
+			return first;
+		}
+
 		function showRenderStart(divId, renderId)
 		{
 			displayLoadingPopup();
 			var renderInfo = document.getElementById(renderId).value;
 			renderInfo = JSON.parse(renderInfo);
-			$("#"+divId).prepend(showRender(divId, divId, renderInfo, "" ));
+			$("#"+divId).prepend(showRender(divId, divId, renderInfo, "" , "container"));
 			document.getElementById(renderId).value = "";
 			hidePopup();
 		}
 
 		function showRenderFromFile(divId, renderId)
 		{
+			document.getElementById("compareRend").style.display = "table-row";
+			document.getElementById("diffRend").style.display = "none";
 			displayLoadingPopup();
 			var urlForSendInner = '../core/php/getLogInfo.php?format=json';
 			var dataSend = {path: "../"+document.getElementById(renderId).value};
@@ -174,8 +318,8 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				type: "POST",
 				success(data)
 				{
-					renderInfo = JSON.parse(data);
-					$("#"+divId).prepend(showRender(divId, divId ,renderInfo, document.getElementById(renderId).value));
+					var renderInfo = JSON.parse(data);
+					$("#"+divId).prepend(showRender(divId, divId ,renderInfo, document.getElementById(renderId).value), "container");
 					hidePopup();
 				}
 			});

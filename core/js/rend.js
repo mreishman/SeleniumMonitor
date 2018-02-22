@@ -1,6 +1,6 @@
-function showRender(divId, id, renderInfo, logFile)
+function showRender(divId, id, renderInfo, logFile, container)
 {
-	var item = $("#storage .container").html();
+	var item = $("#storage ."+container).html();
 	item = item.replace(/{{id}}/g, id);
 	item = item.replace(/{{file}}/g, renderInfo["file"]);
 	item = item.replace(/{{website}}/g, renderInfo["website"]);
