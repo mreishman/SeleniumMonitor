@@ -45,9 +45,10 @@ function genContainer($dataForContainer)
 {
 	$stringGen = "<div style=\"background-color: white; border: 1px solid black;\" id=\"".$dataForContainer["id"]."\" class=\"scanBar containerMain\">";
 	$stringGen .= "<div class=\"fontChange\" style=\"width: 100%; text-align: left;\" id=\"".$dataForContainer["id"]."Title\">";
-	$stringGen .= "<h3>".$dataForContainer["logFile"]."</h3>";
+	$stringGen .= "<h3><span id=\"".$dataForContainer["id"]."RenameDisplay\" >".$dataForContainer["logFile"]."</span><span style=\"display: none;\" id=\"".$dataForContainer["id"]."RenameInput\" > <input id=\"".$dataForContainer["id"]."RenameInputValue\" value=".$dataForContainer["logFile"]." ></input> <a onclick=\"renameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Cancel</a> <a onclick=\"actuallyRenameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Save</a> </span></h3>";
 	$stringGen .= "<div style=\"font-size: 200%;\">";
 	$stringGen .= "<img class=\"imageInHeaderContainer\" onclick=\"removeCompare('".$dataForContainer["id"]."');\" src=\"../core/img/trashCan.png\">";
+	$stringGen .= "<img id=\"".$dataForContainer["id"]."RenameIcon\" class=\"imageInHeaderContainer\" onclick=\"renameCompare('".$dataForContainer["id"]."');\" src=\"../core/img/rename.png\">";
 	$stringGen .= "</div>";
 	$stringGen .= "</div>";
 	$stringGen .= "<div id=\"".$dataForContainer["id"]."ProgressBlocks\" class=\"containerBox\" style=\"text-align: left;\">";
@@ -319,6 +320,42 @@ function generateProgressBlocks($info, $divId)
 					type: "POST",
 					success(data)
 					{
+						poll();
+						hidePopup();
+					}
+				});
+		}
+
+		function renameCompare(fileName)
+		{
+			if(document.getElementById(fileName+"RenameDisplay").style.display === "none")
+			{
+				document.getElementById(fileName+"RenameDisplay").style.display = "inline-block";
+				document.getElementById(fileName+"RenameInput").style.display = "none";
+				document.getElementById(fileName+"RenameIcon").style.display = "inline-block";
+			}
+			else
+			{
+				document.getElementById(fileName+"RenameDisplay").style.display = "none";
+				document.getElementById(fileName+"RenameInput").style.display = "inline-block";
+				document.getElementById(fileName+"RenameIcon").style.display = "none";
+			}
+		}
+
+		function actuallyRenameCompare(fileName)
+		{
+			displayLoadingPopup();
+			var urlForSendInner = '../core/php/renameFile.php?format=json';
+			var dataSend = {dir: "../../tmp/tests/", oldName: fileName, newName: document.getElementById(fileName+"RenameInputValue").value};
+			$.ajax(
+				{
+					url: urlForSendInner,
+					dataType: "json",
+					data: dataSend,
+					type: "POST",
+					success(data)
+					{
+						poll();
 						hidePopup();
 					}
 				});
