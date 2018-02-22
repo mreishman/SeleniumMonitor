@@ -52,6 +52,7 @@ $defaultConfig = array(
 	'runCheckCount'					=> 'true',
 	'sendCrashInfoJS'				=> 'true',
 	'sendCrashInfoPHP'				=> 'true',
+	'showSubFolderTests'			=> 'true',
 	'themeVersion'					=> 3,
 	'timeoutViewMain'				=> 6,
 	'truncateLog'					=> 'true',

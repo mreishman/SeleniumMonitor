@@ -340,7 +340,7 @@ function returnArrayOfGroups($file)
 	return $arrayOfGroups;
 }
 
-function scanDirForTests($dir)
+function scanDirForTests($dir, $showSubFolderTests)
 {
 	$stuffToReturn = "";
 	$files = array_diff(scandir($dir), array('..', '.'));
@@ -353,7 +353,7 @@ function scanDirForTests($dir)
 	        {
 	        	$stuffToReturn .= "<option value='".$path."'' >".$value."</option>";
 	        }
-	        elseif(is_dir($path))
+	        elseif(is_dir($path) && $showSubFolderTests)
 	        {
 	        	$stuffToReturn .= scanDirForTests($path);
 	        }
