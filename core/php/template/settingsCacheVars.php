@@ -22,7 +22,7 @@ Cache Settings
 	</li>
 	<li>
 		<span class="settingsBuffer" > Clear TMP folder: </span>
-		<a class="link">Clear</a>
+		<a onclick="clearAllTestCache();" class="link">Clear</a>
 	</li>
 </ul>
 </div>

@@ -165,7 +165,7 @@ function generateProgressBlocks($info, $divId)
 		<div id="loadingThing" style="width: 100%; text-align: center;">
 			<img src="../core/img/loading.gif" width="50px;">
 		</div>
-		<div id="noCachedTests" style="width: 100%; text-align: center; <?php if($counter !== 0){ echo"display: none;";} ?>">
+		<div id="noCachedTests" style="width: 100%; text-align: center; background-color: green; padding: 20px; padding-left: 200px; padding-right: 0px; <?php if($counter !== 0){ echo"display: none;";} ?>">
 			There are no current tests saved in cache.
 		</div>
 	</div>

@@ -54,6 +54,24 @@ function checkIfChanges()
 	return false;
 }
 
+function clearAllTestCache()
+{
+	displayLoadingPopup();
+	var urlForSendInner = '../core/php/removeAllTmpTests.php?format=json';
+	var dataSend = {dir: "../../tmp/tests/"};
+	$.ajax(
+		{
+			url: urlForSendInner,
+			dataType: "json",
+			data: dataSend,
+			type: "POST",
+			success(data)
+			{
+				hidePopup();
+			}
+		});
+}
+
 $( document ).ready(function() 
 {
 	document.getElementById("popupSelect").addEventListener("change", showOrHidePopupSubWindow, false);
