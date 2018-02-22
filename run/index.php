@@ -69,16 +69,7 @@ if($pollingRateType == 'Seconds')
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
 						<select id="fileListSelector" onchange="getFileList();">
 							<option value="PLACEHOLDER">Select A File</option>
-							<?php
-							$files = array_diff(scandir($locationOfTests), array('..', '.'));
-							foreach($files as $key => $value)
-							{
-								$path = realpath($locationOfTests.DIRECTORY_SEPARATOR.$value);
-						        if(!is_dir($path) && returnArrayOfTests(file($path)) !== array())
-						        {
-						        	echo "<option value='".$path."'' >".$value."</option>";
-						        }
-							}?>
+							<?php echo scanDirForTests($locationOfTests); ?>
 						</select>
 					<?php else: ?>
 						Please specifiy a directory of where test are located on the settings page

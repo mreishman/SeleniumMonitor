@@ -340,6 +340,28 @@ function returnArrayOfGroups($file)
 	return $arrayOfGroups;
 }
 
+function scanDirForTests($dir)
+{
+	$stuffToReturn = "";
+	$files = array_diff(scandir($dir), array('..', '.'));
+	if($files !== array())
+	{
+		foreach($files as $key => $value)
+		{
+			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+	        if(is_file($path) && returnArrayOfTests(file($path)) !== array())
+	        {
+	        	$stuffToReturn .= "<option value='".$path."'' >".$value."</option>";
+	        }
+	        elseif(is_dir($path))
+	        {
+	        	$stuffToReturn .= scanDirForTests($path);
+	        }
+		}
+	}
+	return $stuffToReturn;
+}
+
 function returnArrayOfTests($file)
 {
 	$arrayOfTests = array();
