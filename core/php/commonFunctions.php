@@ -355,7 +355,7 @@ function scanDirForTests($dir, $showSubFolderTests)
 	        }
 	        elseif(is_dir($path) && $showSubFolderTests)
 	        {
-	        	$stuffToReturn .= scanDirForTests($path);
+	        	$stuffToReturn .= scanDirForTests($path, $showSubFolderTests);
 	        }
 		}
 	}
