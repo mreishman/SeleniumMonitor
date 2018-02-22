@@ -63,34 +63,38 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<br>
 					<input type="text" id="testResultInputOne"> <button onclick="showRenderStart('testResultDisplayOne','testResultInputOne');">Render</button>
 					<br>
-					OR
-					<br>
-					<select id="testResultSelectOne">
-						<?php
-						foreach ($files as $k => $fileName)
-						{
-							echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
-						}
-						?>
-					</select>
-					<button onclick="showRenderFromFile('testResultDisplayOne','testResultSelectOne')" >Render</button>
+					<?php if($files !== array()): ?>
+						OR
+						<br>
+						<select id="testResultSelectOne">
+							<?php
+							foreach ($files as $k => $fileName)
+							{
+								echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
+							}
+							?>
+						</select>
+						<button onclick="showRenderFromFile('testResultDisplayOne','testResultSelectOne')" >Render</button>
+					<?php endif; ?>
 				</th>
 				<th width="50%">
 					<h2>Test Results 2 (Changes)</h2>
 					<br>
 					<input type="text" id="testResultInputTwo"> <button  onclick="showRenderStart('testResultDisplayTwo','testResultInputTwo');">Render</button>
 					<br>
-					OR
-					<br>
-					<select id="testResultSelectTwo" >
-						<?php
-						foreach ($files as $k => $fileName)
-						{
-							echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
-						}
-						?>
-					</select>
-					<button onclick="showRenderFromFile('testResultDisplayTwo','testResultSelectTwo')" >Render</button>
+					<?php if($files !== array()): ?>
+						OR
+						<br>
+						<select id="testResultSelectTwo" >
+							<?php
+							foreach ($files as $k => $fileName)
+							{
+								echo "<option value=\"".$path.DIRECTORY_SEPARATOR.$fileName."\" >".$fileName."</option>";
+							}
+							?>
+						</select>
+						<button onclick="showRenderFromFile('testResultDisplayTwo','testResultSelectTwo')" >Render</button>
+					<?php endif; ?>	
 				</th>
 			</tr>
 			<tr>
