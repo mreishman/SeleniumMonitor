@@ -319,7 +319,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				success(data)
 				{
 					var renderInfo = JSON.parse(data);
-					$("#"+divId).prepend(showRender(divId, divId ,renderInfo, document.getElementById(renderId).value), "container");
+					$("#"+divId).prepend(showRender(divId, divId ,renderInfo, (document.getElementById(renderId).value), "container"));
 					hidePopup();
 				}
 			});
