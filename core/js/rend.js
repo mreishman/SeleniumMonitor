@@ -1,12 +1,19 @@
 function showRender(divId, id, renderInfo, logFile, container)
 {
+	var failClass = "blockFail";
+	var errorClass = "blockError";
+	if(container === "containerTwo")
+	{
+		failClass = "blockFail";
+		errorClass = "blockPass";
+	}
 	var item = $("#storage ."+container).html();
 	item = item.replace(/{{id}}/g, id);
 	item = item.replace(/{{file}}/g, renderInfo["file"]);
 	item = item.replace(/{{website}}/g, renderInfo["website"]);
 	item = item.replace(/{{totalCount}}/g, getCountOfBlockType(renderInfo["info"], "block"));
-	item = item.replace(/{{failCount}}/g, getCountOfBlockType(renderInfo["info"], "blockFail"));
-	item = item.replace(/{{errorCount}}/g, getCountOfBlockType(renderInfo["info"], "blockError"));
+	item = item.replace(/{{failCount}}/g, getCountOfBlockType(renderInfo["info"], failClass));
+	item = item.replace(/{{errorCount}}/g, getCountOfBlockType(renderInfo["info"], errorClass));
 	item = item.replace(/{{ProgressBlocks}}/g, generateProgressBlocks(renderInfo["info"],divId));
 	item = item.replace(/{{logFile}}/g, logFile);
 	return item;
