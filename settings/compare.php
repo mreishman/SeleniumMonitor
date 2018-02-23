@@ -170,7 +170,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 					<div class="block blockKey blockPass"></div> - Error/Fail -> Pass
 					<div class="block blockKey blockError"></div> - No Change
 					<div class="block blockKey blockFail"></div> - Pass -> Fail/Error
-					<div class="block blockKey blockRisky"></div> - Not in base
+					<div class="block blockKey blockRisky"></div> - Missing from 2nd test
 					<div class="block blockKey blockSkip"></div> - other
 				</div>
 				<div class="fontChange subTitleEF">
