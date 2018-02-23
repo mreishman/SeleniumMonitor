@@ -207,6 +207,7 @@ $daysSince = calcuateDaysSince($configStatic['lastCheck']);
 				type: "POST",
 				success(data)
 				{
+					dataSend = {path: "../"+document.getElementById("testResultSelectTwo").value};
 					//now second file
 					(function(_data){
 						$.ajax(
