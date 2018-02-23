@@ -4,8 +4,8 @@ function showRender(divId, id, renderInfo, logFile, container)
 	var errorClass = "blockError";
 	if(container === "containerTwo")
 	{
-		failClass = "blockFail";
-		errorClass = "blockPass";
+		failClass = "blockPass";
+		errorClass = "blockFail";
 	}
 	var item = $("#storage ."+container).html();
 	item = item.replace(/{{id}}/g, id);
