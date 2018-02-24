@@ -71,7 +71,7 @@ if($backgroundPollingRateType == 'Seconds')
 						<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
 							Stats
 						</li>
-						<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');">
+						<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'VideosTime');">
 							Videos
 						</li>
 						<li id="{{id}}ActivityMenu" onclick="toggleTab('{{id}}', 'Activity');" class="active">
@@ -85,7 +85,21 @@ if($backgroundPollingRateType == 'Seconds')
 						</li>
 					</ul>
 				</div>
-				<div class="conainerSub" id="{{id}}Videos" style="display: none;">
+				<div style="display: none;" id="{{id}}VideoSubMenu">
+					<table class="menu" style="width: 100%; display: table;">
+						<tr>
+							<th id="{{id}}VideosTimeMenu" style="cursor: pointer;" onclick="toggleTab('{{id}}', 'VideosTime');" class="active" width="50%">
+								Time
+							</th>
+							<th id="{{id}}VideosSessionMenu"  style="cursor: pointer;" onclick="toggleTab('{{id}}', 'VideosSession');"  width="50%">
+								Session ID
+							</th>
+						</tr>
+					</table>
+				</div>
+				<div class="conainerSub" id="{{id}}VideosTime" style="display: none;">
+				</div>
+				<div class="conainerSub" id="{{id}}VideosSession" style="display: none;">
 				</div>
 				<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
 				</div>
@@ -142,7 +156,7 @@ if($backgroundPollingRateType == 'Seconds')
 										<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
 											Stats
 										</li>
-										<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'Videos');">
+										<li id="{{id}}VideosMenu" onclick="toggleTab('{{id}}', 'VideosTime');">
 											Videos
 										</li>
 										<li id="{{id}}ConfigMenu" class="active" onclick="toggleTab('{{id}}', 'Config');">
@@ -153,6 +167,18 @@ if($backgroundPollingRateType == 'Seconds')
 										</li>
 									</ul>
 								</div>
+								<div style="display: none;" id="{{id}}VideoSubMenu">
+									<table class="menu" style="width: 100%; display: table;">
+										<tr>
+											<th id="{{id}}VideosTimeMenu" style="cursor: pointer;" onclick="toggleTab('{{id}}', 'VideosTime');" class="active" width="50%">
+												Time
+											</th>
+											<th id="{{id}}VideosSessionMenu"  style="cursor: pointer;" onclick="toggleTab('{{id}}', 'VideosSession');"  width="50%">
+												Session ID
+											</th>
+										</tr>
+									</table>
+								</div>
 							</span>
 							<div class="conainerSub" id="{{id}}Config">
 								{{config}}
@@ -160,8 +186,11 @@ if($backgroundPollingRateType == 'Seconds')
 							<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
 								{{linkAction}}
 							</div>
-							<div class="conainerSub" id="{{id}}Videos" style="display: none;">
-								{{videos}}
+							<div class="conainerSub" id="{{id}}VideosTime" style="display: none;">
+								{{videosTime}}
+							</div>
+							<div class="conainerSub" id="{{id}}VideosSession" style="display: none;">
+								{{videosSession}}
 							</div>
 							<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
 								{{stats}}

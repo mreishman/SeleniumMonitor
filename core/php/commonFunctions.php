@@ -340,6 +340,28 @@ function returnArrayOfGroups($file)
 	return $arrayOfGroups;
 }
 
+function scanDirForTests($dir, $showSubFolderTests)
+{
+	$stuffToReturn = "";
+	$files = array_diff(scandir($dir), array('..', '.'));
+	if($files !== array())
+	{
+		foreach($files as $key => $value)
+		{
+			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+	        if(is_file($path) && returnArrayOfTests(file($path)) !== array())
+	        {
+	        	$stuffToReturn .= "<option value='".$path."'' >".$value."</option>";
+	        }
+	        elseif(is_dir($path) && $showSubFolderTests)
+	        {
+	        	$stuffToReturn .= scanDirForTests($path, $showSubFolderTests);
+	        }
+		}
+	}
+	return $stuffToReturn;
+}
+
 function returnArrayOfTests($file)
 {
 	$arrayOfTests = array();
@@ -361,4 +383,32 @@ function returnArrayOfTests($file)
 		}
 	}
 	return $arrayOfTests;
+}
+
+function getAllTestLogFileTimes($path = "../../tmp/tests/")
+{
+	$scannedDir = scandir($path);
+	if(!is_array($scannedDir))
+	{
+		$scannedDir = array($scannedDir);
+	}
+	$files = array_diff($scannedDir, array('..', '.'));
+
+	$response = array();
+	if($files)
+	{
+		foreach($files as $k => $filename)
+		{
+			$fullPath = $path . DIRECTORY_SEPARATOR . $filename;
+			if(is_dir($fullPath))
+			{
+				//$response = sizeFilesInDir($path, $filter, $response, $shellOrPhp);
+			}
+			elseif(is_file($fullPath))
+			{
+				$response[$filename] = filemtime($fullPath);
+			}
+		}
+	}
+	return $response;
 }

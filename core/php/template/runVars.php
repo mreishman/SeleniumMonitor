@@ -53,6 +53,13 @@ Run Settings
 			<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="fraction">Elapsed</option>
 		</select>
 	</li>
+	<li>
+		<span class="settingsBuffer" > Show Subfolder Files: </span>
+		<select name="showSubFolderTests">
+			<option <?php if($showSubFolderTests == 'true'){echo "selected";} ?> value="true">True</option>
+			<option <?php if($showSubFolderTests == 'false'){echo "selected";} ?> value="false">False</option>
+		</select>
+	</li>
 </ul>
 </div>
 </form>

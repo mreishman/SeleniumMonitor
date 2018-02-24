@@ -1,4 +1,4 @@
-var testNumber = 0;
+var testNumber = new Date().getTime();
 var arrayOfTests = new Array();
 var maxTests = 3;
 var currentTestsRunning = 0;
@@ -182,7 +182,7 @@ function createNewTestPopup(data)
 	{
 		maxRequests = maxTestsStatic;
 	}
-	testNumber++;
+	testNumber = new Date().getTime();
 	var targetWidthMargin = window.innerWidth;
 	targetWidthMargin = (targetWidthMargin - 1000)/2;
 	var item = $("#storage .newTestPopup").html();
@@ -550,6 +550,23 @@ function pollInner(data)
 							currentTestsRunning--;
 						}
 						currentAjaxRequestNum--;
+						//make ajax request to save current data
+						if(cacheTestEnable === "true")
+						{
+							var urlForSendInner = '../core/php/saveTestObject.php?format=json';
+							var dataSend = {testName: _data["id"][0], data: JSON.stringify(generateExportInfo(_data["id"][0]))};
+							$.ajax(
+							{
+								url: urlForSendInner,
+								dataType: "json",
+								data: dataSend,
+								type: "POST",
+								success(data)
+								{
+
+								}
+							});
+						}
 					}
 				});
 			}(data));
@@ -712,18 +729,6 @@ function stopTestById(idOfTest)
 	document.getElementById(idOfTest+"RefreshButton").style.display = "inline-block";
 }
 
-function showTestPopup(idOfTest)
-{
-	if(document.getElementById(idOfTest).style.display === "block")
-	{
-		document.getElementById(idOfTest).style.display = "none";
-	}
-	else
-	{
-		document.getElementById(idOfTest).style.display = "block";
-	}
-}
-
 function reRunTestsPopup(idOfTest)
 {
 	//show popup with checkbox of types
@@ -871,4 +876,43 @@ function increaseElapsedTimeByOne(idOfTest)
 	valueOfInput = parseInt(document.getElementById(idOfTest+"ElapsedSec").value);
 	var elapsedHtml = "Time Elapsed: "+convertSecToCorrectFormat(idOfTest, valueOfInput + 1, "ElapsedSec");
 	document.getElementById(idOfTest+"ElapsedTxt").innerHTML = elapsedHtml;
+}
+
+function exportResults(idOfTest)
+{
+	var stuff = JSON.stringify(generateExportInfo(idOfTest));
+	showPopup();
+	document.getElementById('popupContentInnerHTMLDiv').innerHTML = "<div class='settingsHeader' >Success</div><br><br><div style='width:100%;text-align:center;'> <img src='../core/img/greenCheck.png' height='50' width='50'> <br> <input type='text' value='"+escapeHtml(stuff)+"' >  </div>";
+
+}
+
+function generateExportInfo(idOfTest)
+{
+	var testArray = $("#"+idOfTest+"ProgressBlocks input");
+	var resultArray = $("#"+idOfTest+" .testPopupBlock span");
+	var blockArray = $("#"+idOfTest+" .block");
+	/* test: {result: ____, notes: ____, title: ____} */
+	var exportInfo = {
+		file: $("#"+idOfTest+"Folder").html(),
+		website: $("#"+idOfTest+"BaseUrl").val(),
+		info: {}
+	};
+	var lengthOfArray = testArray.length;
+	for (var i = 0; i < lengthOfArray; i++)
+	{
+		var testName = testArray[i].id.replace(idOfTest, "");
+		var result = blockArray[i].className.split(/\s+/);
+		var title = blockArray[i].title;
+		var notes = "Error in generating export of notes";
+		if(typeof(resultArray[i]) !== "undefined")
+		{
+			notes = resultArray[i].innerHTML;
+		}
+		exportInfo["info"][testName] = {
+			result: result,
+			notes: notes,
+			title: title
+		}
+	}
+	return exportInfo;
 }

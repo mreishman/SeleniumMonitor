@@ -69,16 +69,7 @@ if($pollingRateType == 'Seconds')
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
 						<select id="fileListSelector" onchange="getFileList();">
 							<option value="PLACEHOLDER">Select A File</option>
-							<?php
-							$files = array_diff(scandir($locationOfTests), array('..', '.'));
-							foreach($files as $key => $value)
-							{
-								$path = realpath($locationOfTests.DIRECTORY_SEPARATOR.$value);
-						        if(!is_dir($path) && returnArrayOfTests(file($path)) !== array())
-						        {
-						        	echo "<option value='".$path."'' >".$value."</option>";
-						        }
-							}?>
+							<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
 						</select>
 					<?php else: ?>
 						Please specifiy a directory of where test are located on the settings page
@@ -135,6 +126,7 @@ if($pollingRateType == 'Seconds')
 					<h3>
 						<span id="{{id}}Folder">{{file}}</span>
 						<div style="float: right;">
+							<img class="imageInHeaderContainer" onclick="exportResults('{{id}}');" src="../core/img/save.png">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
 							<img id="{{id}}StopButton" class="imageInHeaderContainer stopButtonClass" src="../core/img/stopSignDark.png" onclick="stopTestById('{{id}}');">
 							<img style="display: none;" id="{{id}}RefreshButton" class="imageInHeaderContainer" onclick="reRunTestsPopup('{{id}}');" src="../core/img/Refresh.png">
@@ -212,6 +204,7 @@ if($pollingRateType == 'Seconds')
 		var baseUrl = "<?php echo $baseUrl;?>";
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
 		var runCheckCount = "<?php echo $runCheckCount; ?>";
+		var cacheTestEnable = "<?php echo $cacheTestEnable; ?>";
 		$(document).ready(function()
 		{
 			resize();

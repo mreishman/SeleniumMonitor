@@ -34,25 +34,69 @@
 	<table style="width: 100%; height: 100%;">
 		<tr>
 			<th width="33%">
-				<a href="./view/" >
+			</th>
+			<th width="33%">
+			</th>
+			<th width="33%">
+			</th>
+		</tr>
+		<tr>
+			<th>
+				<a onclick="toggleShow('viewMenu');" style="cursor: pointer;">
 				<img src="core/img/monitor.png" width="200px;">
 				<br>
 				View</a>
 			</th>
-			<th width="33%">
+			<th>
 				<a href="./run/" >
 				<img src="core/img/run.png" width="200px;">
 				<br>
 				Run</a>
 			</th>
-			<th width="33%">
+			<th>
 				<a href="./settings/" >
 				<img src="core/img/GearDark.png" width="200px;">
 				<br>
 				Settings</a>
 			</th>
 		</tr>
-		<tr style="height: 25px;">
+		<tr style="height: 12px;">
+			<td>
+			</td>
+			<td>
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr id="viewMenu" style="display: none; background-color: white;">
+			<td colspan="3">
+				<table style="width: 100%; height: 100%;">
+					<tr>
+						<th width="33%">
+						</th>
+						<th width="33%">
+						</th>
+						<th width="33%">
+						</th>
+					</tr>
+					<tr>
+						<th>
+							<a href="./view/" >
+							<img src="core/img/nodes.png" width="200px;">
+							<br>
+							View Nodes</a>
+						</th>
+						<th>
+							<a href="./view/tests.php" >
+							<img src="core/img/testCache.png" width="200px;">
+							<br>
+							View Tests</a>
+						</th>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr style="height: 12px;">
 			<td>
 			</td>
 			<td>
@@ -61,13 +105,34 @@
 			</td>
 		</tr>
 		<tr>
-			<th width="33%">
+			<th>
 				<a href="./settings/testScan.php" >
 				<img src="core/img/scanIcon.png" width="200px;">
 				<br>
 				Test Scan</a>
 			</th>
+			<th>
+				<a href="./settings/compare.php" >
+				<img src="core/img/compare.png" width="200px;">
+				<br>
+				Compare</a>
+			</th>
 		</tr>
 	</table>
 </body>
+<script type="text/javascript">
+	
+	function toggleShow(id)
+	{
+		if(document.getElementById(id).style.display == "none")
+		{
+			document.getElementById(id).style.display = "table-row";
+		}
+		else
+		{
+			document.getElementById(id).style.display = "none";
+		}
+	}
+
+</script>
 </html>
