@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.2',
+	'version'		=> '1.3',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -14,6 +14,10 @@ $versionCheckArray = array(
 		'1.2'	        => array(
 			'branchName'	=> '1.2Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added popup for view when clicking on computer view</li><li>Reduced number of ajax requests to improve refresh rate</li><li>Added ETA to running tests</li><li>Clicking on percent of tests shows fraction value</li><li>Changed up menu navigation, for easier expanding in future</li></ul></li><li>Bug Fixes<ul><li>Fixed bug with enabeling devtools</li><li>Hides files in dropdown that do not contain tests</li><li>Added edit option for main server ip address in settings page</li></ul></li></ul>'
+		),
+		'1.3'	        => array(
+			'branchName'	=> '1.3Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Added cache for tests (when running tests, the output is stored as a cache file)</li><li>View other running tests (cache files are generated, viewable on view > tests page)</li><li>Compare previous cached tests from compare page</li><li>Option to show tests from folders within main folder</li><li>Either shows video names as time or session ID</li></ul></li><li>Bug Fixes<ul><li>Does not show .temp video files until complete</li></ul></li></ul>'
 		)
 	)
 );
