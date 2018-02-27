@@ -149,15 +149,30 @@ function generateProgressBlocks($info, $divId)
 			<?php foreach ($logTimeArray as $key => $value)
 			{
 				$dataForTest = (array)json_decode(file_get_contents("../tmp/tests/".$value));
+				$fileLocal = "";
+				$websiteLocal = "";
+				$infoLocal = {};
+				if(isset($dataForTest["file"]))
+				{
+					$fileLocal = $dataForTest["file"];
+				}
+				if(isset($dataForTest["website"]))
+				{
+					$websiteLocal = $dataForTest["website"];
+				}
+				if(isset($dataForTest["info"]))
+				{
+					$infoLocal = $dataForTest["info"];
+				}
 				echo genContainer(array(
 					"id"				=>	$value,
 					"logFile"			=>	$value,
-					"ProgressBlocks"	=>	generateProgressBlocks($dataForTest["info"], $value),
-					"failCount"			=>	getCountOfBlockType($dataForTest["info"],"blockFail"),
-					"totalCount"		=>	getCountOfBlockType($dataForTest["info"],"block"),
-					"errorCount"		=>	getCountOfBlockType($dataForTest["info"],"blockError"),
-					"website"			=>	$dataForTest["website"],
-					"file"				=>	$dataForTest["file"]
+					"ProgressBlocks"	=>	generateProgressBlocks($infoLocal, $value),
+					"failCount"			=>	getCountOfBlockType($infoLocal,"blockFail"),
+					"totalCount"		=>	getCountOfBlockType($infoLocal,"block"),
+					"errorCount"		=>	getCountOfBlockType($infoLocal,"blockError"),
+					"website"			=>	$websiteLocal,
+					"file"				=>	$fileLocal
 				));
 			}
 			?>
