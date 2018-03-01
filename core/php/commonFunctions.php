@@ -330,9 +330,13 @@ function returnArrayOfGroups($file)
 			if(strpos($file[$i], "//") === false)
 			{
 				$line = filterGroupname($file[$i]);
-				if(!in_array($line, $arrayOfGroups))
+				if(!isset($arrayOfGroups[$line]))
 				{
-					array_push($arrayOfGroups, $line);
+					$arrayOfGroups[$line] = 1;
+				}
+				else
+				{
+					$arrayOfGroups[$line]++;
 				}
 			}
 		}
