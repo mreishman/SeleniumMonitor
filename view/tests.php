@@ -151,7 +151,7 @@ function generateProgressBlocks($info, $divId)
 				$dataForTest = (array)json_decode(file_get_contents("../tmp/tests/".$value));
 				$fileLocal = "";
 				$websiteLocal = "";
-				$infoLocal = {};
+				$infoLocal = array();
 				if(isset($dataForTest["file"]))
 				{
 					$fileLocal = $dataForTest["file"];
@@ -160,20 +160,27 @@ function generateProgressBlocks($info, $divId)
 				{
 					$websiteLocal = $dataForTest["website"];
 				}
-				if(isset($dataForTest["info"]))
+				if(isset($dataForTest["info"]) && !empty((array)$dataForTest["info"]))
 				{
 					$infoLocal = $dataForTest["info"];
+					echo genContainer(array(
+						"id"				=>	$value,
+						"logFile"			=>	$value,
+						"ProgressBlocks"	=>	generateProgressBlocks($infoLocal, $value),
+						"failCount"			=>	getCountOfBlockType($infoLocal,"blockFail"),
+						"totalCount"		=>	getCountOfBlockType($infoLocal,"block"),
+						"errorCount"		=>	getCountOfBlockType($infoLocal,"blockError"),
+						"website"			=>	$websiteLocal,
+						"file"				=>	$fileLocal
+					));
 				}
-				echo genContainer(array(
-					"id"				=>	$value,
-					"logFile"			=>	$value,
-					"ProgressBlocks"	=>	generateProgressBlocks($infoLocal, $value),
-					"failCount"			=>	getCountOfBlockType($infoLocal,"blockFail"),
-					"totalCount"		=>	getCountOfBlockType($infoLocal,"block"),
-					"errorCount"		=>	getCountOfBlockType($infoLocal,"blockError"),
-					"website"			=>	$websiteLocal,
-					"file"				=>	$fileLocal
-				));
+				else
+				{
+					$stringGen = "<div style=\"background-color: white; border: 1px solid black;\" class=\"scanBar containerMain\">";
+					$stringGen .= "<div class=\"fontChange\" style=\"width: 100%; text-align: left;\" >";
+					$stringGen .= "<h3> Error with cache for test ".$value." </h3></div></div>";
+					echo $stringGen;
+				}
 			}
 			?>
 		</div>
