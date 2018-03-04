@@ -139,6 +139,9 @@ if($pollingRateType == 'Seconds')
 						<input type="hidden" name="etaSec" id="{{id}}EtaSec" value="0" >
 						<span onclick="toggleEta('{{id}}');" class="infoBox"  <?php if($defaultShowEta !== "elapsed"): ?> style="display: none;" <?php endif; ?>   id="{{id}}ElapsedTxt" >{{eta}}</span>
 						<input type="hidden" name="etaSec" id="{{id}}ElapsedSec" value="0" >
+						<span class="infoBox">
+							<a href="../view/tests.php#{{id}}.log" style="color: black;" >Log File: {{id}}.log</a>
+						</span>
 					</div>
 				</div>
 				<div id="{{id}}ProgressBlocks" class="containerBox">

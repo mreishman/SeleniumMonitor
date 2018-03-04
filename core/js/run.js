@@ -28,8 +28,12 @@ function getFileList()
 			{
 				var tests = data['arrayOfGroups'];
 				var testsHtml = "<ul class='list'>";
-				for (var i = tests.length - 1; i >= 0; i--) {
-					testsHtml += "<li><input  onchange='getTestList();' type='checkbox' name='"+tests[i]+"'>"+tests[i]+"</li>";
+				var groups = Object.keys(tests);
+				var lengthOfGroups = groups.length;
+				for(var j = 0; j < lengthOfGroups; j++)
+				{
+
+					testsHtml += "<li><input  onchange='getTestList();' type='checkbox' name='"+groups[j]+"'>"+groups[j]+" ("+tests[groups[j]]+")</li>";
 				}
 				testsHtml += "</ul></form>";
 				document.getElementById("groupsPlaceHodler").innerHTML = "<a onclick=\"toggleCheckBoxes('groupsIncludeListForm', true);\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('groupsIncludeListForm', false);\" class=\"link\">Uncheck All</a><form id='groupsIncludeListForm'>"+testsHtml;
