@@ -18,6 +18,10 @@ $versionCheckArray = array(
 		'1.3'	        => array(
 			'branchName'	=> '1.3Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added cache for tests (when running tests, the output is stored as a cache file)</li><li>View other running tests (cache files are generated, viewable on view > tests page)</li><li>Compare previous cached tests from compare page</li><li>Option to show tests from folders within main folder</li><li>Either shows video names as time or session ID</li></ul></li><li>Bug Fixes<ul><li>Does not show .temp video files until complete</li></ul></li></ul>'
+		),
+		'1.3.1'	        => array(
+			'branchName'	=> '1.3.1Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Shows count next to groups for new tests</li><li>Added link to test log when running tests</li></ul></li><li>Bug Fixes<ul><li>Test cache display fixes (for when cache saved incorrectly)</li></ul></li></ul>'
 		)
 	)
 );
