@@ -59,7 +59,7 @@ if($pollingRateType == 'Seconds')
 	
 	<div id="storage">
 		<div class="newTestPopup">
-			<div id="{{id}}" class="runNewTest">
+			<div id="{{id}}" class="runNewTest" >
 				<div class="bannerPHP" style="display: none;">
 					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
@@ -116,11 +116,13 @@ if($pollingRateType == 'Seconds')
 		</div>
 		<div class="container">
 			<div style="background-color: white; border: 1px solid black; " id="{{id}}" class="scanBar containerMain">
-				<div>
-					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}ProgressStart" value="0" max="1"></progress>
-				</div>
-				<div>
-					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}Progress" value="0" max="1"></progress>
+				<div id="{{id}}ProgressBG" style="width: 100%; background-color: darkgrey; height: 15px; border-top: 1px solid black; border-bottom: 1px solid black;">
+					<div id="{{id}}ProgressRisky" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockRisky"></div>
+					<div id="{{id}}ProgressSkip" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockSkip"></div>
+					<div id="{{id}}ProgressFail" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockFail"></div>
+					<div id="{{id}}ProgressError" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockError"></div>
+					<div id="{{id}}ProgressPass" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockPass"></div>
+					<div id="{{id}}ProgressRunning" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockInProgress"></div>
 				</div>
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
