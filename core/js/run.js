@@ -934,3 +934,20 @@ function updateProgressBar(testId)
 	document.getElementById(testId+"ProgressPass").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockPass").length)+"px";
 	document.getElementById(testId+"ProgressRunning").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockInProgress").length)+"px";
 }
+
+function resizeUpdateProgressBar()
+{
+	$(".progressBG").each(function()
+	{
+		var testId = $(this).attr("id");
+		if(testId.indexOf("{{id}}") === -1)
+		{
+			testId = testId.replace("ProgressBG","");
+			updateProgressBar(testId);
+		}
+	});
+}
+
+$(window).on('resize', function(){
+      resizeUpdateProgressBar();
+});

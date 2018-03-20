@@ -116,7 +116,7 @@ if($pollingRateType == 'Seconds')
 		</div>
 		<div class="container">
 			<div style="background-color: white; border: 1px solid black; " id="{{id}}" class="scanBar containerMain">
-				<div id="{{id}}ProgressBG" style="width: 100%; background-color: darkgrey; height: 15px; border-top: 1px solid black; border-bottom: 1px solid black;">
+				<div id="{{id}}ProgressBG" class="progressBG" style="width: 100%; background-color: darkgrey; height: 15px; border-top: 1px solid black; border-bottom: 1px solid black;">
 					<div id="{{id}}ProgressRisky" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockRisky"></div>
 					<div id="{{id}}ProgressSkip" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockSkip"></div>
 					<div id="{{id}}ProgressFail" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockFail"></div>
@@ -142,7 +142,7 @@ if($pollingRateType == 'Seconds')
 						<span onclick="toggleEta('{{id}}');" class="infoBox"  <?php if($defaultShowEta !== "elapsed"): ?> style="display: none;" <?php endif; ?>   id="{{id}}ElapsedTxt" >{{eta}}</span>
 						<input type="hidden" name="etaSec" id="{{id}}ElapsedSec" value="0" >
 						<span class="infoBox">
-							<a href="../view/tests.php#{{id}}.log" style="color: black;" >Log File: {{id}}.log</a>
+							<a href="../view/tests.php#{{id}}.log" style="color: black;" >{{id}}.log</a>
 						</span>
 					</div>
 				</div>
