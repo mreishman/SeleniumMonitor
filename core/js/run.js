@@ -920,3 +920,22 @@ function generateExportInfo(idOfTest)
 	}
 	return exportInfo;
 }
+
+function toggleTab(currentId, tabIdToShow)
+{
+	$("#"+currentId+" .menu li").removeClass("active");
+	$("#"+currentId+" .menu th").removeClass("active");
+	$("#"+currentId+" .conainerSub").hide();
+
+	$("#"+currentId+tabIdToShow).show();
+	if(tabIdToShow === "VideosTime" || tabIdToShow === "VideosSession")
+	{
+		$("#"+currentId+"Videos"+"Menu").addClass("active");
+		$("#"+currentId+"VideoSubMenu").show();
+	}
+	else
+	{
+		$("#"+currentId+"VideoSubMenu").hide();
+	}
+	$("#"+currentId+tabIdToShow+"Menu").addClass("active");
+}

@@ -183,3 +183,38 @@
   	-moz-transition: 1s ease-out ease-in;
   	-o-transition: 1s ease-out ease-in;
 }
+
+.menu
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: inline-block;
+	vertical-align: bottom;
+	color: white;
+}
+
+.menu li
+{
+	float: left;
+	padding: 4px;
+	background-color: #555;
+	border-radius: 10px 10px 0 0;
+	margin: 0 4px 0 4px;
+	cursor: pointer;
+}
+
+.menu .active
+{
+	color: white;
+	background-color: black;
+}
+
+.conainerSub
+{
+	height: 200px;
+	overflow-y: auto;
+	word-wrap:break-word; 
+	word-break: break-all;
+	background-color: grey;
+}
