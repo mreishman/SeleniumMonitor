@@ -33,6 +33,7 @@ $defaultConfig = array(
 	'locationForStatus'				=> '',
 	'locationOfTests'				=> '',
 	'locationOfSelenium'			=> '',
+	'logFileLocation'				=> '',
 	'logFontColor'					=> '#FFFFFF',
 	'mainFontColor'					=> '#FFFFFF',
 	'mainServerIP'					=> "192.168.1.5",

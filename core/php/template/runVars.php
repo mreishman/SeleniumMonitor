@@ -28,6 +28,9 @@ Run Settings
 		<span class="settingsBuffer" > Selenium Folder: </span>  <input style="width: 600px;" type="text" name="locationOfSelenium" value="<?php echo $locationOfSelenium;?>" >
 	</li>
 	<li>
+		<span class="settingsBuffer" > Log File: </span>  <input style="width: 600px;" type="text" name="logFileLocation" value="<?php echo $logFileLocation;?>" >
+	</li>
+	<li>
 		<span class="settingsBuffer" > Default Base URL: </span>  <input style="width: 600px;" type="text" name="defaultBaseUrl" value="<?php echo $defaultBaseUrl;?>" >
 	</li>
 	<li>
