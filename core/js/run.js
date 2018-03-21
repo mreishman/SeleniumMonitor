@@ -120,8 +120,14 @@ function runTests()
 		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'>";
 		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[i]+"\" id='Test"+testNumber+listOfNames[i]+"TestName' >";
 		progressBlocksHtml += "</div>";
-		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> <span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span>";
-		progressBlocksHtml += " </div>";
+		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> ";
+		progressBlocksHtml += "<div id=\"Test"+testNumber+listOfNames[i]+"Menu\" ><div style=\"border-bottom: 1px solid black;\"><ul class=\"menu\">";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuResultsMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Results');\"  class=\"active\">Results</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuVideoMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Video');\">Video</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
+		progressBlocksHtml += "</ul></div>";
+		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
+		progressBlocksHtml += " </div></div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -905,6 +911,8 @@ function generateExportInfo(idOfTest)
 
 function toggleTab(currentId, tabIdToShow)
 {
+	console.log(currentId);
+	console.log(tabIdToShow);
 	$("#"+currentId+" .menu li").removeClass("active");
 	$("#"+currentId+" .menu th").removeClass("active");
 	$("#"+currentId+" .conainerSub").hide();

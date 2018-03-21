@@ -176,7 +176,7 @@ if($pollingRateType == 'Seconds')
 						</li>
 					</ul>
 				</div>
-				<div class="conainerSub" id="{{id}}Stats">
+				<div class="conainerSub containerSubBG" id="{{id}}Stats">
 					<div class="fontChange subTitleEF">
 						<span id="{{id}}FailCount">0</span>/{{totalCount}} Fails
 					</div>
@@ -185,19 +185,19 @@ if($pollingRateType == 'Seconds')
 						<span id="{{id}}ErrorCount">0</span>/{{totalCount}} Errors
 					</div>
 				</div>
-				<div class="conainerSub" style="display: none;" id="{{id}}Fails">
+				<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}Fails">
 					<div class="containerBox containerMaxHeight">
 						<span id="{{id}}Fails">
 						</span>
 					</div>
 				</div>
-				<div class="conainerSub" style="display: none;" id="{{id}}Errors" >
+				<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}Errors" >
 					<div class="containerBox containerMaxHeight">
 						<span  id="{{id}}Errors">
 						</span>
 					</div>
 				</div>
-				<div class="fontChange conainerSub" id="{{id}}Config" style="display: none;" >
+				<div class="fontChange conainerSub containerSubBG" id="{{id}}Config" style="display: none;" >
 					<br>
 					<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
 					<br>

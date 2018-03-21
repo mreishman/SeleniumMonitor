@@ -217,5 +217,9 @@
 	overflow-y: auto;
 	word-wrap:break-word; 
 	word-break: break-all;
+}
+
+.containerSubBG
+{
 	background-color: grey;
 }
