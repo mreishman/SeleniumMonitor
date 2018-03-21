@@ -127,6 +127,8 @@ function runTests()
 		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
 		progressBlocksHtml += "</ul></div>";
 		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p>No Video Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p>No Log Info Available</p></div>";
 		progressBlocksHtml += " </div></div>";
 	}
 
