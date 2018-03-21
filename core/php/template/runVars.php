@@ -37,7 +37,7 @@ Run Settings
 			<option <?php if($runCheckCount == 'false'){echo "selected";} ?> value="false">False</option>
 		</select>
 		<br>
-		* This could limit the ammount of tests runnign at a time depending of the speed of the network / main node
+		* This could limit the ammount of tests running at a time depending of the speed of the network / main node
 	</li>
 	<li>
 		<span class="settingsBuffer" > Default progress indicator: </span>
