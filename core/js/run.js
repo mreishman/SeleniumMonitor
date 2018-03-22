@@ -959,9 +959,20 @@ function getVideoLink(functionData)
 		type: "POST",
 		success(data)
 		{
+			//{"msg":"slot found !","success":true,"session":"a8e58ec7a888d51799483eb38179afc0","internalKey":"b65f21ec-65ea-4f41-a880-1955911b81b5","inactivityTime":719,"proxyId":"http://192.168.1.154:5555"}
 			data = JSON.parse(data);
-			objectOfVideosWithLinks[this.currentFunc]["link"] = data["msg"];
-			objectOfVideosWithLinks[this.currentFunc]["success"] = data["success"];
+			var dataMessage = data["msg"];
+			var dataSuccess = data["success"];
+			if(dataSuccess)
+			{
+				//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
+				dataMessage = data["proxyId"]+"/download_video/"+data["session"]+".mp4";
+				dataMessage = dataMessage.replace(/5555/g,"3000");
+				//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
+				dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+			}
+			objectOfVideosWithLinks[this.currentFunc]["link"] = dataMessage;
+			objectOfVideosWithLinks[this.currentFunc]["success"] = dataSuccess;
 			parseNewVideoData();
 		},
 		complete(data)
@@ -970,6 +981,7 @@ function getVideoLink(functionData)
 		}
 	});
 }
+
 
 function parseNewVideoData()
 {
