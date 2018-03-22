@@ -981,7 +981,10 @@ function parseNewVideoData()
 		var classObjectListLength = classObjectList.length;
 		for (var j = 0; j < classObjectListLength; j++)
 		{
-			classObjectList[j].innerHTML = objectOfVideosWithLinks[functions[i]]["link"];			
+			if("link" in objectOfVideosWithLinks[functions[i]])
+			{
+				classObjectList[j].innerHTML = objectOfVideosWithLinks[functions[i]]["link"];			
+			}
 		}
 	}
 }
