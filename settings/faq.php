@@ -46,7 +46,10 @@ require_once('../core/php/updateCheck.php');
 					A: In the testing code, when creating driver add code that shows the driver session id with test name:
 					<br>
 					Ex: log("SESSION_LINK_FOR_SELENIUM_MONITOR::::: ".$driver->getSessionID()."   :::::   ".$testName);
+					<br>
 					Note: testname is from debug_backtrace where function call name includes 'test'
+					<br>
+					Note: logLocation is in settings, and would be where the function looks for the above keywords 
 				</li>
 			</ul>
 		</div>
