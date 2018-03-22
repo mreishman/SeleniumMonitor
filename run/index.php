@@ -160,49 +160,51 @@ if($pollingRateType == 'Seconds')
 					<div class="block blockKey blockSkip"></div> - Skipped
 					<div class="block blockKey blockRisky"></div> - Risky
 				</div>
-				<div style="border-bottom: 1px solid black;">
-					<ul class="menu">
-						<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');"  class="active">
-							Stats
-						</li>
-						<li id="{{id}}ErrorsMenu" onclick="toggleTab('{{id}}', 'Errors');">
-							Errors
-						</li>
-						<li id="{{id}}FailsMenu" onclick="toggleTab('{{id}}', 'Fails');">
-							Fails
-						</li>
-						<li id="{{id}}ConfigMenu" onclick="toggleTab('{{id}}', 'Config');">
-							Config
-						</li>
-					</ul>
-				</div>
-				<div class="conainerSub containerSubBG" id="{{id}}Stats">
-					<div class="fontChange subTitleEF">
-						<span id="{{id}}FailCount">0</span>/{{totalCount}} Fails
+				<div id="{{id}}MainMenu" >
+					<div style="border-bottom: 1px solid black;">
+						<ul class="menu">
+							<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}MainMenu', 'Stats');"  class="active">
+								Stats
+							</li>
+							<li id="{{id}}ErrorsMenu" onclick="toggleTab('{{id}}MainMenu', 'Errors');">
+								Errors
+							</li>
+							<li id="{{id}}FailsMenu" onclick="toggleTab('{{id}}MainMenu', 'Fails');">
+								Fails
+							</li>
+							<li id="{{id}}ConfigMenu" onclick="toggleTab('{{id}}MainMenu', 'Config');">
+								Config
+							</li>
+						</ul>
 					</div>
-					<br>
-					<div  class="fontChange subTitleEF">
-						<span id="{{id}}ErrorCount">0</span>/{{totalCount}} Errors
+					<div class="conainerSub containerSubBG" id="{{id}}MainMenuStats">
+						<div class="fontChange subTitleEF">
+							<span id="{{id}}FailCount">0</span>/{{totalCount}} Fails
+						</div>
+						<br>
+						<div  class="fontChange subTitleEF">
+							<span id="{{id}}ErrorCount">0</span>/{{totalCount}} Errors
+						</div>
 					</div>
-				</div>
-				<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}Fails">
-					<div class="containerBox containerMaxHeight">
-						<span id="{{id}}Fails">
-						</span>
+					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuFails">
+						<div class="containerBox containerMaxHeight">
+							<span id="{{id}}Fails">
+							</span>
+						</div>
 					</div>
-				</div>
-				<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}Errors" >
-					<div class="containerBox containerMaxHeight">
-						<span  id="{{id}}Errors">
-						</span>
+					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuErrors" >
+						<div class="containerBox containerMaxHeight">
+							<span  id="{{id}}Errors">
+							</span>
+						</div>
 					</div>
-				</div>
-				<div class="fontChange conainerSub containerSubBG" id="{{id}}Config" style="display: none;" >
-					<br>
-					<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
-					<br>
-					<input style="width: 75%; display: block;" type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
-					<br>
+					<div class="fontChange conainerSub containerSubBG" id="{{id}}MainMenuConfig" style="display: none;" >
+						<br>
+						<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
+						<br>
+						<input style="width: 75%; display: block;" type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
+						<br>
+					</div>
 				</div>
 			</div>
 		</div>
