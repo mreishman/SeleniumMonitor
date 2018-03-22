@@ -936,6 +936,10 @@ function parseNewVideoDataForLinks()
 			}
 			else
 			{
+				if("success" in objectOfVideosWithLinks[functions[i]] && objectOfVideosWithLinks[functions[i]]["success"] === "false")
+				{
+					delete objectOfVideosWithLinks[functions[i]];
+				}
 				paseVideoDataCounter--;
 			}
 		}
@@ -956,8 +960,8 @@ function getVideoLink(functionData)
 		success(data)
 		{
 			data = JSON.parse(data);
-			var failOrSuccess = data["success"];
 			objectOfVideosWithLinks[this.currentFunc]["link"] = data["msg"];
+			objectOfVideosWithLinks[this.currentFunc]["success"] = data["success"];
 			parseNewVideoData();
 		},
 		complete(data)
