@@ -11,8 +11,10 @@ var ajaxRequestValue = 3;
 var testsPerAjax = 1;
 var totalTimeOfAllTests = new Array();
 var objectOfVideos = {};
+var objectOfVideosWithLinks = {};
 var objectOfLogs = {};
 var gettingLogData = false;
+var paseVideoDataCounter = 0;
 var logData = {};
 
 function getFileList()
@@ -131,7 +133,7 @@ function runTests()
 		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
 		progressBlocksHtml += "</ul></div>";
 		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
-		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p>No Video Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p class=\""+listOfNames[i]+"\" >No Video Info Available</p></div>";
 		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p>No Log Info Available</p></div>";
 		progressBlocksHtml += " </div></div>";
 	}
@@ -900,18 +902,74 @@ function parseDataForVideoLink()
 		if(text[i].indexOf("SESSION_LINK_FOR_SELENIUM_MONITOR") > -1)
 		{
 			var dataForParse = text[i].split(":::::");
-			if(!(dataForParse[2] in objectOfVideos))
+			objectOfVideos[dataForParse[2]] = dataForParse[1].replace(/-/g,"").trim().toLowerCase();
+		}
+	}
+	if(paseVideoDataCounter === 0)
+	{
+		parseNewVideoDataForLinks();
+	}
+}
+
+function parseNewVideoDataForLinks()
+{
+	var functions = Object.keys(objectOfVideos);
+	var lengthOfFunct = functions.length;
+	paseVideoDataCounter = lengthOfFunct;
+	for (var i = 0; i < lengthOfFunct; i++)
+	{
+		if(!(functions[i] in objectOfVideosWithLinks))
+		{
+			//not in video with links yet
+			objectOfVideosWithLinks[functions[i]] = {};
+			objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
+			getVideoLink(functions[i]);
+		}
+		else
+		{
+			//its there, check if session is same
+			if(objectOfVideosWithLinks[functions[i]]["session"] !== objectOfVideos[functions[i]])
 			{
-				objectOfVideos[dataForParse[2]] = dataForParse[1].replace("-","");
+				//new session, get that data
+				objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
+				getVideoLink(functions[i])
+			}
+			else
+			{
+				paseVideoDataCounter--;
 			}
 		}
 	}
-	parseNewVideoData();
 }
 
-function parseNewVideodata()
+function getVideoLink(functionData)
 {
-	var functions = Object.keys(objectOfVideos);
+	var urlData = "../core/php/getTestInfo.php";
+	var data = {session: objectOfVideos[functionData]};
+	$.ajax(
+	{
+		url: urlData,
+		dataType: "json",
+		data,
+		currentFunc: functionData,
+		type: "POST",
+		success(data)
+		{
+			data = JSON.parse(data);
+			var failOrSuccess = data["success"];
+			objectOfVideosWithLinks[this.currentFunc]["link"] = data["msg"];
+			parseNewVideoData();
+		},
+		complete(data)
+		{
+			paseVideoDataCounter--;
+		}
+	});
+}
+
+function parseNewVideoData()
+{
+	var functions = Object.keys(objectOfVideosWithLinks);
 	var lengthOfFunct = functions.length;
 	for (var i = 0; i < lengthOfFunct; i++)
 	{
@@ -919,11 +977,7 @@ function parseNewVideodata()
 		var classObjectListLength = classObjectList.length;
 		for (var j = 0; j < classObjectListLength; j++)
 		{
-			if(classObjectList[j].innerHTML === "")
-			{
-				classObjectList[j].innerHTML = objectOfVideos[functions[i]];
-				break;
-			}
+			classObjectList[j].innerHTML = objectOfVideosWithLinks[functions[i]]["link"];			
 		}
 	}
 }
