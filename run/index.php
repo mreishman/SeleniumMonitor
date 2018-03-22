@@ -163,16 +163,16 @@ if($pollingRateType == 'Seconds')
 				<div id="{{id}}MainMenu" >
 					<div style="border-bottom: 1px solid black;">
 						<ul class="menu">
-							<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}MainMenu', 'Stats');"  class="active">
+							<li id="{{id}}MainMenuStatsMenu" onclick="toggleTab('{{id}}MainMenu', 'Stats');"  class="active">
 								Stats
 							</li>
-							<li id="{{id}}ErrorsMenu" onclick="toggleTab('{{id}}MainMenu', 'Errors');">
+							<li id="{{id}}MainMenuErrorsMenu" onclick="toggleTab('{{id}}MainMenu', 'Errors');">
 								Errors
 							</li>
-							<li id="{{id}}FailsMenu" onclick="toggleTab('{{id}}MainMenu', 'Fails');">
+							<li id="{{id}}MainMenuFailsMenu" onclick="toggleTab('{{id}}MainMenu', 'Fails');">
 								Fails
 							</li>
-							<li id="{{id}}ConfigMenu" onclick="toggleTab('{{id}}MainMenu', 'Config');">
+							<li id="{{id}}MainMenuConfigMenu" onclick="toggleTab('{{id}}MainMenu', 'Config');">
 								Config
 							</li>
 						</ul>
