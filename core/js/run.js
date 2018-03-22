@@ -10,6 +10,10 @@ var maxTestsStatic = 1;
 var ajaxRequestValue = 3;
 var testsPerAjax = 1;
 var totalTimeOfAllTests = new Array();
+var objectOfVideos = {};
+var objectOfLogs = {};
+var gettingLogData = false;
+var logData = {};
 
 function getFileList()
 {
@@ -851,6 +855,76 @@ function timerStuff()
 			decreaseEtaByOne(idOfTest);
 			increaseElapsedTimeByOne(idOfTest);
 		}
+
+	}
+
+	if(arrayOfTests.length > 0)
+	{
+		//update log info
+		if(!gettingLogData)
+		{
+			getLogData();
+		}
+	}
+}
+
+function getLogData()
+{
+	gettingLogData = true;
+	var urlLog = "../core/php/poll.php";
+	data = {};
+	$.ajax(
+	{
+		url: urlLog,
+		dataType: "json",
+		data,
+		type: "POST",
+		success(data)
+		{
+			logData = data;
+			parseDataForVideoLink();
+		},
+		complete(data)
+		{
+			gettingLogData = false;
+		}
+	});
+}
+
+function parseDataForVideoLink()
+{
+	var text = logData.split("\n");
+	var lengthOfTextArray = text.length;
+	for (var i = 0; i < lengthOfTextArray; i++)
+	{
+		if(text[i].indexOf("SESSION_LINK_FOR_SELENIUM_MONITOR") > -1)
+		{
+			var dataForParse = text[i].split(":::::");
+			if(!(dataForParse[2] in objectOfVideos))
+			{
+				objectOfVideos[dataForParse[2]] = dataForParse[1].replace("-","");
+			}
+		}
+	}
+	parseNewVideoData();
+}
+
+function parseNewVideodata()
+{
+	var functions = Object.keys(objectOfVideos);
+	var lengthOfFunct = functions.length;
+	for (var i = 0; i < lengthOfFunct; i++)
+	{
+		var classObjectList = document.getElementsByClassName(functions[i]);
+		var classObjectListLength = classObjectList.length;
+		for (var j = 0; j < classObjectListLength; j++)
+		{
+			if(classObjectList[j].innerHTML === "")
+			{
+				classObjectList[j].innerHTML = objectOfVideos[functions[i]];
+				break;
+			}
+		}
 	}
 }
 
@@ -913,8 +987,6 @@ function generateExportInfo(idOfTest)
 
 function toggleTab(currentId, tabIdToShow)
 {
-	console.log(currentId);
-	console.log(tabIdToShow);
 	$("#"+currentId+" .menu li").removeClass("active");
 	$("#"+currentId+" .menu th").removeClass("active");
 	$("#"+currentId+" .conainerSub").hide();
