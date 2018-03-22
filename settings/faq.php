@@ -39,6 +39,15 @@ require_once('../core/php/updateCheck.php');
 					<br>
 					Ex: if($argv[$i] === "--exclude-group"){ $baseURL = $argv[$i+1]; }
 				</li>
+				<li id="howSetupVideoLink">
+					Q: How do I link video to test?
+				</li>
+				<li>
+					A: In the testing code, when creating driver add code that shows the driver session id with test name:
+					<br>
+					Ex: log("SESSION_LINK_FOR_SELENIUM_MONITOR::::: ".$driver->getSessionID()."   :::::   ".$testName);
+					Note: testname is from debug_backtrace where function call name includes 'test'
+				</li>
 			</ul>
 		</div>
 	</div>
