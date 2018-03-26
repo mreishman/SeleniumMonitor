@@ -916,6 +916,7 @@ function parseNewVideoDataForLinks()
 	var functions = Object.keys(objectOfVideos);
 	var lengthOfFunct = functions.length;
 	paseVideoDataCounter = lengthOfFunct;
+	var listOfVideos = new Array();
 	for (var i = 0; i < lengthOfFunct; i++)
 	{
 		if(!(functions[i] in objectOfVideosWithLinks))
@@ -923,7 +924,7 @@ function parseNewVideoDataForLinks()
 			//not in video with links yet
 			objectOfVideosWithLinks[functions[i]] = {};
 			objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
-			getVideoLink(functions[i]);
+			listOfVideos.push(objectOfVideos[functions[i]]);
 		}
 		else
 		{
@@ -932,7 +933,7 @@ function parseNewVideoDataForLinks()
 			{
 				//new session, get that data
 				objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
-				getVideoLink(functions[i])
+				listOfVideos.push(objectOfVideos[functions[i]]);
 			}
 			else
 			{
@@ -944,35 +945,51 @@ function parseNewVideoDataForLinks()
 			}
 		}
 	}
+	if(listOfVideos.length > 0)
+	{
+		getVideoLink(listOfVideos);
+	}
 }
 
 function getVideoLink(functionData)
 {
 	var urlData = "../core/php/getTestInfo.php";
-	var data = {session: objectOfVideos[functionData]};
+	var data = {sessions: functionData};
 	$.ajax(
 	{
 		url: urlData,
 		dataType: "json",
 		data,
-		currentFunc: functionData,
 		type: "POST",
 		success(data)
 		{
 			//{"msg":"slot found !","success":true,"session":"a8e58ec7a888d51799483eb38179afc0","internalKey":"b65f21ec-65ea-4f41-a880-1955911b81b5","inactivityTime":719,"proxyId":"http://192.168.1.154:5555"}
-			data = JSON.parse(data);
-			var dataMessage = data["msg"];
-			var dataSuccess = data["success"];
-			if(dataSuccess)
+			for(var i = 0, length1 = data.length; i < length1; i++)
 			{
-				//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
-				dataMessage = data["proxyId"]+"/download_video/"+data["session"]+".mp4";
-				dataMessage = dataMessage.replace(/5555/g,"3000");
-				//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
-				dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+				var dataInner = data[i];
+				var dataMessage = dataInner["msg"];
+				var dataSuccess = dataInner["success"];
+				if(dataSuccess)
+				{
+					//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
+					dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
+					dataMessage = dataMessage.replace(/5555/g,"3000");
+					//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
+					dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+				}
+				var selector = "";
+				var keysOfObjectOfVideos = Object.keys(objectOfVideos);
+				for(var i = 0, length1 = keysOfObjectOfVideos.length; i < length1; i++)
+				{
+					if(objectOfVideos[keysOfObjectOfVideos[i]] === dataInner["session"])
+					{
+						selector = keysOfObjectOfVideos[i];
+						objectOfVideosWithLinks[selector]["link"] = dataMessage;
+						objectOfVideosWithLinks[selector]["success"] = dataSuccess;
+						break;
+					}
+				}
 			}
-			objectOfVideosWithLinks[this.currentFunc]["link"] = dataMessage;
-			objectOfVideosWithLinks[this.currentFunc]["success"] = dataSuccess;
 			parseNewVideoData();
 		},
 		complete(data)
