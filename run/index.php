@@ -146,7 +146,7 @@ if($pollingRateType == 'Seconds')
 						</span>
 					</div>
 				</div>
-				<div id="{{id}}ProgressBlocks" class="containerBox">
+				<div id="{{id}}ProgressBlocks" class="containerBox" style="max-height: 500px; overflow: auto;">
 					{{ProgressBlocks}}
 				</div>
 				<div class="key fontChange">
@@ -187,13 +187,13 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</div>
 					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuFails">
-						<div class="containerBox containerMaxHeight">
+						<div class="containerBox">
 							<span id="{{id}}Fails">
 							</span>
 						</div>
 					</div>
 					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuErrors" >
-						<div class="containerBox containerMaxHeight">
+						<div class="containerBox">
 							<span  id="{{id}}Errors">
 							</span>
 						</div>
