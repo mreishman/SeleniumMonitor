@@ -865,14 +865,15 @@ function timerStuff()
 		//update log info
 		if(!gettingLogData)
 		{
-			getLogData();
+			gettingLogData = true;
+			setTimeout(function(){ getLogData(); }, 10000);
 		}
 	}
 }
 
 function getLogData()
 {
-	gettingLogData = true;
+	
 	var urlLog = "../core/php/poll.php";
 	data = {};
 	$.ajax(
@@ -891,6 +892,23 @@ function getLogData()
 			gettingLogData = false;
 		}
 	});
+}
+
+function parseDataForLogInfo()
+{
+	var text = logData.split("\n");
+	var lengthOfTextArray = text.length;
+	for (var i = 0; i < lengthOfTextArray; i++)
+	{
+		if(text[i].indexOf("SELENIUM_LOG_INFORMATION") > -1)
+		{
+			var dataForParse = text[i].split(":::::");
+			var logLine = dataForParse[0]+dataForParse[3];
+			//chekc if logLine is already in log for test
+			var found = false;
+
+		}
+	}
 }
 
 function parseDataForVideoLink()
@@ -960,6 +978,7 @@ function getVideoLink(functionData)
 		url: urlData,
 		dataType: "json",
 		data,
+		sentData: functionData,
 		type: "POST",
 		success(data)
 		{
@@ -967,26 +986,29 @@ function getVideoLink(functionData)
 			for(var i = 0, length1 = data.length; i < length1; i++)
 			{
 				var dataInner = data[i];
-				var dataMessage = dataInner["msg"];
-				var dataSuccess = dataInner["success"];
-				if(dataSuccess)
+				if(typeof dataInner !== "undefined")
 				{
-					//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
-					dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
-					dataMessage = dataMessage.replace(/5555/g,"3000");
-					//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
-					dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
-				}
-				var selector = "";
-				var keysOfObjectOfVideos = Object.keys(objectOfVideos);
-				for(var i = 0, length1 = keysOfObjectOfVideos.length; i < length1; i++)
-				{
-					if(objectOfVideos[keysOfObjectOfVideos[i]] === dataInner["session"])
+					var dataMessage = dataInner["msg"];
+					var dataSuccess = dataInner["success"];
+					if(dataSuccess)
 					{
-						selector = keysOfObjectOfVideos[i];
-						objectOfVideosWithLinks[selector]["link"] = dataMessage;
-						objectOfVideosWithLinks[selector]["success"] = dataSuccess;
-						break;
+						//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
+						dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
+						dataMessage = dataMessage.replace(/5555/g,"3000");
+						//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
+						dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+					}
+					var selector = "";
+					var keysOfObjectOfVideos = Object.keys(objectOfVideos);
+					for(var i = 0, length1 = keysOfObjectOfVideos.length; i < length1; i++)
+					{
+						if(objectOfVideos[keysOfObjectOfVideos[i]] === dataInner["session"])
+						{
+							selector = keysOfObjectOfVideos[i];
+							objectOfVideosWithLinks[selector]["link"] = dataMessage;
+							objectOfVideosWithLinks[selector]["success"] = dataSuccess;
+							break;
+						}
 					}
 				}
 			}
@@ -994,7 +1016,7 @@ function getVideoLink(functionData)
 		},
 		complete(data)
 		{
-			paseVideoDataCounter--;
+			paseVideoDataCounter = paseVideoDataCounter - functionData.length;
 		}
 	});
 }
