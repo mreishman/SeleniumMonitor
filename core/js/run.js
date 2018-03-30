@@ -944,7 +944,7 @@ function updateLogsForTests()
 	var lengthOfKeysOfLogs = keysOfLogs.length;
 	for(var i = 0; i < lengthOfKeysOfLogs; i++)
 	{
-		var classObjectList = document.getElementsByClassName(keysOfLogs[i]+"Video");
+		var classObjectList = document.getElementsByClassName(testLogs[keysOfLogs[i]]["testName"]+"Log");
 		var classObjectListLength = classObjectList.length;
 		for (var j = 0; j < classObjectListLength; j++)
 		{
