@@ -16,6 +16,7 @@ var objectOfLogs = {};
 var gettingLogData = false;
 var paseVideoDataCounter = 0;
 var logData = {};
+var testLogs = {};
 
 function getFileList()
 {
@@ -133,8 +134,8 @@ function runTests()
 		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
 		progressBlocksHtml += "</ul></div>";
 		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
-		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p class=\""+listOfNames[i]+"\" >No Video Info Available</p></div>";
-		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p>No Log Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p class=\""+listOfNames[i]+"Video\" >No Video Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p class=\""+listOfNames[i]+"Log\">No Log Info Available</p></div>";
 		progressBlocksHtml += " </div></div>";
 	}
 
@@ -886,6 +887,7 @@ function getLogData()
 		{
 			logData = data;
 			parseDataForVideoLink();
+			parseDataForLogInfo();
 		},
 		complete(data)
 		{
@@ -904,9 +906,57 @@ function parseDataForLogInfo()
 		{
 			var dataForParse = text[i].split(":::::");
 			var logLine = dataForParse[0]+dataForParse[3];
+			var sessionId = dataForParse[2];
 			//chekc if logLine is already in log for test
 			var found = false;
+			if(!(sessionId in testLogs))
+			{
+				testLogs[sessionId] = {};
+			}
+			if(!("log" in testLogs))
+			{
+				testLogs[sessionId]["log"] = new Array();
+			}
+			var lengthOfLog = testLogs[sessionId]["log"].length;
+			var found = false;
+			if(lengthOfLog > 0)
+			{
+				for(var i = 0; i < lengthOfLog; i++)
+				{
+					if(testLogs[sessionId]["log"][i] === logLine)
+					{
+						found = true;
+					}
+				}
+			}
+			if(!found)
+			{
+				testLogs[sessionId]["log"].push(logLine);
+			}
+		}
+	}
+	updateLogsForTests();
+}
 
+function updateLogsForTests()
+{
+	var keysOfLogs = Object.keys(testLogs);
+	var lengthOfKeysOfLogs = keysOfLogs.length;
+	for(var i = 0; i < lengthOfKeysOfLogs; i++)
+	{
+		var classObjectList = document.getElementsByClassName(keysOfLogs[i]+"Video");
+		var classObjectListLength = classObjectList.length;
+		for (var j = 0; j < classObjectListLength; j++)
+		{
+			if("log" in testLogs[keysOfLogs[i]])
+			{
+				classObjectList[j].innerHTML = "";
+				var lengthOfLog = testLogs[keysOfLogs[i]]["log"].length;
+				for(var k = 0; k < lengthOfLog; k++)
+				{
+					classObjectList[j].innerHTML += testLogs[keysOfLogs[i]]["log"][k]+"<br>";
+				}
+			}
 		}
 	}
 }
@@ -920,7 +970,14 @@ function parseDataForVideoLink()
 		if(text[i].indexOf("SESSION_LINK_FOR_SELENIUM_MONITOR") > -1)
 		{
 			var dataForParse = text[i].split(":::::");
-			objectOfVideos[dataForParse[2]] = dataForParse[1].replace(/-/g,"").trim().toLowerCase();
+			var sessionId = dataForParse[1].replace(/-/g,"").trim().toLowerCase();
+			var testName = dataForParse[2].trim();
+			objectOfVideos[testName] = sessionId;
+			if(!(sessionId in testLogs))
+			{
+				testLogs[sessionId] = {};
+			}
+			testLogs[sessionId]["testName"] = testName;
 		}
 	}
 	if(paseVideoDataCounter === 0)
@@ -1028,7 +1085,7 @@ function parseNewVideoData()
 	var lengthOfFunct = functions.length;
 	for (var i = 0; i < lengthOfFunct; i++)
 	{
-		var classObjectList = document.getElementsByClassName(functions[i]);
+		var classObjectList = document.getElementsByClassName(functions[i]+"Video");
 		var classObjectListLength = classObjectList.length;
 		for (var j = 0; j < classObjectListLength; j++)
 		{
