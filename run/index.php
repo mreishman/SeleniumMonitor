@@ -59,7 +59,7 @@ if($pollingRateType == 'Seconds')
 	
 	<div id="storage">
 		<div class="newTestPopup">
-			<div id="{{id}}" class="runNewTest">
+			<div id="{{id}}" class="runNewTest" >
 				<div class="bannerPHP" style="display: none;">
 					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
@@ -116,11 +116,13 @@ if($pollingRateType == 'Seconds')
 		</div>
 		<div class="container">
 			<div style="background-color: white; border: 1px solid black; " id="{{id}}" class="scanBar containerMain">
-				<div>
-					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}ProgressStart" value="0" max="1"></progress>
-				</div>
-				<div>
-					<progress style="color: white; background: #000000; width: 100%;" id="{{id}}Progress" value="0" max="1"></progress>
+				<div id="{{id}}ProgressBG" class="progressBG" style="width: 100%; background-color: darkgrey; height: 15px; border-top: 1px solid black; border-bottom: 1px solid black;">
+					<div id="{{id}}ProgressRisky" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockRisky"></div>
+					<div id="{{id}}ProgressSkip" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockSkip"></div>
+					<div id="{{id}}ProgressFail" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockFail"></div>
+					<div id="{{id}}ProgressError" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockError"></div>
+					<div id="{{id}}ProgressPass" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockPass"></div>
+					<div id="{{id}}ProgressRunning" style="border: 0; width: 0; height: 13px; display: inline-block; margin: 0; padding: 0; float: left;" class="blockInProgress"></div>
 				</div>
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
@@ -140,11 +142,11 @@ if($pollingRateType == 'Seconds')
 						<span onclick="toggleEta('{{id}}');" class="infoBox"  <?php if($defaultShowEta !== "elapsed"): ?> style="display: none;" <?php endif; ?>   id="{{id}}ElapsedTxt" >{{eta}}</span>
 						<input type="hidden" name="etaSec" id="{{id}}ElapsedSec" value="0" >
 						<span class="infoBox">
-							<a href="../view/tests.php#{{id}}.log" style="color: black;" >Log File: {{id}}.log</a>
+							<a href="../view/tests.php#{{id}}.log" style="color: black;" >{{id}}.log</a>
 						</span>
 					</div>
 				</div>
-				<div id="{{id}}ProgressBlocks" class="containerBox">
+				<div id="{{id}}ProgressBlocks" class="containerBox" style="max-height: 500px; overflow: auto;">
 					{{ProgressBlocks}}
 				</div>
 				<div class="key fontChange">
@@ -158,31 +160,51 @@ if($pollingRateType == 'Seconds')
 					<div class="block blockKey blockSkip"></div> - Skipped
 					<div class="block blockKey blockRisky"></div> - Risky
 				</div>
-				<div class="fontChange subTitleEF">
-					(<span id="{{id}}FailCount">0</span>/{{totalCount}})Fails:
-					<div style="float: right;">
-						<img class="imageInHeaderContainer" id="{{id}}FailsContract" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/contract.png" style="display: none;">
-						<img class="imageInHeaderContainer" id="{{id}}FailsExpand" onclick="toggleSubtitleEF('{{id}}Fails');" src="../core/img/expand.png" >
+				<div id="{{id}}MainMenu" >
+					<div style="border-bottom: 1px solid black;">
+						<ul class="menu">
+							<li id="{{id}}MainMenuStatsMenu" onclick="toggleTab('{{id}}MainMenu', 'Stats');"  class="active">
+								Stats
+							</li>
+							<li id="{{id}}MainMenuErrorsMenu" onclick="toggleTab('{{id}}MainMenu', 'Errors');">
+								Errors
+							</li>
+							<li id="{{id}}MainMenuFailsMenu" onclick="toggleTab('{{id}}MainMenu', 'Fails');">
+								Fails
+							</li>
+							<li id="{{id}}MainMenuConfigMenu" onclick="toggleTab('{{id}}MainMenu', 'Config');">
+								Config
+							</li>
+						</ul>
 					</div>
-				</div>
-				<div class="containerBox containerMaxHeight">
-					<span  style="display: none;" id="{{id}}Fails">
-					</span>
-				</div>
-				<div  class="fontChange subTitleEF">
-					(<span id="{{id}}ErrorCount">0</span>/{{totalCount}})Errors:
-					<div style="float: right;">
-						<img class="imageInHeaderContainer" id="{{id}}ErrorsContract" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/contract.png"  style="display: none;" >
-						<img class="imageInHeaderContainer" id="{{id}}ErrorsExpand" onclick="toggleSubtitleEF('{{id}}Errors');" src="../core/img/expand.png">
+					<div class="conainerSub containerSubBG" id="{{id}}MainMenuStats">
+						<div class="fontChange subTitleEF">
+							<span id="{{id}}FailCount">0</span>/{{totalCount}} Fails
+						</div>
+						<br>
+						<div  class="fontChange subTitleEF">
+							<span id="{{id}}ErrorCount">0</span>/{{totalCount}} Errors
+						</div>
 					</div>
-				</div>
-				<div class="containerBox containerMaxHeight">
-					<span style="display: none;" id="{{id}}Errors">
-					</span>
-				</div>
-				<div class="fontChange">
-					<input type="hidden" id="{{id}}File" value="{{file}}">
-					<input type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
+					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuFails">
+						<div class="containerBox">
+							<span id="{{id}}Fails">
+							</span>
+						</div>
+					</div>
+					<div class="conainerSub containerSubBG" style="display: none;" id="{{id}}MainMenuErrors" >
+						<div class="containerBox">
+							<span  id="{{id}}Errors">
+							</span>
+						</div>
+					</div>
+					<div class="fontChange conainerSub containerSubBG" id="{{id}}MainMenuConfig" style="display: none;" >
+						<br>
+						<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
+						<br>
+						<input style="width: 75%; display: block;" type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
+						<br>
+					</div>
 				</div>
 			</div>
 		</div>

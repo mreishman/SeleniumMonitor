@@ -10,6 +10,13 @@ var maxTestsStatic = 1;
 var ajaxRequestValue = 3;
 var testsPerAjax = 1;
 var totalTimeOfAllTests = new Array();
+var objectOfVideos = {};
+var objectOfVideosWithLinks = {};
+var objectOfLogs = {};
+var gettingLogData = false;
+var paseVideoDataCounter = 0;
+var logData = {};
+var testLogs = {};
 
 function getFileList()
 {
@@ -120,8 +127,16 @@ function runTests()
 		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'>";
 		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[i]+"\" id='Test"+testNumber+listOfNames[i]+"TestName' >";
 		progressBlocksHtml += "</div>";
-		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> <span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span>";
-		progressBlocksHtml += " </div>";
+		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> ";
+		progressBlocksHtml += "<div id=\"Test"+testNumber+listOfNames[i]+"Menu\" ><div style=\"border-bottom: 1px solid black;\"><ul class=\"menu\">";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuResultsMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Results');\"  class=\"active\">Results</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuVideoMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Video');\">Video</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
+		progressBlocksHtml += "</ul></div>";
+		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p class=\""+listOfNames[i]+"Video\" >No Video Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p class=\""+listOfNames[i]+"Log\">No Log Info Available</p></div>";
+		progressBlocksHtml += " </div></div>";
 	}
 
 	var arrayForNewTestArray = {
@@ -187,8 +202,6 @@ function createNewTestPopup(data)
 		maxRequests = maxTestsStatic;
 	}
 	testNumber = new Date().getTime();
-	var targetWidthMargin = window.innerWidth;
-	targetWidthMargin = (targetWidthMargin - 1000)/2;
 	var item = $("#storage .newTestPopup").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
@@ -198,7 +211,6 @@ function createNewTestPopup(data)
 	maxTestsHtml += "</ul>";
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
 	$("#main").append(item);
-	document.getElementById("Test"+testNumber).style.marginLeft = targetWidthMargin+"px";
 }
 
 function adjustAjaxRequestValueFromSlider()
@@ -350,16 +362,6 @@ function poll()
 	}
 }
 
-function updateProgressBar()
-{
-
-}
-
-function updateProgressBarStart(testNumberLocal, firstNum, secondNum)
-{
-	document.getElementById(testNumberLocal+"ProgressStart").value = ((firstNum/secondNum).toFixed(5));
-}
-
 function pollInner(data)
 {
 	var check = false;
@@ -392,7 +394,6 @@ function pollInner(data)
 				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
 
 				arrayOfTests[0]["startCount"]++;
-				updateProgressBarStart("Test"+testNumberLocal, arrayOfTests[0]["startCount"], arrayOfTests[0]["total"]);
 
 				valueForFile[i] = document.getElementById("Test"+testNumberLocal+"File").value;
 				id[i] = "Test"+testNumberLocal;
@@ -401,7 +402,7 @@ function pollInner(data)
 			}
 			var data = {id , testName , numberOfTestsToRun, timeStart};
 			var urlForSend = '../core/php/runTest.php?format=json';
-
+			updateProgressBar("Test"+testNumberLocal);
 			(function(_data){
 				$.ajax(
 				{
@@ -538,7 +539,6 @@ function pollInner(data)
 								{
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
 									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = ""+arrayOfTests[0]["count"]+"/"+arrayOfTests[0]["total"];
-									document.getElementById(_data["id"][i]+"Progress").value = (percentValue.toFixed(5));
 									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: "+getEta(_data["id"][i], (arrayOfTests[0]["total"]-arrayOfTests[0]["count"]));
 									
 								}
@@ -547,12 +547,12 @@ function pollInner(data)
 									document.getElementById(_data["id"][i]+"ProgressTxt").innerHTML = "Finished";
 									document.getElementById(_data["id"][i]+"ProgressCount").innerHTML = "Finished";
 									document.getElementById(_data["id"][i]+"EtaTxt").innerHTML = "ETA: --";
-									document.getElementById(_data["id"][i]+"Progress").value = 1;
 								}
 								
 							}
 							currentTestsRunning--;
 						}
+						updateProgressBar(_data["id"][0]);
 						currentAjaxRequestNum--;
 						//make ajax request to save current data
 						if(cacheTestEnable === "true")
@@ -791,12 +791,9 @@ function reRunTests(idOfTest)
 	var newStart = totalTestCount - arrayOfTestsToBeReRun.length;
 	//reset percent bar (get number of tests from boxes)
 
-	updateProgressBarStart(idOfTest, newStart, totalTestCount);
-
 	var percentValue = (newStart/totalTestCount);
 	document.getElementById(idOfTest+"ProgressTxt").innerHTML = ""+((100*percentValue).toFixed(2))+"%";
 	document.getElementById(idOfTest+"ProgressCount").innerHTML = ""+newStart+"/"+totalTestCount;
-	document.getElementById(idOfTest+"Progress").value = (percentValue.toFixed(5));
 
 	var arrayForNewTestArray = {
 		name: idOfTest.substring(4),
@@ -861,6 +858,241 @@ function timerStuff()
 			decreaseEtaByOne(idOfTest);
 			increaseElapsedTimeByOne(idOfTest);
 		}
+
+	}
+
+	if(arrayOfTests.length > 0)
+	{
+		//update log info
+		if(!gettingLogData)
+		{
+			gettingLogData = true;
+			setTimeout(function(){ getLogData(); }, 10000);
+		}
+	}
+}
+
+function getLogData()
+{
+	
+	var urlLog = "../core/php/poll.php";
+	data = {};
+	$.ajax(
+	{
+		url: urlLog,
+		dataType: "json",
+		data,
+		type: "POST",
+		success(data)
+		{
+			logData = data;
+			parseDataForVideoLink();
+			parseDataForLogInfo();
+		},
+		complete(data)
+		{
+			gettingLogData = false;
+		}
+	});
+}
+
+function parseDataForLogInfo()
+{
+	var text = logData.split("\n");
+	var lengthOfTextArray = text.length;
+	for (var i = 0; i < lengthOfTextArray; i++)
+	{
+		if(text[i].indexOf("SELENIUM_LOG_INFORMATION") > -1)
+		{
+			var dataForParse = text[i].split(":::::");
+			var logLine = dataForParse[0]+dataForParse[3];
+			var sessionId = dataForParse[2];
+			//chekc if logLine is already in log for test
+			var found = false;
+			if(!(sessionId in testLogs))
+			{
+				testLogs[sessionId] = {};
+			}
+			if(!("log" in testLogs[sessionId]))
+			{
+				testLogs[sessionId]["log"] = new Array();
+			}
+			else
+			{
+				var lengthOfLog = testLogs[sessionId]["log"].length;
+				for(var j = 0; j < lengthOfLog; j++)
+				{
+					if(testLogs[sessionId]["log"][j] === logLine)
+					{
+						found = true;
+					}
+				}
+			}
+			if(!found)
+			{
+				testLogs[sessionId]["log"].push(logLine);
+			}
+		}
+	}
+	updateLogsForTests();
+}
+
+function updateLogsForTests()
+{
+	var keysOfLogs = Object.keys(testLogs);
+	var lengthOfKeysOfLogs = keysOfLogs.length;
+	for(var i = 0; i < lengthOfKeysOfLogs; i++)
+	{
+		var classObjectList = document.getElementsByClassName(testLogs[keysOfLogs[i]]["testName"]+"Log");
+		var classObjectListLength = classObjectList.length;
+		for (var j = 0; j < classObjectListLength; j++)
+		{
+			if("log" in testLogs[keysOfLogs[i]])
+			{
+				classObjectList[j].innerHTML = "";
+				var lengthOfLog = testLogs[keysOfLogs[i]]["log"].length;
+				for(var k = 0; k < lengthOfLog; k++)
+				{
+					classObjectList[j].innerHTML += testLogs[keysOfLogs[i]]["log"][k]+"<br>";
+				}
+			}
+		}
+	}
+}
+
+function parseDataForVideoLink()
+{
+	var text = logData.split("\n");
+	var lengthOfTextArray = text.length;
+	for (var i = 0; i < lengthOfTextArray; i++)
+	{
+		if(text[i].indexOf("SESSION_LINK_FOR_SELENIUM_MONITOR") > -1)
+		{
+			var dataForParse = text[i].split(":::::");
+			var sessionId = dataForParse[1].replace(/-/g,"").trim().toLowerCase();
+			var testName = dataForParse[2].trim();
+			objectOfVideos[testName] = sessionId;
+			if(!(sessionId in testLogs))
+			{
+				testLogs[sessionId] = {};
+			}
+			testLogs[sessionId]["testName"] = testName;
+		}
+	}
+	if(paseVideoDataCounter === 0)
+	{
+		parseNewVideoDataForLinks();
+	}
+}
+
+function parseNewVideoDataForLinks()
+{
+	var functions = Object.keys(objectOfVideos);
+	var lengthOfFunct = functions.length;
+	paseVideoDataCounter = lengthOfFunct;
+	var listOfVideos = new Array();
+	for (var i = 0; i < lengthOfFunct; i++)
+	{
+		if(!(functions[i] in objectOfVideosWithLinks))
+		{
+			//not in video with links yet
+			objectOfVideosWithLinks[functions[i]] = {};
+			objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
+			listOfVideos.push(objectOfVideos[functions[i]]);
+		}
+		else
+		{
+			//its there, check if session is same
+			if(objectOfVideosWithLinks[functions[i]]["session"] !== objectOfVideos[functions[i]])
+			{
+				//new session, get that data
+				objectOfVideosWithLinks[functions[i]]["session"] = objectOfVideos[functions[i]];
+				listOfVideos.push(objectOfVideos[functions[i]]);
+			}
+			else
+			{
+				if("success" in objectOfVideosWithLinks[functions[i]] && objectOfVideosWithLinks[functions[i]]["success"] === "false")
+				{
+					delete objectOfVideosWithLinks[functions[i]];
+				}
+				paseVideoDataCounter--;
+			}
+		}
+	}
+	if(listOfVideos.length > 0)
+	{
+		getVideoLink(listOfVideos);
+	}
+}
+
+function getVideoLink(functionData)
+{
+	var urlData = "../core/php/getTestInfo.php";
+	var data = {sessions: functionData};
+	$.ajax(
+	{
+		url: urlData,
+		dataType: "json",
+		data,
+		sentData: functionData,
+		type: "POST",
+		success(data)
+		{
+			//{"msg":"slot found !","success":true,"session":"a8e58ec7a888d51799483eb38179afc0","internalKey":"b65f21ec-65ea-4f41-a880-1955911b81b5","inactivityTime":719,"proxyId":"http://192.168.1.154:5555"}
+			for(var i = 0, length1 = data.length; i < length1; i++)
+			{
+				var dataInner = data[i];
+				if(typeof dataInner !== "undefined")
+				{
+					var dataMessage = dataInner["msg"];
+					var dataSuccess = dataInner["success"];
+					if(dataSuccess)
+					{
+						//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
+						dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
+						dataMessage = dataMessage.replace(/5555/g,"3000");
+						//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
+						dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+					}
+					var selector = "";
+					var keysOfObjectOfVideos = Object.keys(objectOfVideos);
+					for(var i = 0, length1 = keysOfObjectOfVideos.length; i < length1; i++)
+					{
+						if(objectOfVideos[keysOfObjectOfVideos[i]] === dataInner["session"])
+						{
+							selector = keysOfObjectOfVideos[i];
+							objectOfVideosWithLinks[selector]["link"] = dataMessage;
+							objectOfVideosWithLinks[selector]["success"] = dataSuccess;
+							break;
+						}
+					}
+				}
+			}
+			parseNewVideoData();
+		},
+		complete(data)
+		{
+			paseVideoDataCounter = paseVideoDataCounter - functionData.length;
+		}
+	});
+}
+
+
+function parseNewVideoData()
+{
+	var functions = Object.keys(objectOfVideosWithLinks);
+	var lengthOfFunct = functions.length;
+	for (var i = 0; i < lengthOfFunct; i++)
+	{
+		var classObjectList = document.getElementsByClassName(functions[i]+"Video");
+		var classObjectListLength = classObjectList.length;
+		for (var j = 0; j < classObjectListLength; j++)
+		{
+			if("link" in objectOfVideosWithLinks[functions[i]])
+			{
+				classObjectList[j].innerHTML = objectOfVideosWithLinks[functions[i]]["link"];			
+			}
+		}
 	}
 }
 
@@ -920,3 +1152,52 @@ function generateExportInfo(idOfTest)
 	}
 	return exportInfo;
 }
+
+function toggleTab(currentId, tabIdToShow)
+{
+	$("#"+currentId+" .menu li").removeClass("active");
+	$("#"+currentId+" .menu th").removeClass("active");
+	$("#"+currentId+" .conainerSub").hide();
+
+	$("#"+currentId+tabIdToShow).show();
+	if(tabIdToShow === "VideosTime" || tabIdToShow === "VideosSession")
+	{
+		$("#"+currentId+"Videos"+"Menu").addClass("active");
+		$("#"+currentId+"VideoSubMenu").show();
+	}
+	else
+	{
+		$("#"+currentId+"VideoSubMenu").hide();
+	}
+	$("#"+currentId+tabIdToShow+"Menu").addClass("active");
+}
+
+function updateProgressBar(testId)
+{
+	var backgroundProgressWidth = document.getElementById(testId+"ProgressBG").getBoundingClientRect().width;
+	var blocks = $("#"+testId+"ProgressBlocks .block").length;
+	var oneTestIsWorth = backgroundProgressWidth/blocks;
+	document.getElementById(testId+"ProgressRisky").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockRisky").length)+"px";
+	document.getElementById(testId+"ProgressSkip").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockSkip").length)+"px";
+	document.getElementById(testId+"ProgressFail").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockFail").length)+"px";
+	document.getElementById(testId+"ProgressError").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockError").length)+"px";
+	document.getElementById(testId+"ProgressPass").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockPass").length)+"px";
+	document.getElementById(testId+"ProgressRunning").style.width = ""+(oneTestIsWorth*$("#"+testId+"ProgressBlocks .blockInProgress").length)+"px";
+}
+
+function resizeUpdateProgressBar()
+{
+	$(".progressBG").each(function()
+	{
+		var testId = $(this).attr("id");
+		if(testId.indexOf("{{id}}") === -1)
+		{
+			testId = testId.replace("ProgressBG","");
+			updateProgressBar(testId);
+		}
+	});
+}
+
+$(window).on('resize', function(){
+      resizeUpdateProgressBar();
+});
