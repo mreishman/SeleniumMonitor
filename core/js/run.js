@@ -913,17 +913,16 @@ function parseDataForLogInfo()
 			{
 				testLogs[sessionId] = {};
 			}
-			if(!("log" in testLogs))
+			if(!("log" in testLogs[sessionId]))
 			{
 				testLogs[sessionId]["log"] = new Array();
 			}
-			var lengthOfLog = testLogs[sessionId]["log"].length;
-			var found = false;
-			if(lengthOfLog > 0)
+			else
 			{
-				for(var i = 0; i < lengthOfLog; i++)
+				var lengthOfLog = testLogs[sessionId]["log"].length;
+				for(var j = 0; j < lengthOfLog; j++)
 				{
-					if(testLogs[sessionId]["log"][i] === logLine)
+					if(testLogs[sessionId]["log"][j] === logLine)
 					{
 						found = true;
 					}
