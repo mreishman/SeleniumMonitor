@@ -52,8 +52,8 @@ Run Settings
 	<li>
 		<span class="settingsBuffer" > Default ETA: </span>
 		<select name="defaultShowEta">
-			<option <?php if($defaultShowEta == 'eta'){echo "selected";} ?> value="percent">ETA</option>
-			<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="fraction">Elapsed</option>
+			<option <?php if($defaultShowEta == 'eta'){echo "selected";} ?> value="eta">ETA</option>
+			<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="elapsed">Elapsed</option>
 		</select>
 	</li>
 	<li>
