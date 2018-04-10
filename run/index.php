@@ -52,7 +52,7 @@ if($pollingRateType == 'Seconds')
 		<img class="menuImage" src="<?php echo $baseUrl; ?>img/stopSignLight.png" onclick="stopAllTests();" style="display: inline-block; cursor: pointer;" height="30px">
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
-
+	<?php require_once('../core/php/template/sidebar.php'); ?>
 	<div id="main">
 		
 	</div>
@@ -213,6 +213,7 @@ if($pollingRateType == 'Seconds')
 	<form id="settingsInstallUpdate" action="../update/updater.php" method="post" style="display: none"></form>
 	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script src="../core/js/run.js?v=<?php echo $cssVersion?>"></script>
+	<script src="../core/js/sidebar.js?v=<?php echo $cssVersion?>"></script>
 	<script>
 		<?php
 		echo "var autoCheckUpdate = ".$autoCheckUpdate.";";

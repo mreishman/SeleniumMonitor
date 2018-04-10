@@ -36,4 +36,15 @@ body
 }
 
 <?php endif; ?>
+
+#main
+{
+	right: 300px;
+}
+
+#menu
+{
+	right: 300px;
+}
+
 </style>

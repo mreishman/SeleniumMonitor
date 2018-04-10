@@ -16,12 +16,12 @@ div {
 
 #menu {
 	position: absolute;
-	width: 100%;
 	z-index: 20;
 	padding: .5em 1em;
 	max-height: 300px;
 	border-bottom: 1px solid white;
-	overflow-y: auto;	
+	overflow-y: auto;
+	left: 0;
 }
 
 .backgroundForMenus{
@@ -122,7 +122,6 @@ div {
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	width: 100%;
 	overflow: auto;
 }
 
