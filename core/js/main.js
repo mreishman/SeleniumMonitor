@@ -55,6 +55,22 @@ function getListOfBrowsers(data)
 	return browserList;
 }
 
+function getMaxBrowserCount(data, browser)
+{
+	var browserInner = data.split("browserName="+browser);
+	var totmax = 0;
+	for (var i = 1; i < browserInner.length; i++)
+	{
+		if(browserInner[i].indexOf("maxInstances=") !== -1)
+		{
+			var max = browserInner[i].split("maxInstances=");
+			max = max[1].split(",")[0];
+			totmax++;
+		}
+	}
+	return totmax;
+}
+
 function getCurrentNodeCount(data)
 {
 	var splitData = data.split("<div class='proxy'>");

@@ -26,9 +26,10 @@ function sideBarDisplayLogic(data)
 function browserNodeInfoLogic(data)
 {
 	var browserList = getListOfBrowsers(data);
-	var html = "<table style=\"width: 100%;\" ><tr><th width=\"33%\"></th><th width=\"33%\"></th><th width=\"33%\"></th>";
+	var html = "<table style=\"width: 280px;\" ><tr><th width=\"33%\"></th><th width=\"33%\"></th><th width=\"33%\"></th>";
 	for(var i = 0; i < browserList.length; i++)
 	{
+		var maxBrowserCount = getMaxBrowserCount(data, browserList[i]);
 		var browserSrc = "../core/img/chrome-hr.png";
 		if(browserList[i] === "safari")
 		{
@@ -42,9 +43,9 @@ function browserNodeInfoLogic(data)
 		{
 			browserSrc = "../core/img/firefox-hr.png";
 		}
-		else if(browserList[i] === "edge")
+		else if(browserList[i] === "MicrosoftEdge")
 		{
-			browserSrc = "../core/img/edge-hr.png";
+			browserSrc = "../core/img/MicrosoftEdge-hr.png";
 		}
 		else if(browserList[i] === "opera")
 		{
@@ -54,7 +55,7 @@ function browserNodeInfoLogic(data)
 		{
 			html += "</tr><tr>"
 		}
-		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> -/- </th>";
+		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> -/"+maxBrowserCount+" </th>";
 	}
 	$("#browserNodeInfo").html(html);
 }
