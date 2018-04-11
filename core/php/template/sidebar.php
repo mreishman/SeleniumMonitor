@@ -4,12 +4,12 @@
 			<th width="50%">
 				<canvas width="150px" height="150px"></canvas>
 				<br>
-				<span id="currentRunTest" ></span>/<span id="currentMaxNodeTot"></span>
+				<span id="currentRunTest" >-</span>/<span id="currentMaxNodeTot">-</span>
 			</th>
 			<th width="50%">
 				<canvas width="150px" height="150px"></canvas>
 				<br>
-				<span id="currentRunNodes"></span>/<span id="currentNodeCount"></span>
+				<span id="currentRunNodes">-</span>/<span id="currentNodeCount">-</span>
 			</th>
 		</tr>
 	</table>
@@ -32,6 +32,7 @@
 		margin-left: 9px;
 		margin-top: 10px;
 		margin-bottom: 10px;
+		border-left: 1px solid black;
 	}
 
 </style>

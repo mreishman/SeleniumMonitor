@@ -149,7 +149,7 @@ if($pollingRateType == 'Seconds')
 				<div id="{{id}}ProgressBlocks" class="containerBox" style="max-height: 500px; overflow: auto;">
 					{{ProgressBlocks}}
 				</div>
-				<div class="key fontChange">
+				<div class="key fontChange" style="margin-bottom: 10px; margin-top: 10px;" >
 					Key:
 					<br>
 					<div class="block blockKey blockEmpty"></div> - Waiting
