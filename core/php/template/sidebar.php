@@ -2,12 +2,12 @@
 	<table>
 		<tr>
 			<th width="50%">
-				<canvas width="150px" height="150px"></canvas>
+				<canvas id="testCountCanvas" width="150px" height="75px"></canvas>
 				<br>
 				<span id="currentRunTest" >-</span>/<span id="currentMaxNodeTot">-</span>
 			</th>
 			<th width="50%">
-				<canvas width="150px" height="150px"></canvas>
+				<canvas id="nodeCountCanvas" width="150px" height="75px"></canvas>
 				<br>
 				<span id="currentRunNodes">-</span>/<span id="currentNodeCount">-</span>
 			</th>
