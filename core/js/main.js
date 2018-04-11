@@ -35,6 +35,26 @@ function getMaxConcurrentTests(data)
 	return maxTestsStaticInner;
 }
 
+function getListOfBrowsers(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	var browserList = new Array();
+	for (var i = 1; i < splitData.length; i++)
+	{
+		var browserInner = splitData[i].split("browserName=");
+		for (var j = 1; j < browserInner.length; j++)
+		{
+			var browserName = browserInner[j].split(",");
+			browserName = browserName[0];
+			if(browserList.indexOf(browserName) === -1)
+			{
+				browserList.push(browserName);
+			}
+		}
+	}
+	return browserList;
+}
+
 function getCurrentNodeCount(data)
 {
 	var splitData = data.split("<div class='proxy'>");

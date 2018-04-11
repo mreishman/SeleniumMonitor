@@ -14,6 +14,8 @@
 		</tr>
 	</table>
 	<canvas class="canvasMonitor" id="useageCanvas" width="280" height="150" ></canvas>
+	<div id="browserNodeInfo">
+	</div>
 </div>
 
 <script type="text/javascript">

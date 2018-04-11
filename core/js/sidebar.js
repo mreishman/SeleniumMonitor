@@ -20,6 +20,43 @@ function sideBarDisplayLogic(data)
 {
 	graphLogic(data);
 	speedOmLogic(data);
+	browserNodeInfoLogic(data);
+}
+
+function browserNodeInfoLogic(data)
+{
+	var browserList = getListOfBrowsers(data);
+	var html = "<table style=\"width: 100%;\" ><tr><th width=\"33%\"></th><th width=\"33%\"></th><th width=\"33%\"></th>";
+	for(var i = 0; i < browserList.length; i++)
+	{
+		var browserSrc = "../core/img/chrome-hr.png";
+		if(browserList[i] === "safari")
+		{
+			browserSrc = "../core/img/safari-hr.png";
+		}
+		else if(browserList[i] === "internet explorer")
+		{
+			browserSrc = "../core/img/internet-explorer-hr.png";
+		}
+		else if(browserList[i] === "firefox")
+		{
+			browserSrc = "../core/img/firefox-hr.png";
+		}
+		else if(browserList[i] === "edge")
+		{
+			browserSrc = "../core/img/edge-hr.png";
+		}
+		else if(browserList[i] === "opera")
+		{
+			browserSrc = "../core/img/opera-hr.png";
+		}
+		if(i%3 === 0)
+		{
+			html += "</tr><tr>"
+		}
+		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> -/- </th>";
+	}
+	$("#browserNodeInfo").html(html);
 }
 
 function speedOmLogic(data)
