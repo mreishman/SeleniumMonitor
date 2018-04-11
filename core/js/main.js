@@ -35,6 +35,26 @@ function getMaxConcurrentTests(data)
 	return maxTestsStaticInner;
 }
 
+function getCurrentNodeCount(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	return (splitData.length - 1);
+}
+
+function getCurrentNodeUsage(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	var nodeUsage = 0;
+	for (var i = 1; i < splitData.length; i++)
+	{
+		if(splitData[i].indexOf("class='busy'") !== -1)
+		{
+			nodeUsage++;
+		}
+	}
+	return nodeUsage;
+}
+
 function getCurrentRunningTestCount(data)
 {
 	

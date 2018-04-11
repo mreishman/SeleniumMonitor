@@ -26,6 +26,12 @@ function speedOmLogic(data)
 {
 	var currentMaxTestsStatic = getMaxConcurrentTests(data);
 	var currentCurrentRunningTestCount = getCurrentRunningTestCount(data);
+	var totalNodes = getCurrentNodeCount(data);
+	var nodeInUsage = getCurrentNodeUsage(data);
+	$("#currentRunTest").html(currentCurrentRunningTestCount);
+	$("#currentMaxNodeTot").html(currentMaxTestsStatic);
+	$("#currentNodeCount").html(totalNodes);
+	$("#currentRunNodes").html(nodeInUsage);
 }
 
 function graphLogic(data)

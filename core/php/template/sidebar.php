@@ -1,13 +1,19 @@
-<div style="position: absolute; width: 300px; top: 0; bottom: 0; right: 0; background-color: white; border-left: 1px solid black;">
+<div style="position: absolute; width: 300px; top: 0; bottom: 0; right: 0; background-color: white; color: black; border-left: 1px solid black; overflow: auto;">
+	<table>
+		<tr>
+			<th width="50%">
+				<canvas width="150px" height="150px"></canvas>
+				<br>
+				<span id="currentRunTest" ></span>/<span id="currentMaxNodeTot"></span>
+			</th>
+			<th width="50%">
+				<canvas width="150px" height="150px"></canvas>
+				<br>
+				<span id="currentRunNodes"></span>/<span id="currentNodeCount"></span>
+			</th>
+		</tr>
+	</table>
 	<canvas class="canvasMonitor" id="useageCanvas" width="280" height="150" ></canvas>
-	<ul style="color: black;">
-		<li>
-			Current Running Tests
-		</li>
-		<li>
-			Nodes In Use
-		</li>
-	</ul>
 </div>
 
 <script type="text/javascript">
