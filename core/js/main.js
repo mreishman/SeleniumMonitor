@@ -55,7 +55,7 @@ function getListOfBrowsers(data)
 	return browserList;
 }
 
-function getMaxBrowserCount(data, browser)
+function getCurrentBrowserCount(data, browser)
 {
 	var browserInner = data.split("browserName="+browser);
 	var totmax = 0;

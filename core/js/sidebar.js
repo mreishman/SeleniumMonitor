@@ -29,7 +29,8 @@ function browserNodeInfoLogic(data)
 	var html = "<table style=\"width: 280px;\" ><tr><th width=\"33%\"></th><th width=\"33%\"></th><th width=\"33%\"></th>";
 	for(var i = 0; i < browserList.length; i++)
 	{
-		var maxBrowserCount = getMaxBrowserCount(data, browserList[i]);
+		var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
+		var maxBrowserCount = "";
 		var browserSrc = "../core/img/chrome-hr.png";
 		if(browserList[i] === "safari")
 		{
@@ -55,7 +56,7 @@ function browserNodeInfoLogic(data)
 		{
 			html += "</tr><tr>"
 		}
-		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> -/"+maxBrowserCount+" </th>";
+		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> "+currentBrowserCount+"/"+maxBrowserCount+" </th>";
 	}
 	$("#browserNodeInfo").html(html);
 }
