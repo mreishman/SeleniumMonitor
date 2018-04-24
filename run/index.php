@@ -42,7 +42,9 @@ if($pollingRateType == 'Seconds')
 	?>
 </head>
 <body>
-	<?php require_once("../core/php/customCSS.php");?>
+	<?php
+	$thisVarForShowSideBar = true;
+	require_once("../core/php/customCSS.php");?>
 	<div id="menu">
 		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<div onclick="pausePollAction();" class="menuImageDiv">
@@ -216,6 +218,11 @@ if($pollingRateType == 'Seconds')
 	<script src="../core/js/sidebar.js?v=<?php echo $cssVersion?>"></script>
 	<script>
 		<?php
+		$popupSettingsArrayEncode = json_encode($popupSettingsArray);
+		if($popupSettingsArrayEncode == "")
+		{
+			$popupSettingsArrayEncode = "{}";
+		}
 		echo "var autoCheckUpdate = ".$autoCheckUpdate.";";
 		echo "var dateOfLastUpdate = '".$configStatic['lastCheck']."';";
 		echo "var daysSinceLastCheck = '".$daysSince."';";
@@ -225,7 +232,7 @@ if($pollingRateType == 'Seconds')
 		?>
 		var dontNotifyVersion = "<?php echo $dontNotifyVersion;?>";
 		var currentVersion = "<?php echo $configStatic['version'];?>";
-		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
+		var popupSettingsArray = JSON.parse('<?php echo $popupSettingsArrayEncode; ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";

@@ -43,12 +43,14 @@ if($backgroundPollingRateType == 'Seconds')
 	<script src="../core/js/jquery.js"></script>
 </head>
 <body>
-	<?php require_once("../core/php/customCSS.php");?>
+	<?php
+	$thisVarForShowSideBar = true;
+	require_once("../core/php/customCSS.php");?>
 	<div id="menu">
 		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
-
+	<?php require_once('../core/php/template/sidebar.php'); ?>
 
 	<div id="main">
 		
@@ -226,6 +228,7 @@ if($backgroundPollingRateType == 'Seconds')
 	<script src="../core/js/update.js?v=<?php echo $cssVersion?>"></script>
 	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script src="../core/js/view.js?v=<?php echo $cssVersion?>"></script>
+	<script src="../core/js/sidebar.js?v=<?php echo $cssVersion?>"></script>
 	<script type="text/javascript">
 		$(document).ready(function()
 		{
