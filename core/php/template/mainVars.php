@@ -87,6 +87,17 @@ Main Settings
 			</div>
 		</div>
 	</li>
+	<li>
+		<span class="settingsBuffer" > BrowserStack Username: </span>  <input type="text" name="browserStackUsername" value="<?php echo $browserStackUsername;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > BrowserStack Access Key: </span>  <input type="text" name="browserStackAccessKey" value="<?php echo $browserStackAccessKey;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > IP of main server: </span>  <input type="text" name="mainServerIP" value="<?php echo $mainServerIP;?>" >
+		<br>
+		*server address will be http:// IP  :4444/wd/hub
+	</li>
 </ul>
 </div>
 </form>
