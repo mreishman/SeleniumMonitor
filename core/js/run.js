@@ -197,14 +197,33 @@ function createNewTestPopup(data)
 {
 	maxTestsStatic = getMaxConcurrentTests(data);
 	var listOfPlatforms = getListOfPlatforms(data);
-	var platformListHtml = "<select id='InputForPlatformName' ><option value='any' >Any</option>";
+	var platformListHtml = "<select id='InputForPlatformName' onchange='adjustPlatformValueFromInput();' ><option value='any' >Any</option>";
 	newLineCount = Object.keys(listOfPlatforms);
 	countLength = newLineCount.length;
 	for(var i = 0; i < countLength; i++)
 	{
-		platformListHtml += "<option value='"+listOfPlatforms[i]+"' >"+listOfPlatforms[i]+"</option>";
+		platformListHtml += "<option ";
+		if(listOfPlatforms[i] == platformValue)
+		{
+			platformListHtml += "  selected  ";
+		}
+		platformListHtml += " value='"+listOfPlatforms[i]+"' >"+listOfPlatforms[i]+"</option>";
 	}
 	platformListHtml += "</select>";
+	var browserOptions = "<select  onchange='adjustBrowserValueFromInput();' id=\"InputForBrowserName\" ><option value='any' >Any</option>";
+	var browserList = {0:"chrome",1:"edge",2:"firefox",3:"internet explorer",4:"opera",5:"safari"};
+	newLineCount = Object.keys(browserList);
+	countLength = newLineCount.length;
+	for(var i = 0; i < countLength; i++)
+	{
+		browserOptions += "<option ";
+		if(browserList[i] == browserValue)
+		{
+			browserOptions += "  selected  ";
+		}
+		browserOptions += " value='"+browserList[i]+"' >"+browserList[i]+"</option>";
+	}
+	browserOptions += "</select>";
 	var maxRequests = 5;
 	if (maxTestsStatic < 5)
 	{
@@ -218,11 +237,20 @@ function createNewTestPopup(data)
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
 	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
 	maxTestsHtml += "</ul>";
-	var browserOptions = "<select id=\"InputForBrowserName\" ><option value='any' >Any</option><option value='chrome' >Chrome</option><option value='edge' >Edge</option><option value='firefox' >Firefox</option><option value='internet explorer' >Internet Explorer</option><option value='safari' >Safari</option><option value='opera' >Opera</option></select>";
 	item = item.replace(/{{browserSelect}}/g, browserOptions);
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
 	item = item.replace(/{{osSelect}}/g, platformListHtml);
 	$("#main").append(item);
+}
+
+function adjustBrowserValueFromInput()
+{
+	browserValue = document.getElementById("InputForBrowserName").value;
+}
+
+function adjustPlatformValueFromInput()
+{
+	platformValue = document.getElementById("InputForPlatformName").value;
 }
 
 function adjustAjaxRequestValueFromSlider()
@@ -418,13 +446,13 @@ function pollInner(data)
 			var localBaseUrl = document.getElementById("Test"+testNumberLocal+"BaseUrl").value;
 			var browserName = "";
 			var platformName = "";
-			if(document.getElementById("InputForBrowserName").value !== "any")
+			if(browserValue !== "any")
 			{
-				browserName = '"browserName":"'+document.getElementById("InputForBrowserName").value+'",';
+				browserName = '"browserName":"'+browserValue+'",';
 			}
-			if(document.getElementById("InputForPlatformName").value !== "any")
+			if(platformValue !== "any")
 			{
-				platformName = '"platform":"'+document.getElementById("InputForPlatformName").value+'",';
+				platformName = '"platform":"'+platformValue+'",';
 			}
 			var paramString = "'{"+browserName+'"baseUrl":"'+localBaseUrl+'","url":"http://'+urlForSendTests+':4444/wd/hub","username":"'+browserStackUsername+'","accessKey":"'+browserStackAccessKey+'"'+"}'";
 			(function(_data){

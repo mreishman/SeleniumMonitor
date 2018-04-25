@@ -248,6 +248,8 @@ if($pollingRateType == 'Seconds')
 		var urlForSendTests = "<?php echo $mainServerIP; ?>";
 		var browserStackUsername = "<?php echo $browserStackUsername; ?>";
 		var browserStackAccessKey = "<?php echo $browserStackAccessKey; ?>";
+		var browserValue = "any";
+		var platformValue = "any";
 		$(document).ready(function()
 		{
 			resize();
