@@ -35,6 +35,22 @@ function getMaxConcurrentTests(data)
 	return maxTestsStaticInner;
 }
 
+function getListOfPlatforms(data)
+{
+	var splitData = data.split("platform:");
+	var platformList = new Array();
+	for (var i = 1; i < splitData.length; i++)
+	{
+		var platformInner = splitData[i].split(",");
+		platformInner = platformInner[0].trim();
+		if(platformList.indexOf(platformInner) === -1)
+		{
+			platformList.push(platformInner);
+		}
+	}
+	return platformList;
+}
+
 function getListOfBrowsers(data)
 {
 	var splitData = data.split("<div class='proxy'>");

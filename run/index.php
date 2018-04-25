@@ -84,12 +84,19 @@ if($pollingRateType == 'Seconds')
 					<br>
 					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
 				</div>
-				<div class="newTestPartFour testSelectPart">
+				<div class="newTestPartThree testSelectPart">
 					<h1 class="title">3.</h1>
 					<br>
 					Max number of concurrent tests:
 					<br>
 					{{maxTestsNum}}
+				</div>
+				<div class="newTestPartFour testSelectPart">
+					<h1 class="title">4.</h1>
+					<br>
+					Browser Config: {{browserSelect}}
+					<br>
+					OS select: {{osSelect}}
 				</div>
 				<br>
 				<div class="newTestPartFive">
@@ -238,6 +245,9 @@ if($pollingRateType == 'Seconds')
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
 		var runCheckCount = "<?php echo $runCheckCount; ?>";
 		var cacheTestEnable = "<?php echo $cacheTestEnable; ?>";
+		var urlForSendTests = "<?php echo $mainServerIP; ?>";
+		var browserStackUsername = "<?php echo $browserStackUsername; ?>";
+		var browserStackAccessKey = "<?php echo $browserStackAccessKey; ?>";
 		$(document).ready(function()
 		{
 			resize();

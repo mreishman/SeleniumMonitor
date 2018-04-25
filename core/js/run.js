@@ -196,6 +196,15 @@ function showStartTestNewPopup()
 function createNewTestPopup(data)
 {
 	maxTestsStatic = getMaxConcurrentTests(data);
+	var listOfPlatforms = getListOfPlatforms(data);
+	var platformListHtml = "<select id='InputForPlatformName' ><option value='any' >Any</option>";
+	newLineCount = Object.keys(listOfPlatforms);
+	countLength = newLineCount.length;
+	for(var i = 0; i < countLength; i++)
+	{
+		platformListHtml += "<option value='"+listOfPlatforms[i]+"' >"+listOfPlatforms[i]+"</option>";
+	}
+	platformListHtml += "</select>";
 	var maxRequests = 5;
 	if (maxTestsStatic < 5)
 	{
@@ -207,9 +216,12 @@ function createNewTestPopup(data)
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
-	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
+	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
 	maxTestsHtml += "</ul>";
+	var browserOptions = "<select id=\"InputForBrowserName\" ><option value='any' >Any</option><option value='chrome' >Chrome</option><option value='edge' >Edge</option><option value='firefox' >Firefox</option><option value='internet explorer' >Internet Explorer</option><option value='safari' >Safari</option><option value='opera' >Opera</option></select>";
+	item = item.replace(/{{browserSelect}}/g, browserOptions);
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
+	item = item.replace(/{{osSelect}}/g, platformListHtml);
 	$("#main").append(item);
 }
 
@@ -403,12 +415,24 @@ function pollInner(data)
 			var data = {id , testName , numberOfTestsToRun, timeStart};
 			var urlForSend = '../core/php/runTest.php?format=json';
 			updateProgressBar("Test"+testNumberLocal);
+			var localBaseUrl = document.getElementById("Test"+testNumberLocal+"BaseUrl").value;
+			var browserName = "";
+			var platformName = "";
+			if(document.getElementById("InputForBrowserName").value !== "any")
+			{
+				browserName = '"browserName":"'+document.getElementById("InputForBrowserName").value+'",';
+			}
+			if(document.getElementById("InputForPlatformName").value !== "any")
+			{
+				platformName = '"platform":"'+document.getElementById("InputForPlatformName").value+'",';
+			}
+			var paramString = "'{"+browserName+'"baseUrl":"'+localBaseUrl+'","url":"http://'+urlForSendTests+':4444/wd/hub","username":"'+browserStackUsername+'","accessKey":"'+browserStackAccessKey+'"'+"}'";
 			(function(_data){
 				$.ajax(
 				{
 					url: urlForSend,
 					dataType: "json",
-					data: {filter: testName, file: valueForFile, baseUrl: document.getElementById("Test"+testNumberLocal+"BaseUrl").value, numberOfTestsToRun},
+					data: {filter: testName, file: valueForFile, paramaters: paramString, numberOfTestsToRun},
 					type: "POST",
 					success(data)
 					{
