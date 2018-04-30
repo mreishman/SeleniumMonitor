@@ -35,6 +35,78 @@ function getMaxConcurrentTests(data)
 	return maxTestsStaticInner;
 }
 
+function getListOfPlatforms(data)
+{
+	var splitData = data.split("platform:");
+	var platformList = new Array();
+	for (var i = 1; i < splitData.length; i++)
+	{
+		var platformInner = splitData[i].split(",");
+		platformInner = platformInner[0].trim();
+		if(platformList.indexOf(platformInner) === -1)
+		{
+			platformList.push(platformInner);
+		}
+	}
+	return platformList;
+}
+
+function getListOfBrowsers(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	var browserList = new Array();
+	for (var i = 1; i < splitData.length; i++)
+	{
+		var browserInner = splitData[i].split("browserName=");
+		for (var j = 1; j < browserInner.length; j++)
+		{
+			var browserName = browserInner[j].split(",");
+			browserName = browserName[0];
+			if(browserList.indexOf(browserName) === -1)
+			{
+				browserList.push(browserName);
+			}
+		}
+	}
+	return browserList;
+}
+
+function getCurrentBrowserCount(data, browser)
+{
+	var browserInner = data.split("browserName="+browser);
+	var totmax = 0;
+	for (var i = 1; i < browserInner.length; i++)
+	{
+		if(browserInner[i].indexOf("maxInstances=") !== -1)
+		{
+			var max = browserInner[i].split("maxInstances=");
+			max = max[1].split(",")[0];
+			totmax++;
+		}
+	}
+	return totmax;
+}
+
+function getCurrentNodeCount(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	return (splitData.length - 1);
+}
+
+function getCurrentNodeUsage(data)
+{
+	var splitData = data.split("<div class='proxy'>");
+	var nodeUsage = 0;
+	for (var i = 1; i < splitData.length; i++)
+	{
+		if(splitData[i].indexOf("class='busy'") !== -1)
+		{
+			nodeUsage++;
+		}
+	}
+	return nodeUsage;
+}
+
 function getCurrentRunningTestCount(data)
 {
 	

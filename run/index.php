@@ -42,7 +42,9 @@ if($pollingRateType == 'Seconds')
 	?>
 </head>
 <body>
-	<?php require_once("../core/php/customCSS.php");?>
+	<?php
+	$thisVarForShowSideBar = true;
+	require_once("../core/php/customCSS.php");?>
 	<div id="menu">
 		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<div onclick="pausePollAction();" class="menuImageDiv">
@@ -52,7 +54,7 @@ if($pollingRateType == 'Seconds')
 		<img class="menuImage" src="<?php echo $baseUrl; ?>img/stopSignLight.png" onclick="stopAllTests();" style="display: inline-block; cursor: pointer;" height="30px">
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
-
+	<?php require_once('../core/php/template/sidebar.php'); ?>
 	<div id="main">
 		
 	</div>
@@ -82,12 +84,19 @@ if($pollingRateType == 'Seconds')
 					<br>
 					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
 				</div>
-				<div class="newTestPartFour testSelectPart">
+				<div class="newTestPartThree testSelectPart">
 					<h1 class="title">3.</h1>
 					<br>
 					Max number of concurrent tests:
 					<br>
 					{{maxTestsNum}}
+				</div>
+				<div class="newTestPartFour testSelectPart">
+					<h1 class="title">4.</h1>
+					<br>
+					Browser Config: {{browserSelect}}
+					<br>
+					OS select: {{osSelect}}
 				</div>
 				<br>
 				<div class="newTestPartFive">
@@ -149,7 +158,7 @@ if($pollingRateType == 'Seconds')
 				<div id="{{id}}ProgressBlocks" class="containerBox" style="max-height: 500px; overflow: auto;">
 					{{ProgressBlocks}}
 				</div>
-				<div class="key fontChange">
+				<div class="key fontChange" style="margin-bottom: 10px; margin-top: 10px;" >
 					Key:
 					<br>
 					<div class="block blockKey blockEmpty"></div> - Waiting
@@ -213,8 +222,14 @@ if($pollingRateType == 'Seconds')
 	<form id="settingsInstallUpdate" action="../update/updater.php" method="post" style="display: none"></form>
 	<script src="../core/js/main.js?v=<?php echo $cssVersion?>"></script>
 	<script src="../core/js/run.js?v=<?php echo $cssVersion?>"></script>
+	<script src="../core/js/sidebar.js?v=<?php echo $cssVersion?>"></script>
 	<script>
 		<?php
+		$popupSettingsArrayEncode = json_encode($popupSettingsArray);
+		if($popupSettingsArrayEncode == "")
+		{
+			$popupSettingsArrayEncode = "{}";
+		}
 		echo "var autoCheckUpdate = ".$autoCheckUpdate.";";
 		echo "var dateOfLastUpdate = '".$configStatic['lastCheck']."';";
 		echo "var daysSinceLastCheck = '".$daysSince."';";
@@ -224,12 +239,17 @@ if($pollingRateType == 'Seconds')
 		?>
 		var dontNotifyVersion = "<?php echo $dontNotifyVersion;?>";
 		var currentVersion = "<?php echo $configStatic['version'];?>";
-		var popupSettingsArray = JSON.parse('<?php echo json_encode($popupSettingsArray); ?>');
+		var popupSettingsArray = JSON.parse('<?php echo $popupSettingsArrayEncode; ?>');
 		var updateNoticeMeter = "<?php echo $updateNoticeMeter;?>";
 		var baseUrl = "<?php echo $baseUrl;?>";
 		var placeholderBaseUrl = "<?php echo $defaultBaseUrl; ?>";
 		var runCheckCount = "<?php echo $runCheckCount; ?>";
 		var cacheTestEnable = "<?php echo $cacheTestEnable; ?>";
+		var urlForSendTests = "<?php echo $mainServerIP; ?>";
+		var browserStackUsername = "<?php echo $browserStackUsername; ?>";
+		var browserStackAccessKey = "<?php echo $browserStackAccessKey; ?>";
+		var browserValue = "any";
+		var platformValue = "any";
 		$(document).ready(function()
 		{
 			resize();

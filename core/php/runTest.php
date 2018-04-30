@@ -19,7 +19,7 @@ require_once('../../core/php/loadVars.php');
 
 $filterBase = $_POST["filter"];
 $fileBase = $_POST["file"];
-$baseUrl = $_POST["baseUrl"];
+$paramaters = $_POST["paramaters"];
 $numberOfTestsToRun = $_POST["numberOfTestsToRun"];
 
 $arrayOfArraysOfArrays = array();
@@ -29,7 +29,7 @@ for ($i=0; $i < $numberOfTestsToRun; $i++)
 { 
 	$file = $fileBase[$i];
 	$filter = $filterBase[$i];
-	$command = "cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$baseUrl." 2>&1";
+	$command = "cd ".$locationOfSelenium." && phpunit ".$file." --filter ".$filter." --exclude-group ".$paramaters." 2>&1";
 	$handleObject[$i] = popen($command, 'r');
 }
 

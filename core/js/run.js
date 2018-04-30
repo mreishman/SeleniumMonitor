@@ -196,6 +196,34 @@ function showStartTestNewPopup()
 function createNewTestPopup(data)
 {
 	maxTestsStatic = getMaxConcurrentTests(data);
+	var listOfPlatforms = getListOfPlatforms(data);
+	var platformListHtml = "<select id='InputForPlatformName' onchange='adjustPlatformValueFromInput();' ><option value='any' >Any</option>";
+	newLineCount = Object.keys(listOfPlatforms);
+	countLength = newLineCount.length;
+	for(var i = 0; i < countLength; i++)
+	{
+		platformListHtml += "<option ";
+		if(listOfPlatforms[i] == platformValue)
+		{
+			platformListHtml += "  selected  ";
+		}
+		platformListHtml += " value='"+listOfPlatforms[i]+"' >"+listOfPlatforms[i]+"</option>";
+	}
+	platformListHtml += "</select>";
+	var browserOptions = "<select  onchange='adjustBrowserValueFromInput();' id=\"InputForBrowserName\" ><option value='any' >Any</option>";
+	var browserList = {0:"chrome",1:"edge",2:"firefox",3:"internet explorer",4:"opera",5:"safari"};
+	newLineCount = Object.keys(browserList);
+	countLength = newLineCount.length;
+	for(var i = 0; i < countLength; i++)
+	{
+		browserOptions += "<option ";
+		if(browserList[i] == browserValue)
+		{
+			browserOptions += "  selected  ";
+		}
+		browserOptions += " value='"+browserList[i]+"' >"+browserList[i]+"</option>";
+	}
+	browserOptions += "</select>";
 	var maxRequests = 5;
 	if (maxTestsStatic < 5)
 	{
@@ -207,10 +235,22 @@ function createNewTestPopup(data)
 	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
-	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+((maxTestsStatic-(maxTestsStatic%2))/2)+"\" value=\""+testsPerAjax+"\" ></li>";
+	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
 	maxTestsHtml += "</ul>";
+	item = item.replace(/{{browserSelect}}/g, browserOptions);
 	item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
+	item = item.replace(/{{osSelect}}/g, platformListHtml);
 	$("#main").append(item);
+}
+
+function adjustBrowserValueFromInput()
+{
+	browserValue = document.getElementById("InputForBrowserName").value;
+}
+
+function adjustPlatformValueFromInput()
+{
+	platformValue = document.getElementById("InputForPlatformName").value;
 }
 
 function adjustAjaxRequestValueFromSlider()
@@ -403,12 +443,24 @@ function pollInner(data)
 			var data = {id , testName , numberOfTestsToRun, timeStart};
 			var urlForSend = '../core/php/runTest.php?format=json';
 			updateProgressBar("Test"+testNumberLocal);
+			var localBaseUrl = document.getElementById("Test"+testNumberLocal+"BaseUrl").value;
+			var browserName = "";
+			var platformName = "";
+			if(browserValue !== "any")
+			{
+				browserName = '"browserName":"'+browserValue+'",';
+			}
+			if(platformValue !== "any")
+			{
+				platformName = '"platform":"'+platformValue+'",';
+			}
+			var paramString = "'{"+browserName+'"baseUrl":"'+localBaseUrl+'","url":"http://'+urlForSendTests+':4444/wd/hub","username":"'+browserStackUsername+'","accessKey":"'+browserStackAccessKey+'"'+"}'";
 			(function(_data){
 				$.ajax(
 				{
 					url: urlForSend,
 					dataType: "json",
-					data: {filter: testName, file: valueForFile, baseUrl: document.getElementById("Test"+testNumberLocal+"BaseUrl").value, numberOfTestsToRun},
+					data: {filter: testName, file: valueForFile, paramaters: paramString, numberOfTestsToRun},
 					type: "POST",
 					success(data)
 					{
@@ -900,6 +952,7 @@ function parseDataForLogInfo()
 {
 	var text = logData.split("\n");
 	var lengthOfTextArray = text.length;
+	var arrayOfSessions = new Array();
 	for (var i = 0; i < lengthOfTextArray; i++)
 	{
 		if(text[i].indexOf("SELENIUM_LOG_INFORMATION") > -1)
@@ -907,6 +960,10 @@ function parseDataForLogInfo()
 			var dataForParse = text[i].split(":::::");
 			var logLine = dataForParse[0]+dataForParse[3];
 			var sessionId = dataForParse[2];
+			if(arrayOfSessions.indexOf(sessionId) === -1)
+			{
+				arrayOfSessions.push(sessionId);
+			}
 			//chekc if logLine is already in log for test
 			var found = false;
 			if(!(sessionId in testLogs))
@@ -934,26 +991,31 @@ function parseDataForLogInfo()
 			}
 		}
 	}
-	updateLogsForTests();
+	updateLogsForTests(arrayOfSessions);
 }
 
-function updateLogsForTests()
+function updateLogsForTests(arrayOfSessions)
 {
 	var keysOfLogs = Object.keys(testLogs);
 	var lengthOfKeysOfLogs = keysOfLogs.length;
 	for(var i = 0; i < lengthOfKeysOfLogs; i++)
 	{
-		var classObjectList = document.getElementsByClassName(testLogs[keysOfLogs[i]]["testName"]+"Log");
-		var classObjectListLength = classObjectList.length;
-		for (var j = 0; j < classObjectListLength; j++)
+		if(arrayOfSessions.indexOf(keysOfLogs[i]) !== -1)
 		{
-			if("log" in testLogs[keysOfLogs[i]])
+			var classObjectList = document.getElementsByClassName(testLogs[keysOfLogs[i]]["testName"]+"Log");
+			var classObjectListLength = classObjectList.length;
+			for (var j = 0; j < classObjectListLength; j++)
 			{
-				classObjectList[j].innerHTML = "";
-				var lengthOfLog = testLogs[keysOfLogs[i]]["log"].length;
-				for(var k = 0; k < lengthOfLog; k++)
+				if("log" in testLogs[keysOfLogs[i]])
 				{
-					classObjectList[j].innerHTML += testLogs[keysOfLogs[i]]["log"][k]+"<br>";
+					classObjectList[j].innerHTML = "";
+					var lengthOfLog = testLogs[keysOfLogs[i]]["log"].length;
+					var htmlForLog = "";
+					for(var k = 0; k < lengthOfLog; k++)
+					{
+						htmlForLog += testLogs[keysOfLogs[i]]["log"][k]+"<br>";
+					}
+					classObjectList[j].innerHTML = htmlForLog;
 				}
 			}
 		}
