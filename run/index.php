@@ -52,7 +52,15 @@ if($pollingRateType == 'Seconds')
 			<img id="pauseImage" class="menuImage" src="<?php echo $baseUrl; ?>img/Pause.png" style="display: inline-block;" height="30px">
 		</div>
 		<img class="menuImage" src="<?php echo $baseUrl; ?>img/stopSignLight.png" onclick="stopAllTests();" style="display: inline-block; cursor: pointer;" height="30px">
+		<a onclick="toggleAjaxLinks();" class="link" style="float: right; margin-left: 10px;">Ajax Settings</a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
+		<div style="display: none;" id="ajaxLinks">
+		<ul>
+			<li>
+				Set Base URL: <input id="baseUrlInput" type="text" value="<?php echo $defaultBaseUrl; ?>" placeholder="https://test.website.com/" name="baseUrl">
+			</li>
+		</ul>
+	</div>
 	</div>
 	<?php require_once('../core/php/template/sidebar.php'); ?>
 	<div id="main">
@@ -77,22 +85,15 @@ if($pollingRateType == 'Seconds')
 						Please specifiy a directory of where test are located on the settings page
 					<?php endif;?>
 				</div>
-				<div class="newTestPartTwo testSelectPart testSelectPartBorder">
+				<div class="newTestPartThree testSelectPart testSelectPartBorder">
 					<h1 class="title">2.</h1>
-					<br>
-					Set Base URL <a href="../settings/faq.php#howSetupBaseUrl"><img src="../core/img/info.png" height="10px" width="10px"></a>
-					<br>
-					<input id="baseUrlInput" type="text" value="{{baseUrlInput}}" placeholder="https://test.website.com/" name="baseUrl">
-				</div>
-				<div class="newTestPartThree testSelectPart">
-					<h1 class="title">3.</h1>
 					<br>
 					Max number of concurrent tests:
 					<br>
 					{{maxTestsNum}}
 				</div>
 				<div class="newTestPartFour testSelectPart">
-					<h1 class="title">4.</h1>
+					<h1 class="title">3.</h1>
 					<br>
 					Browser Config: {{browserSelect}}
 					<br>

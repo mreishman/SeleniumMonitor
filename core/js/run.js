@@ -113,7 +113,6 @@ function runTests()
 	var groupsExclude = $("#testsListForm").serializeArray();
 	var listOfNames = new Array();
 	var progressBlocksHtml = "";
-	placeholderBaseUrl = document.getElementById("baseUrlInput").value;
 	var innerArrayOfTests = new Array();
 
 	for (var i = groupsExclude.length - 1; i >= 0; i--)
@@ -164,7 +163,6 @@ function runTests()
 	var item = $("#storage .container").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{file}}/g, document.getElementById("fileListSelector").value);
-	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
 	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
 	item = item.replace(/{{eta}}/g, etaHtml);
@@ -232,7 +230,6 @@ function createNewTestPopup(data)
 	testNumber = new Date().getTime();
 	var item = $("#storage .newTestPopup").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
-	item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	var maxTestsHtml = "<ul style=\"list-style: none;\">";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
 	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
