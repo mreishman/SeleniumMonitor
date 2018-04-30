@@ -224,9 +224,13 @@ function generateProgressBlocks($info, $divId)
 	</div>
 
 	<script type="text/javascript">
+		var initialCount = <?php echo $counter; ?>;
 		$(document).ready(function()
 		{
-			document.getElementById("testSidebar").style.display = "block";
+			if(initialCount > 0)
+			{
+				document.getElementById("testSidebar").style.display = "block";
+			}
 			document.getElementById("subMain").style.display = "block";
 			document.getElementById("loadingThing").style.display = "none";
 			resize();
