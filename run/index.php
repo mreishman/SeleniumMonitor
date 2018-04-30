@@ -55,9 +55,14 @@ if($pollingRateType == 'Seconds')
 		<a onclick="toggleAjaxLinks();" class="link" style="float: right; margin-left: 10px;">Ajax Settings</a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 		<div style="display: none;" id="ajaxLinks">
-		<ul>
+		<ul style="color: black;">
 			<li>
 				Set Base URL: <input id="baseUrlInput" type="text" value="<?php echo $defaultBaseUrl; ?>" placeholder="https://test.website.com/" name="baseUrl">
+			</li>
+			<span id="maxTestsNum" ></span>
+			<li id="browserSelect">
+			</li>
+			<li id="osSelect">
 			</li>
 		</ul>
 	</div>
@@ -73,7 +78,7 @@ if($pollingRateType == 'Seconds')
 				<div class="bannerPHP" style="display: none;">
 					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
-				<div class="newTestPartOne testSelectPartBorder testSelectPart">
+				<div class="newTestPartOne">
 					<h1 class="title">1.</h1>
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
@@ -85,23 +90,9 @@ if($pollingRateType == 'Seconds')
 						Please specifiy a directory of where test are located on the settings page
 					<?php endif;?>
 				</div>
-				<div class="newTestPartThree testSelectPart testSelectPartBorder">
-					<h1 class="title">2.</h1>
-					<br>
-					Max number of concurrent tests:
-					<br>
-					{{maxTestsNum}}
-				</div>
-				<div class="newTestPartFour testSelectPart">
-					<h1 class="title">3.</h1>
-					<br>
-					Browser Config: {{browserSelect}}
-					<br>
-					OS select: {{osSelect}}
-				</div>
 				<br>
 				<div class="newTestPartFive">
-					<h1 class="title">4.</h1>
+					<h1 class="title">2.</h1>
 					<br>
 					<div class="partFiveContainer">
 						<span>Groups:</span>

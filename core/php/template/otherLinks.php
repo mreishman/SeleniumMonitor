@@ -119,6 +119,7 @@ if($newLocationForSearch !== "" || $newLocationForMonitor !== "" || $newLocation
 		#otherLinks ul li, #ajaxLinks ul li
 		{
 			display: inline-block;
+			padding: 10px;
 		}
 	</style>
 	<a onclick="toggleOtherLinks();" class="link" style="float: right;"> Other Apps</a>
