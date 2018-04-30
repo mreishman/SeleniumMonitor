@@ -49,6 +49,20 @@ function genContainer($dataForContainer)
 	$stringGen .= "<div style=\"font-size: 200%;\">";
 	$stringGen .= "<img class=\"imageInHeaderContainer\" onclick=\"removeCompare('".$dataForContainer["id"]."');\" src=\"../core/img/trashCan.png\">";
 	$stringGen .= "<img id=\"".$dataForContainer["id"]."RenameIcon\" class=\"imageInHeaderContainer\" onclick=\"renameCompare('".$dataForContainer["id"]."');\" src=\"../core/img/rename.png\">";
+	$stringGen .= "<img id=\"".$dataForContainer["id"]."UnlockIcon\" class=\"imageInHeaderContainer\" onclick=\"lockFile('".$dataForContainer["id"]."');\" src=\"../core/img/unlock.png\"";
+	$showLock = false;
+	if(strpos($dataForContainer["logFile"], "LOCK") > -1)
+	{
+		$stringGen .= " style=\"display: none;\" ";
+		$showLock = true;
+	}
+	$stringGen .= ">";
+	$stringGen .= "<img id=\"".$dataForContainer["id"]."LockIcon\" class=\"imageInHeaderContainer\" onclick=\"unlockFile('".$dataForContainer["id"]."');\" src=\"../core/img/lock.png\"";
+	if(!$showLock)
+	{
+		$stringGen .= " style=\"display: none;\" ";
+	}
+	$stringGen .= ">";
 	$stringGen .= "</div>";
 	$stringGen .= "</div>";
 	$stringGen .= "<div id=\"".$dataForContainer["id"]."ProgressBlocks\" class=\"containerBox\" style=\"text-align: left;\">";

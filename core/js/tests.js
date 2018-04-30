@@ -140,19 +140,40 @@ function renameCompare(fileName)
 
 function actuallyRenameCompare(fileName)
 {
+	renameCompareSub(fileName, document.getElementById(fileName+"RenameInputValue").value)
+}
+
+function lockFile(fileName)
+{
+	var fileNameArr =  fileName.split(".");
+	var fileNameArrlen = fileNameArr.length;
+	fileNameArr[fileNameArrlen-2] = fileNameArr[fileNameArrlen-2]+"LOCK";
+	renameCompareSub(fileName,fileNameArr.join("."));
+}
+
+function unlockFile(fileName)
+{
+	var fileNameArr =  fileName.split(".");
+	var fileNameArrlen = fileNameArr.length;
+	fileNameArr[fileNameArrlen-2] = fileNameArr[fileNameArrlen-2].replace("LOCK","");
+	renameCompareSub(fileName,fileNameArr.join("."));
+}
+
+function renameCompareSub(fileName, newFileName)
+{
 	displayLoadingPopup();
 	var urlForSendInner = '../core/php/renameFile.php?format=json';
-	var dataSend = {dir: "../../tmp/tests/", oldName: fileName, newName: document.getElementById(fileName+"RenameInputValue").value};
+	var dataSend = {dir: "../../tmp/tests/", oldName: fileName, newName: newFileName};
 	$.ajax(
+	{
+		url: urlForSendInner,
+		dataType: "json",
+		data: dataSend,
+		type: "POST",
+		success(data)
 		{
-			url: urlForSendInner,
-			dataType: "json",
-			data: dataSend,
-			type: "POST",
-			success(data)
-			{
-				poll();
-				hidePopup();
-			}
-		});
+			poll();
+			hidePopup();
+		}
+	});
 }
