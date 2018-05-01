@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.4',
+	'version'		=> '1.5',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -26,6 +26,10 @@ $versionCheckArray = array(
 		'1.4'	        => array(
 			'branchName'	=> '1.4Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Changed progress bar for running tests to reflect errors, pass and fails</li><li>Added tabs at bottom of test window for better seperation of data</li><li>Added video link to tests (for each test, in video tab)</li><li>Added log link to tests (for each test, in log tab)</li></ul></li><li>Bug Fixes<ul><li>Fixed issue with save of eta view not showing up after save (requires re-save to show up again)</li></ul></li></ul>'
+		),
+		'1.5'	        => array(
+			'branchName'	=> '1.5Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Added sidebar for viewing the current grid status</li><li>Added option to pass through more config data (server ip, browser, platform)</li><li>Added option to lock cached test results</li></ul></li><li>Bug Fixes<ul><li>Improved poll time for log data collection</li></ul></li></ul>'
 		)
 	)
 );
