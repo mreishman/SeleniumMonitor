@@ -356,6 +356,7 @@ function showPopup(id)
 	{
 		popupImageLogic(id, document.getElementById(id+"JumbotronImage").src);
 	}
+	document.getElementById("popup").style.width = ""+((window.innerWidth*0.9)-280)+"px";
 }
 
 function hidePopupWindow()
