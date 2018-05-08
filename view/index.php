@@ -201,7 +201,7 @@ if($backgroundPollingRateType == 'Seconds')
 					</tr>
 				</table>
 			</div>
-			<div id="popupBackground" class="popupBackground">
+			<div id="popupBackground" class="popupBackground" style="right: 300px;">
 			</div>
 		</div>
 	</div>
