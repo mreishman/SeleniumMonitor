@@ -66,7 +66,7 @@ if($pollingRateType == 'Seconds')
 					PhpUnit is not detected. Please verify that PhpUnit is installed and configured. 
 				</div>
 				<div>
-					<button onclick="refreshAjaxSettingsData();" >Refresh</button>
+					<a class="link" onclick="refreshAjaxSettingsData();" >Refresh</a>
 				</div>
 				<div class="newTestPartOne testSelectPartBorder testSelectPart">
 					<h1 class="title">1.</h1>
