@@ -282,7 +282,7 @@ function adjustTestsPerRequestValueFromSlider()
 
 function adjustTestsPerRequestValueFromInput()
 {
-	var sliderValue = document.getElementById("inputForTestPerRequest").value;
+	var sliderValue = parseInt(document.getElementById("inputForTestPerRequest").value);
 	var maxValue = document.getElementById("sliderForTestPerRequest").max;
 	if(sliderValue > maxValue)
 	{
