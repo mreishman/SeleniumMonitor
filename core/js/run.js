@@ -195,7 +195,6 @@ function showStartTestNewPopup()
 
 function refreshAjaxSettingsData()
 {
-	$("#Test"+testNumber).remove();
 	$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
 	{
 		createNewTestPopup(data, false);
