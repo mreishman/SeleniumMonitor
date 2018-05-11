@@ -113,6 +113,7 @@ function runTests()
 	var groupsExclude = $("#testsListForm").serializeArray();
 	var listOfNames = new Array();
 	var progressBlocksHtml = "";
+	placeholderBaseUrl = document.getElementById("baseUrlInput").value;
 	var innerArrayOfTests = new Array();
 
 	for (var i = groupsExclude.length - 1; i >= 0; i--)
@@ -163,6 +164,7 @@ function runTests()
 	var item = $("#storage .container").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
 	item = item.replace(/{{file}}/g, document.getElementById("fileListSelector").value);
+	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
 	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
 	item = item.replace(/{{eta}}/g, etaHtml);
