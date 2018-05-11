@@ -64,6 +64,7 @@ if($pollingRateType == 'Seconds')
 			</li>
 			<li id="osSelect">
 			</li>
+			<a class="link" onclick="refreshAjaxSettingsData();" >Refresh</a>
 		</ul>
 	</div>
 	</div>

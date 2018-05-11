@@ -193,7 +193,16 @@ function showStartTestNewPopup()
 	});
 }
 
-function createNewTestPopup(data)
+function refreshAjaxSettingsData()
+{
+	$("#Test"+testNumber).remove();
+	$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+	{
+		createNewTestPopup(data, false);
+	});
+}
+
+function createNewTestPopup(data, addItem = true)
 {
 	maxTestsStatic = getMaxConcurrentTests(data);
 	var listOfPlatforms = getListOfPlatforms(data);
@@ -230,15 +239,21 @@ function createNewTestPopup(data)
 		maxRequests = maxTestsStatic;
 	}
 	testNumber = new Date().getTime();
-	var item = $("#storage .newTestPopup").html();
-	item = item.replace(/{{id}}/g, "Test"+testNumber);
+	if(addItem)
+	{
+		var item = $("#storage .newTestPopup").html();
+		item = item.replace(/{{id}}/g, "Test"+testNumber);
+	}
 	var maxTestsHtml = "";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
 	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
 	document.getElementById("browserSelect").innerHTML = "Browser Config: " + browserOptions;
 	document.getElementById("maxTestsNum").innerHTML = maxTestsHtml;
 	document.getElementById("osSelect").innerHTML = "OS select: " + platformListHtml;
-	$("#main").append(item);
+	if(addItem)
+	{
+		$("#main").append(item);
+	}
 }
 
 function adjustBrowserValueFromInput()
@@ -280,7 +295,7 @@ function adjustTestsPerRequestValueFromSlider()
 
 function adjustTestsPerRequestValueFromInput()
 {
-	var sliderValue = document.getElementById("inputForTestPerRequest").value;
+	var sliderValue = parseInt(document.getElementById("inputForTestPerRequest").value);
 	var maxValue = document.getElementById("sliderForTestPerRequest").max;
 	if(sliderValue > maxValue)
 	{

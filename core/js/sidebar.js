@@ -1,14 +1,19 @@
 var dataArrayForGraphBase = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var dataArrayForGraph = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var sideBarStuff = false;
 
 function sidebarStuff()
 {
 	if(typeof sidebarStuffRun === "undefined")
 	{
-		$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+		if(sideBarStuff === false)
 		{
-			sideBarDisplayLogic(data);
-		});
+			sideBarStuff = true;
+			$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
+			{
+				sideBarDisplayLogic(data);
+			});
+		}
 	}
 	else
 	{
@@ -21,6 +26,7 @@ function sideBarDisplayLogic(data)
 	graphLogic(data);
 	speedOmLogic(data);
 	browserNodeInfoLogic(data);
+	sideBarStuff = false;
 }
 
 function browserNodeInfoLogic(data)
