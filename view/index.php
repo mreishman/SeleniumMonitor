@@ -49,6 +49,8 @@ if($backgroundPollingRateType == 'Seconds')
 	<div id="menu">
 		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
 		<a onclick="toggleDisplay();" >Toggle Display</a>
+		<a onclick="plusWidth();" >+</a>
+		<a onclick="minusWidth();" >-</a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 	<?php require_once('../core/php/template/sidebar.php'); ?>
