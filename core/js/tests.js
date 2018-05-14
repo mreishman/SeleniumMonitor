@@ -53,6 +53,7 @@ function poll()
 					if(arrayOfFiles.length === 0)
 					{
 						document.getElementById("noCachedTests").style.display = "block";
+						document.getElementById("testSidebar").style.display = "none";
 					}
 				}
 			}
@@ -88,6 +89,7 @@ function getLogData(path)
 				if(document.getElementById("noCachedTests").style.display !== "none")
 				{
 					document.getElementById("noCachedTests").style.display = "none";
+					document.getElementById("testSidebar").style.display = "block";
 				}
 				resize();
 			}

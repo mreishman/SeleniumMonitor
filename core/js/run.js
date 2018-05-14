@@ -195,10 +195,9 @@ function showStartTestNewPopup()
 
 function refreshAjaxSettingsData()
 {
-	$("#Test"+testNumber).remove();
 	$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
 	{
-		createNewTestPopup(data, true);
+		createNewTestPopup(data, false);
 	});
 }
 
@@ -243,17 +242,15 @@ function createNewTestPopup(data, addItem = true)
 	{
 		var item = $("#storage .newTestPopup").html();
 		item = item.replace(/{{id}}/g, "Test"+testNumber);
-		item = item.replace(/{{baseUrlInput}}/g, placeholderBaseUrl);
 	}
-	var maxTestsHtml = "<ul style=\"list-style: none;\">";
+	var maxTestsHtml = "";
 	maxTestsHtml += "<li>Number Of Ajax Requests <input id=\"inputForAjaxRequest\" onchange=\"adjustAjaxRequestValueFromInput();\" type=\"text\" value=\""+ajaxRequestValue+"\" style=\"width: 30px;\" > <input onchange=\"adjustAjaxRequestValueFromSlider();\" id=\"sliderForAjaxRequest\" type=\"range\" min=\"1\" max=\""+maxRequests+"\" value=\""+ajaxRequestValue+"\" ></li>";
 	maxTestsHtml += "<li>Number Of Tests Per Request <input onchange=\"adjustTestsPerRequestValueFromInput();\" id=\"inputForTestPerRequest\" type=\"text\" value=\""+testsPerAjax+"\"  style=\"width: 30px;\" >  <input onchange=\"adjustTestsPerRequestValueFromSlider();\" id=\"sliderForTestPerRequest\" type=\"range\" min=\"1\" max=\""+maxTestsStatic+"\" value=\""+testsPerAjax+"\" ></li>";
-	maxTestsHtml += "</ul>";
+	document.getElementById("browserSelect").innerHTML = "Browser Config: " + browserOptions;
+	document.getElementById("maxTestsNum").innerHTML = maxTestsHtml;
+	document.getElementById("osSelect").innerHTML = "OS select: " + platformListHtml;
 	if(addItem)
 	{
-		item = item.replace(/{{browserSelect}}/g, browserOptions);
-		item = item.replace(/{{maxTestsNum}}/g, maxTestsHtml);
-		item = item.replace(/{{osSelect}}/g, platformListHtml);
 		$("#main").append(item);
 	}
 }

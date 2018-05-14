@@ -111,14 +111,15 @@ elseif(file_exists('../../../loghog/search/index.php'))
 if($newLocationForSearch !== "" || $newLocationForMonitor !== "" || $newLocationForLogHog !== "" || $locationForStatus !== ""):
 ?>
 	<style type="text/css">
-		#otherLinks ul
+		#otherLinks ul, #ajaxLinks ul
 		{
 			list-style: none;
 			float: right;
 		}
-		#otherLinks ul li
+		#otherLinks ul li, #ajaxLinks ul li
 		{
 			display: inline-block;
+			padding: 10px;
 		}
 	</style>
 	<a onclick="toggleOtherLinks();" class="link" style="float: right;"> Other Apps</a>
@@ -156,6 +157,19 @@ if($newLocationForSearch !== "" || $newLocationForMonitor !== "" || $newLocation
 			else
 			{
 				document.getElementById("otherLinks").style.display = "none";
+			}
+			resize();
+		}
+
+		function toggleAjaxLinks()
+		{
+			if(document.getElementById("ajaxLinks").style.display === "none")
+			{
+				document.getElementById("ajaxLinks").style.display = "block";
+			}
+			else
+			{
+				document.getElementById("ajaxLinks").style.display = "none";
 			}
 			resize();
 		}
