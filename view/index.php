@@ -48,6 +48,7 @@ if($backgroundPollingRateType == 'Seconds')
 	require_once("../core/php/customCSS.php");?>
 	<div id="menu">
 		<a href="../"> <img class="menuImage" src="<?php echo $baseUrl; ?>img/backArrow.png" style="display: inline-block; cursor: pointer;" height="20px"> </a>
+		<a onclick="toggleDisplay();" >Toggle Display</a>
 		<?php require_once("../core/php/template/otherLinks.php");?>
 	</div>
 	<?php require_once('../core/php/template/sidebar.php'); ?>
@@ -59,7 +60,7 @@ if($backgroundPollingRateType == 'Seconds')
 	<div id="storage">
 		<div class="server">
 			<div id="{{id}}" class="mainBox">
-				<div id="{{id}}Title">
+				<div class="hideWhenToggle alwaysShowWHenToggle" id="{{id}}Title">
 					<h2 style="font-size: 150%;">{{title}}</h2>
 				</div>
 				<div id="{{id}}Jumbotron" class="jumbotron">
@@ -68,7 +69,7 @@ if($backgroundPollingRateType == 'Seconds')
 						<img class='img-responsive' src="../core/img/static.gif">
 					</span>
 				</div>
-				<div style="border-bottom: 1px solid white;">
+				<div class="hideWhenToggle alwaysShowWHenToggle" style="border-bottom: 1px solid white;">
 					<ul class="menu">
 						<li id="{{id}}StatsMenu" onclick="toggleTab('{{id}}', 'Stats');">
 							Stats
@@ -87,7 +88,7 @@ if($backgroundPollingRateType == 'Seconds')
 						</li>
 					</ul>
 				</div>
-				<div style="display: none;" id="{{id}}VideoSubMenu">
+				<div class="hideWhenToggle" style="display: none;" id="{{id}}VideoSubMenu">
 					<table class="menu" style="width: 100%; display: table;">
 						<tr>
 							<th id="{{id}}VideosTimeMenu" style="cursor: pointer;" onclick="toggleTab('{{id}}', 'VideosTime');" class="active" width="50%">
@@ -99,19 +100,19 @@ if($backgroundPollingRateType == 'Seconds')
 						</tr>
 					</table>
 				</div>
-				<div class="conainerSub" id="{{id}}VideosTime" style="display: none;">
+				<div class="conainerSub hideWhenToggle" id="{{id}}VideosTime" style="display: none;">
 				</div>
-				<div class="conainerSub" id="{{id}}VideosSession" style="display: none;">
+				<div class="conainerSub hideWhenToggle" id="{{id}}VideosSession" style="display: none;">
 				</div>
-				<div class="conainerSub" id="{{id}}Stats"  style="display: none;">
+				<div class="conainerSub hideWhenToggle" id="{{id}}Stats"  style="display: none;">
 				</div>
-				<div class="conainerSub" id="{{id}}Activity">
+				<div class="conainerSub hideWhenToggle alwaysShowWHenToggle" id="{{id}}Activity">
 					{{activity}}
 				</div>
-				<div class="conainerSub" id="{{id}}Config"  style="display: none;">
+				<div class="conainerSub hideWhenToggle" id="{{id}}Config"  style="display: none;">
 					{{config}}
 				</div>
-				<div class="conainerSub" id="{{id}}Actions"  style="display: none;">
+				<div class="conainerSub hideWhenToggle" id="{{id}}Actions"  style="display: none;">
 					<ul class="linkActions">
 						<li>
 							<a class="link" onclick="rebootMachine('{{linkOne}}');">Send Reboot</a>

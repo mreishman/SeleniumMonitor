@@ -405,3 +405,30 @@ function rebootMachine(ipAddress)
 	});
 	
 }
+var justDisplay = false;
+
+function toggleDisplay()
+{
+	if(justDisplay)
+	{
+		justDisplay = false;
+		$(".alwaysShowWHenToggle").show();
+		$(".mainBox").height("450px");
+		$(".mainBox").css("box-shadow","5px 5px 5px black");
+		$(".mainBox").css("border-radius","15px");
+		$(".mainBox").css("border","2px solid white");
+		$(".mainBox").css("margin","20px");
+		$(".mainBox").css("padding","10px");
+	}
+	else
+	{
+		justDisplay = true;
+		$(".hideWhenToggle").hide();
+		$(".mainBox").height("auto");
+		$(".mainBox").css("box-shadow","0");
+		$(".mainBox").css("border-radius","0");
+		$(".mainBox").css("border","0");
+		$(".mainBox").css("margin","0");
+		$(".mainBox").css("padding","0");
+	}
+}
