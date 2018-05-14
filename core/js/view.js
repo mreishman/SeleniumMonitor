@@ -7,6 +7,7 @@ var currentPopupWindow = null;
 var popupWidthPic = 0;
 var popupHeightPic = 0;
 var justDisplay = false;
+var hideVideo = false;
 
 function poll()
 {
@@ -433,10 +434,26 @@ function toggleDisplay()
 	}
 }
 
+function toggleVideo()
+{
+	if(hideVideo)
+	{
+		hideVideo = false;
+		$(".mainBox").height("450px");
+		$(".jumbotron").show();
+	}
+	else
+	{
+		hideVideo = true;
+		$(".mainBox").height("auto");
+		$(".jumbotron").hide();
+	}
+}
+
 function plusWidth()
 {
 	$(".mainBox").width($(".mainBox").width()+10);
-	if(!justDisplay)
+	if(!justDisplay && !hideVideo)
 	{
 		$(".mainBox").height($(".mainBox").width()*1.35135135135);
 	}
@@ -445,7 +462,7 @@ function plusWidth()
 function minusWidth()
 {
 	$(".mainBox").width($(".mainBox").width()-10);
-	if(!justDisplay)
+	if(!justDisplay && !hideVideo)
 	{
 		$(".mainBox").height($(".mainBox").width()*1.35135135135);
 	}
