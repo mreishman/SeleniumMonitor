@@ -11,7 +11,10 @@ function sidebarStuff()
 			sideBarStuff = true;
 			$.getJSON("../core/php/getMainServerInfo.php", {}, function(data) 
 			{
-				sideBarDisplayLogic(data);
+				if(data)
+				{
+					sideBarDisplayLogic(data);
+				}
 			});
 		}
 	}
@@ -36,6 +39,7 @@ function browserNodeInfoLogic(data)
 	for(var i = 0; i < browserList.length; i++)
 	{
 		var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
+		var totalBrowserCount = getCurrentBrowserCountTotal(data, browserList[i]);
 		var browserSrc = "../core/img/chrome-hr.png";
 		if(browserList[i] === "safari")
 		{
@@ -61,7 +65,7 @@ function browserNodeInfoLogic(data)
 		{
 			html += "</tr><tr>"
 		}
-		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> "+currentBrowserCount+" </th>";
+		html += "<th height=\"75px;\"><img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" ><br> "+currentBrowserCount+"/"+totalBrowserCount+" </th>";
 	}
 	$("#browserNodeInfo").html(html);
 }

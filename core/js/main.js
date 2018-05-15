@@ -71,6 +71,17 @@ function getListOfBrowsers(data)
 	return browserList;
 }
 
+function getCurrentBrowserCountTotal(data, browser)
+{
+	var browserInner = data.split(browser+".png");
+	var totmax = 0;
+	for (var i = 1; i < browserInner.length; i++)
+	{
+		totmax++;
+	}
+	return totmax;
+}
+
 function getCurrentBrowserCount(data, browser)
 {
 	var browserInner = data.split("browserName="+browser);
@@ -81,7 +92,7 @@ function getCurrentBrowserCount(data, browser)
 		{
 			var max = browserInner[i].split("maxInstances=");
 			max = max[1].split(",")[0];
-			totmax++;
+			totmax += parseInt(max);
 		}
 	}
 	return totmax;
