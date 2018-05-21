@@ -389,7 +389,34 @@ function poll()
 						document.getElementById("Test"+idOfTest+"StopButton").style.display = "none";
 						document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
 					}
+					//check for re-run logic
+					var allowedErrorRate = document.getElementById("errorRate").value;
+					var allowedFailRate = document.getElementById("failRate").value;
+					var testName = arrayOfTests[0]["name"];
+					var currentErrorRate = arrayOfTests[0]["errorCount"]/arrayOfTests[0]["total"];
+					var currentFailRate = arrayOfTests[0]["failCount"]/arrayOfTests[0]["total"];
+					if(parseFloat(currentErrorRate) > parseFloat(allowedErrorRate))
+					{
+						if(!document.getElementById("testFormResetForm"))
+						{
+							$("#main").append("<form id=\"testFormResetForm\"></form>");
+						}
+						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockError\">");
+					}
+					if(parseFloat(currentFailRate) > parseFloat(allowedFailRate))
+					{
+						if(!document.getElementById("testFormResetForm"))
+						{
+							$("#main").append("<form id=\"testFormResetForm\"></form>");
+						}
+						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockFail\">");
+					}
 					arrayOfTests.shift();
+					reRunTests("Test"+testName);
+					if(document.getElementById("testFormResetForm"))
+					{
+						$("#testFormResetForm").remove();
+					}
 				}
 			}
 		}
