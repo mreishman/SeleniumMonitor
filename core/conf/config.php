@@ -19,6 +19,7 @@ $defaultConfig = array(
 	'cssVersion'					=> 1,
 	'currentTheme'					=> 'Default',
 	'defaultBaseUrl'				=> '',
+	'defaultCombinedRate'			=> 0.075,
 	'defaultErrorRate'				=> 0.05,
 	'defaultFailRate'				=> 0.05,
 	'defaultShowEta'				=> 'eta',

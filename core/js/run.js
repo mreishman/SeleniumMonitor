@@ -390,12 +390,13 @@ function poll()
 						document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
 					}
 					//check for re-run logic
-					var allowedErrorRate = document.getElementById("errorRate").value;
-					var allowedFailRate = document.getElementById("failRate").value;
+					var allowedErrorRate = parseFloat(document.getElementById("errorRate").value);
+					var allowedFailRate = parseFloat(document.getElementById("failRate").value);
+					var combinedRate = parseFloat(ocument.getElementById("combinedRate").value);
 					var testName = arrayOfTests[0]["name"];
-					var currentErrorRate = arrayOfTests[0]["errorCount"]/arrayOfTests[0]["total"];
-					var currentFailRate = arrayOfTests[0]["failCount"]/arrayOfTests[0]["total"];
-					if(parseFloat(currentErrorRate) > parseFloat(allowedErrorRate))
+					var currentErrorRate = parseFloat(arrayOfTests[0]["errorCount"]/arrayOfTests[0]["total"]);
+					var currentFailRate = parseFloat(arrayOfTests[0]["failCount"]/arrayOfTests[0]["total"]);
+					if((currentErrorRate > allowedErrorRate) || ((currentErrorRate+currentFailRate)>combinedRate))
 					{
 						if(!document.getElementById("testFormResetForm"))
 						{
@@ -403,7 +404,7 @@ function poll()
 						}
 						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockError\">");
 					}
-					if(parseFloat(currentFailRate) > parseFloat(allowedFailRate))
+					if((currentFailRate > allowedFailRate) || ((currentErrorRate+currentFailRate)>combinedRate))
 					{
 						if(!document.getElementById("testFormResetForm"))
 						{

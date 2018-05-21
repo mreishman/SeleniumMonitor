@@ -34,6 +34,15 @@ Run Settings
 		<span class="settingsBuffer" > Default Base URL: </span>  <input style="width: 600px;" type="text" name="defaultBaseUrl" value="<?php echo $defaultBaseUrl;?>" >
 	</li>
 	<li>
+		<span class="settingsBuffer" > Max Error Rate: </span>  <input style="width: 600px;" type="text" name="defaultErrorRate" value="<?php echo $defaultErrorRate;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > Max Fail Rate: </span>  <input style="width: 600px;" type="text" name="defaultFailRate" value="<?php echo $defaultFailRate;?>" >
+	</li>
+	<li>
+		<span class="settingsBuffer" > Max Combined Rate: </span>  <input style="width: 600px;" type="text" name="defaultCombinedRate" value="<?php echo $defaultCombinedRate;?>" >
+	</li>
+	<li>
 		<span class="settingsBuffer" > Enable Network Check: </span>
 		<select name="runCheckCount">
 			<option <?php if($runCheckCount == 'true'){echo "selected";} ?> value="true">True</option>
