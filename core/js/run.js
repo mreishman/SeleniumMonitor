@@ -17,6 +17,7 @@ var gettingLogData = false;
 var paseVideoDataCounter = 0;
 var logData = {};
 var testLogs = {};
+var numOfRetries = {};
 
 function getFileList()
 {
@@ -412,8 +413,19 @@ function poll()
 						}
 						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockFail\">");
 					}
+					if(!(testName in numOfRetries))
+					{
+						numOfRetries[testName] = 1;
+					}
+					else
+					{
+						numOfRetries[testName]++;
+					}
 					arrayOfTests.shift();
-					reRunTests("Test"+testName);
+					if(numOfRetries[testName] < parseInt(document.getElementById("NumRetry").value))
+					{
+						reRunTests("Test"+testName);
+					}
 					if(document.getElementById("testFormResetForm"))
 					{
 						$("#testFormResetForm").remove();

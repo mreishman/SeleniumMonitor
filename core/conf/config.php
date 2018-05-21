@@ -22,6 +22,7 @@ $defaultConfig = array(
 	'defaultCombinedRate'			=> 0.075,
 	'defaultErrorRate'				=> 0.05,
 	'defaultFailRate'				=> 0.05,
+	'defaultNumRetry'				=> 5,
 	'defaultShowEta'				=> 'eta',
 	'defaultShowProgressType'		=> 'percent',
 	'developmentTabEnabled'			=> 'false',

@@ -73,6 +73,10 @@ if($pollingRateType == 'Seconds')
 			<li>
 				Combined Rate: <input id="combinedRate" type="text" value="<?php echo $defaultCombinedRate; ?>" name="combinedRate"> 
 			</li>
+			<li>
+				Max Retries: <input id="NumRetry" type="text" value="<?php echo $defaultNumRetry; ?>" name="NumRetry"> 
+			</li>
+			
 			<a class="link" onclick="refreshAjaxSettingsData();" >Refresh</a>
 		</ul>
 	</div>
