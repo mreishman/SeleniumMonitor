@@ -43,6 +43,9 @@ Run Settings
 		<span class="settingsBuffer" > Max Combined Rate: </span>  <input style="width: 600px;" type="text" name="defaultCombinedRate" value="<?php echo $defaultCombinedRate;?>" >
 	</li>
 	<li>
+		<span class="settingsBuffer" > Max Retries: </span>  <input style="width: 600px;" type="text" name="defaultNumRetry" value="<?php echo $defaultNumRetry;?>" >
+	</li>
+	<li>
 		<span class="settingsBuffer" > Enable Network Check: </span>
 		<select name="runCheckCount">
 			<option <?php if($runCheckCount == 'true'){echo "selected";} ?> value="true">True</option>
