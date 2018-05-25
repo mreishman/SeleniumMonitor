@@ -393,7 +393,7 @@ function poll()
 					//check for re-run logic
 					var allowedErrorRate = parseFloat(document.getElementById("errorRate").value);
 					var allowedFailRate = parseFloat(document.getElementById("failRate").value);
-					var combinedRate = parseFloat(ocument.getElementById("combinedRate").value);
+					var combinedRate = parseFloat(document.getElementById("combinedRate").value);
 					var testName = arrayOfTests[0]["name"];
 					var currentErrorRate = parseFloat(arrayOfTests[0]["errorCount"]/arrayOfTests[0]["total"]);
 					var currentFailRate = parseFloat(arrayOfTests[0]["failCount"]/arrayOfTests[0]["total"]);
