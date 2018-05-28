@@ -170,3 +170,26 @@ function unEscapeHtml(text) {
 
   return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
+
+function getLogData()
+{
+	
+	var urlLog = "../core/php/poll.php";
+	data = {};
+	$.ajax(
+	{
+		url: urlLog,
+		dataType: "json",
+		data,
+		type: "POST",
+		success(data)
+		{
+			logData = data;
+			logDataParse();
+		},
+		complete(data)
+		{
+			gettingLogData = false;
+		}
+	});
+}

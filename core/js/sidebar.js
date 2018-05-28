@@ -38,8 +38,13 @@ function browserNodeInfoLogic(data)
 	var html = "<table style=\"width: 280px;\" ><tr><th width=\"33%\"></th><th width=\"33%\"></th><th width=\"33%\"></th>";
 	for(var i = 0; i < browserList.length; i++)
 	{
+		var browserNow = browserList[i];
+		if(browserNow === "internet explorer")
+		{
+			browserNow = "internet-explorer";
+		}
 		var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
-		var totalBrowserCount = getCurrentBrowserCountTotal(data, browserList[i]);
+		var totalBrowserCount = getCurrentBrowserCountTotal(data, browserNow);
 		var browserSrc = "../core/img/chrome-hr.png";
 		if(browserList[i] === "safari")
 		{
@@ -80,8 +85,14 @@ function speedOmLogic(data)
 	$("#currentMaxNodeTot").html(currentMaxTestsStatic);
 	$("#currentNodeCount").html(totalNodes);
 	$("#currentRunNodes").html(nodeInUsage);
-	drawSpdTests(currentCurrentRunningTestCount, currentMaxTestsStatic);
-	drawNodeCount(nodeInUsage, totalNodes);
+	if(document.getElementById("testCountCanvas"))
+	{
+		drawSpdTests(currentCurrentRunningTestCount, currentMaxTestsStatic);
+	}
+	if(document.getElementById("nodeCountCanvas"))
+	{
+		drawNodeCount(nodeInUsage, totalNodes);
+	}
 }
 
 function drawSpdTests(now, base)

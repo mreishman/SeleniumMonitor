@@ -976,28 +976,10 @@ function timerStuff()
 	}
 }
 
-function getLogData()
+function logDataParse()
 {
-	
-	var urlLog = "../core/php/poll.php";
-	data = {};
-	$.ajax(
-	{
-		url: urlLog,
-		dataType: "json",
-		data,
-		type: "POST",
-		success(data)
-		{
-			logData = data;
-			parseDataForVideoLink();
-			parseDataForLogInfo();
-		},
-		complete(data)
-		{
-			gettingLogData = false;
-		}
-	});
+	parseDataForVideoLink();
+	parseDataForLogInfo();
 }
 
 function parseDataForLogInfo()
