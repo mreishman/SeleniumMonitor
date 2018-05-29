@@ -92,10 +92,21 @@ if($backgroundPollingRateType == 'Seconds')
 		var logData = "";
 		var gettingLogData = false;
 
-		document.getElementById("useageCanvas").style.width = ""+window.innerWidth+"px";
+		
 
-		var sideBarStuffPoll = setInterval(function(){overviewStuff();},1000);
-		var logStuffPoll = setInterval(function(){getLogData();},3000);
+		$(document).ready(function()
+		{
+			resizeGraph();
+			window.onresize = resizeGraph;
+
+			var sideBarStuffPoll = setInterval(function(){overviewStuff();},1000);
+			var logStuffPoll = setInterval(function(){getLogData();},3000);
+		});
+
+		function resizeGraph()
+		{
+			document.getElementById("useageCanvas").style.width = ""+window.innerWidth+"px";
+		}
 
 		function getLogStuff()
 		{
@@ -162,12 +173,12 @@ if($backgroundPollingRateType == 'Seconds')
 				var counter = 0;
 				for(counter; counter < (totalBrowserCount-currentBrowserCount); counter++)
 				{
-					html += "<img style=\"opacity: 0.5;\" src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" >";
+					html += "<img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" >";
 				}
 
 				for(counter; counter < totalBrowserCount; counter++)
 				{
-					html += "<img src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" >";
+					html += "<img style=\"opacity: 0.5;\" src=\""+browserSrc+"\" width=\"45px\" height=\"45px\" >";
 				}
 				html += "<br>";
 
