@@ -64,6 +64,19 @@ if($pollingRateType == 'Seconds')
 			</li>
 			<li id="osSelect">
 			</li>
+			<li>
+				Allowed Error Rate: <input id="errorRate" type="text" value="<?php echo $defaultErrorRate; ?>" name="errorRate">
+			</li>
+			<li>
+				Allowed Fail Rate: <input id="failRate" type="text" value="<?php echo $defaultFailRate; ?>" name="failRate">
+			</li>
+			<li>
+				Combined Rate: <input id="combinedRate" type="text" value="<?php echo $defaultCombinedRate; ?>" name="combinedRate"> 
+			</li>
+			<li>
+				Max Retries: <input id="NumRetry" type="text" value="<?php echo $defaultNumRetry; ?>" name="NumRetry"> 
+			</li>
+			
 			<a class="link" onclick="refreshAjaxSettingsData();" >Refresh</a>
 		</ul>
 	</div>

@@ -17,6 +17,7 @@ var gettingLogData = false;
 var paseVideoDataCounter = 0;
 var logData = {};
 var testLogs = {};
+var numOfRetries = {};
 
 function getFileList()
 {
@@ -389,7 +390,46 @@ function poll()
 						document.getElementById("Test"+idOfTest+"StopButton").style.display = "none";
 						document.getElementById("Test"+idOfTest+"RefreshButton").style.display = "inline-block";
 					}
+					//check for re-run logic
+					var allowedErrorRate = parseFloat(document.getElementById("errorRate").value);
+					var allowedFailRate = parseFloat(document.getElementById("failRate").value);
+					var combinedRate = parseFloat(document.getElementById("combinedRate").value);
+					var testName = arrayOfTests[0]["name"];
+					var currentErrorRate = parseFloat(arrayOfTests[0]["errorCount"]/arrayOfTests[0]["total"]);
+					var currentFailRate = parseFloat(arrayOfTests[0]["failCount"]/arrayOfTests[0]["total"]);
+					if((currentErrorRate > allowedErrorRate) || ((currentErrorRate+currentFailRate)>combinedRate))
+					{
+						if(!document.getElementById("testFormResetForm"))
+						{
+							$("#main").append("<form id=\"testFormResetForm\"></form>");
+						}
+						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockError\">");
+					}
+					if((currentFailRate > allowedFailRate) || ((currentErrorRate+currentFailRate)>combinedRate))
+					{
+						if(!document.getElementById("testFormResetForm"))
+						{
+							$("#main").append("<form id=\"testFormResetForm\"></form>");
+						}
+						$("#testFormResetForm").append("<input type=\"checkbox\" checked name=\"blockFail\">");
+					}
+					if(!(testName in numOfRetries))
+					{
+						numOfRetries[testName] = 1;
+					}
+					else
+					{
+						numOfRetries[testName]++;
+					}
 					arrayOfTests.shift();
+					if(numOfRetries[testName] < parseInt(document.getElementById("NumRetry").value))
+					{
+						reRunTests("Test"+testName);
+					}
+					if(document.getElementById("testFormResetForm"))
+					{
+						$("#testFormResetForm").remove();
+					}
 				}
 			}
 		}
@@ -936,28 +976,10 @@ function timerStuff()
 	}
 }
 
-function getLogData()
+function logDataParse()
 {
-	
-	var urlLog = "../core/php/poll.php";
-	data = {};
-	$.ajax(
-	{
-		url: urlLog,
-		dataType: "json",
-		data,
-		type: "POST",
-		success(data)
-		{
-			logData = data;
-			parseDataForVideoLink();
-			parseDataForLogInfo();
-		},
-		complete(data)
-		{
-			gettingLogData = false;
-		}
-	});
+	parseDataForVideoLink();
+	parseDataForLogInfo();
 }
 
 function parseDataForLogInfo()
