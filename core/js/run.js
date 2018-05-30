@@ -1144,11 +1144,9 @@ function getVideoLink(functionData)
 					var dataSuccess = dataInner["success"];
 					if(dataSuccess)
 					{
-						//http://192.168.1.151:3000/download_video/23ce6d4e7c00d6c57e358c0dc0d38ab0.mp4
 						dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
 						dataMessage = dataMessage.replace(/5555/g,"3000");
-						//dataMessage = "<video width=\"320\" height=\"240\" controls> <source src=\""+dataMessage+"\" type=\"video/mp4\"></video>";
-						dataMessage = "<a style=\"color: black;\" href=\""+dataMessage+"\" >"+dataMessage+"</a>";
+						dataMessage = "<iframe  src=\""+dataMessage+"\" ></iframe>";
 					}
 					var selector = "";
 					var keysOfObjectOfVideos = Object.keys(objectOfVideos);
