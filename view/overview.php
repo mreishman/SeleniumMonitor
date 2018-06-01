@@ -63,7 +63,7 @@ if($backgroundPollingRateType == 'Seconds')
 						<span id="browserNodeInfo" ></span>
 					</td>
 					<td width="50%">
-						<span id="logHolder" style="display: block; height: 500px; overflow: auto; background-color: #222;">
+						<span id="logHolder" style="display: block;height: 500px;overflow: auto;background-color: #222;word-break: break-all;">
 						</span>
 					</td>
 				<?php else: ?>
@@ -156,7 +156,7 @@ if($backgroundPollingRateType == 'Seconds')
 				var browserNow = browserList[i];
 				if(browserNow === "internet explorer")
 				{
-					browserNow = "internet-explorer";
+					browserNow = "internet_explorer";
 				}
 				var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
 				var totalBrowserCount = getCurrentBrowserCountTotal(data, browserNow);
