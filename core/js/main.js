@@ -57,11 +57,15 @@ function getListOfBrowsers(data)
 	var browserList = new Array();
 	for (var i = 1; i < splitData.length; i++)
 	{
-		var browserInner = splitData[i].split("browserName=");
-		for (var j = 1; j < browserInner.length; j++)
+		var browserInner = splitData[i].split(".png");
+		for (var j = 0; j < browserInner.length - 1; j++)
 		{
-			var browserName = browserInner[j].split(",");
-			browserName = browserName[0];
+			var browserName = browserInner[j].split("/");
+			browserName = browserName[browserName.length - 1];
+			if(browserName == "internet_explorer" || browserName == "internet-explorer")
+			{
+				browserNow === "internet explorer";
+			}
 			if(browserList.indexOf(browserName) === -1)
 			{
 				browserList.push(browserName);

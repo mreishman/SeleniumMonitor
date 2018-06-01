@@ -55,16 +55,25 @@ if($backgroundPollingRateType == 'Seconds')
 		<canvas class="canvasMonitor" id="useageCanvas" width="300" height="300" style="height: 350px; border: 0;" ></canvas>
 		<table width="100%">
 			<tr>
-				<td width="50%">
-					<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
-					<br>
-					<br>
-					<span id="browserNodeInfo" ></span>
-				</td>
-				<td width="50%">
-					<span id="logHolder" style="display: block; height: 500px; overflow: auto; background-color: #222;">
-					</span>
-				</td>
+				<?php if ($logFileLocation != ""): ?>
+					<td width="50%">
+						<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
+						<br>
+						<br>
+						<span id="browserNodeInfo" ></span>
+					</td>
+					<td width="50%">
+						<span id="logHolder" style="display: block;height: 500px;overflow: auto;background-color: #222;word-break: break-all;">
+						</span>
+					</td>
+				<?php else: ?>
+					<td width="100%">
+						<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
+						<br>
+						<br>
+						<span id="browserNodeInfo" ></span>
+					</td>
+				<?php endif; ?>
 			</tr>
 		</table>
 	</div>
@@ -100,7 +109,9 @@ if($backgroundPollingRateType == 'Seconds')
 			window.onresize = resizeGraph;
 
 			var sideBarStuffPoll = setInterval(function(){overviewStuff();},1000);
-			var logStuffPoll = setInterval(function(){getLogData();},3000);
+			<?php if ($logFileLocation != ""): ?>
+				var logStuffPoll = setInterval(function(){getLogData();},3000);
+			<?php endif; ?>
 		});
 
 		function resizeGraph()
@@ -145,7 +156,7 @@ if($backgroundPollingRateType == 'Seconds')
 				var browserNow = browserList[i];
 				if(browserNow === "internet explorer")
 				{
-					browserNow = "internet-explorer";
+					browserNow = "internet_explorer";
 				}
 				var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
 				var totalBrowserCount = getCurrentBrowserCountTotal(data, browserNow);
