@@ -109,7 +109,9 @@ if($backgroundPollingRateType == 'Seconds')
 			window.onresize = resizeGraph;
 
 			var sideBarStuffPoll = setInterval(function(){overviewStuff();},1000);
-			var logStuffPoll = setInterval(function(){getLogData();},3000);
+			<?php if ($logFileLocation != ""): ?>
+				var logStuffPoll = setInterval(function(){getLogData();},3000);
+			<?php endif; ?>
 		});
 
 		function resizeGraph()
