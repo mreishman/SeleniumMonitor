@@ -52,7 +52,7 @@ if($backgroundPollingRateType == 'Seconds')
 	
 
 	<div id="main" style="right: 0; top: 62px;">
-		<canvas class="canvasMonitor" id="useageCanvas" width="300" height="300" style="height: 350px; border: 0;" ></canvas>
+		<canvas class="canvasMonitor" id="useageCanvas" width="300" height="300" style="height: 350px; border: 0; background-color: #FFF;" ></canvas>
 		<table width="100%">
 			<tr>
 				<?php if ($logFileLocation != ""): ?>
