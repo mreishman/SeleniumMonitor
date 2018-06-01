@@ -55,16 +55,25 @@ if($backgroundPollingRateType == 'Seconds')
 		<canvas class="canvasMonitor" id="useageCanvas" width="300" height="300" style="height: 350px; border: 0;" ></canvas>
 		<table width="100%">
 			<tr>
-				<td width="50%">
-					<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
-					<br>
-					<br>
-					<span id="browserNodeInfo" ></span>
-				</td>
-				<td width="50%">
-					<span id="logHolder" style="display: block; height: 500px; overflow: auto; background-color: #222;">
-					</span>
-				</td>
+				<?php if ($logFileLocation != ""): ?>
+					<td width="50%">
+						<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
+						<br>
+						<br>
+						<span id="browserNodeInfo" ></span>
+					</td>
+					<td width="50%">
+						<span id="logHolder" style="display: block; height: 500px; overflow: auto; background-color: #222;">
+						</span>
+					</td>
+				<?php else: ?>
+					<td width="100%">
+						<span style="font-size: 200%;" >Instances: <i><span id="currentRunTest" >0</span>/<span id="currentMaxNodeTot" >24</span></i> Nodes: <i><span id="currentRunNodes" >0</span>/<span id="currentNodeCount">6</span></i></span>
+						<br>
+						<br>
+						<span id="browserNodeInfo" ></span>
+					</td>
+				<?php endif; ?>
 			</tr>
 		</table>
 	</div>
