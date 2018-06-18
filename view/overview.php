@@ -158,6 +158,10 @@ if($backgroundPollingRateType == 'Seconds')
 				{
 					browserNow = "internet_explorer";
 				}
+				if(browserList[i] === "internet_explorer")
+				{
+					browserList[i] = "internet explorer";
+				}
 				var currentBrowserCount = getCurrentBrowserCount(data, browserList[i]);
 				var totalBrowserCount = getCurrentBrowserCountTotal(data, browserNow);
 				var browserSrc = "../core/img/chrome-hr.png";
