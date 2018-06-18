@@ -144,7 +144,7 @@ if($backgroundPollingRateType == 'Seconds')
 								</span>
 							</div>
 						</td>
-						<td id="{{id}}" width="240px" style="vertical-align: top;">
+						<td id="{{id}}" width="260px" style="vertical-align: top;">
 							<span id="popupSpanLeftHeight" style="display: block;">
 								<div onclick="hidePopupWindow();" class="link" style="width: 100%; text-align: center; margin-bottom: 10px;" >Close Popup</div>
 								<br>

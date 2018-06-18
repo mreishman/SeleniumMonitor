@@ -16,6 +16,13 @@ function showRender(divId, id, renderInfo, logFile, container)
 	item = item.replace(/{{errorCount}}/g, getCountOfBlockType(renderInfo["info"], errorClass));
 	item = item.replace(/{{ProgressBlocks}}/g, generateProgressBlocks(renderInfo["info"],divId));
 	item = item.replace(/{{logFile}}/g, logFile);
+	if(id.indexOf("Test") === 0 && item.indexOf("{{date}}") > -1)
+	{
+		var newDate = id.replace("Test", "");
+		newDate = newDate.replace(".log","");
+		newDate = new Date(newDate);
+		item = item.replace(/{{date}}/g, newDate);
+	}
 	return item;
 }
 
