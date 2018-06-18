@@ -45,7 +45,12 @@ function genContainer($dataForContainer)
 {
 	$stringGen = "<div style=\"background-color: white; border: 1px solid black;\" id=\"".$dataForContainer["id"]."\" class=\"scanBar containerMain\">";
 	$stringGen .= "<div class=\"fontChange\" style=\"width: 100%; text-align: left;\" id=\"".$dataForContainer["id"]."Title\">";
-	$stringGen .= "<h3><span id=\"".$dataForContainer["id"]."RenameDisplay\" >".$dataForContainer["logFile"]."</span><span style=\"display: none;\" id=\"".$dataForContainer["id"]."RenameInput\" > <input id=\"".$dataForContainer["id"]."RenameInputValue\" value=".$dataForContainer["logFile"]." ></input> <a onclick=\"renameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Cancel</a> <a onclick=\"actuallyRenameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Save</a> </span></h3>";
+	$stringGen .= "<h3><span id=\"".$dataForContainer["id"]."RenameDisplay\" >".$dataForContainer["logFile"]."</span><span style=\"display: none;\" id=\"".$dataForContainer["id"]."RenameInput\" > <input id=\"".$dataForContainer["id"]."RenameInputValue\" value=".$dataForContainer["logFile"]." ></input> <a onclick=\"renameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Cancel</a> <a onclick=\"actuallyRenameCompare('".$dataForContainer["id"]."');\" class=\"link\" >Save</a> </span>";
+	if($dataForContainer["date"] !== "")
+	{
+		$stringGen .= "(".$dataForContainer["date"].")";
+	}
+	$stringGen .= "</h3>";
 	$stringGen .= "<div style=\"font-size: 200%;\">";
 	$stringGen .= "<img class=\"imageInHeaderContainer\" onclick=\"removeCompare('".$dataForContainer["id"]."');\" src=\"../core/img/trashCan.png\">";
 	$stringGen .= "<img id=\"".$dataForContainer["id"]."RenameIcon\" class=\"imageInHeaderContainer\" onclick=\"renameCompare('".$dataForContainer["id"]."');\" src=\"../core/img/rename.png\">";
@@ -176,6 +181,13 @@ function generateProgressBlocks($info, $divId)
 				}
 				if(isset($dataForTest["info"]) && !empty((array)$dataForTest["info"]))
 				{
+					$date = "";
+					if(strpos($value, "Test") === 0)
+					{
+						$newDate = str_replace("Test", "", $value);
+						$newDate = str_replace(".log", "", $newDate);
+						$date = "<span id=\"".$value."SpanForDateConvert\" ></span>";
+					}
 					$infoLocal = $dataForTest["info"];
 					echo genContainer(array(
 						"id"				=>	$value,
@@ -185,8 +197,13 @@ function generateProgressBlocks($info, $divId)
 						"totalCount"		=>	getCountOfBlockType($infoLocal,"block"),
 						"errorCount"		=>	getCountOfBlockType($infoLocal,"blockError"),
 						"website"			=>	$websiteLocal,
-						"file"				=>	$fileLocal
+						"file"				=>	$fileLocal,
+						"date"				=>	$date
 					));
+					if(strpos($value, "Test") === 0)
+					{
+						echo "<script> document.getElementById(\"".$value."SpanForDateConvert\").innerHTML = new Date(".$newDate."); </script>";
+					}
 				}
 				else
 				{
@@ -217,7 +234,8 @@ function generateProgressBlocks($info, $divId)
 					"totalCount"		=>	"{{totalCount}}",
 					"errorCount"		=>	"{{errorCount}}",
 					"website"			=>	"{{website}}",
-					"file"				=>	"{{file}}"
+					"file"				=>	"{{file}}",
+					"date"				=>	"{{date}}"
 				));
 			?>
 		</div>
