@@ -1145,8 +1145,10 @@ function getVideoLink(functionData)
 					if(dataSuccess)
 					{
 						dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
-						dataMessage = dataMessage.replace(/5555/g,"3000");
-						dataMessage = "<iframe id=\"iFrameFor"+dataInner["session"]+"\"  src=\""+dataMessage+"\" ></iframe> <button onclick=\"document.getElementById('iFrameFor"+dataInner["session"]+"').src = document.getElementById('iFrameFor"+dataInner["session"]+"').src;\" >Refresh</button>";
+						var dataMessageNew = dataMessage.replace(/5555/g,"3000");
+						dataMessage = "<iframe id=\"iFrameFor"+dataInner["session"]+"\"  src=\""+dataMessageNew+"\" ></iframe>";
+						dataMessage += "<a class=\"link\" onclick=\"document.getElementById('iFrameFor"+dataInner["session"]+"').src = document.getElementById('iFrameFor"+dataInner["session"]+"').src;\" >Refresh</a>";
+						dataMessage += "<a target=\"_blank\" href=\""+dataMessageNew+"\"  >Open in new window</a>"
 					}
 					var selector = "";
 					var keysOfObjectOfVideos = Object.keys(objectOfVideos);
