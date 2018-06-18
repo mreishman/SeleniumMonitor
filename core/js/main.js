@@ -64,7 +64,7 @@ function getListOfBrowsers(data)
 			browserName = browserName[browserName.length - 1];
 			if(browserName == "internet_explorer" || browserName == "internet-explorer")
 			{
-				browserNow === "internet explorer";
+				browserName === "internet explorer";
 			}
 			if(browserList.indexOf(browserName) === -1)
 			{

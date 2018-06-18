@@ -359,6 +359,8 @@ function showPopup(id)
 		popupImageLogic(id, document.getElementById(id+"JumbotronImage").src);
 	}
 	document.getElementById("popup").style.width = ""+((window.innerWidth*0.9)-280)+"px";
+	document.getElementById(id+"PopupJumbotronHolder").style.maxWidth = ""+((window.innerWidth*0.9)-540)+"px";
+	document.getElementById(id+"PopupJumbotronHolder").style.overflow = "auto";
 }
 
 function hidePopupWindow()
