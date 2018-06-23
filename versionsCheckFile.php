@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.5',
+	'version'		=> '1.5.1',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -30,6 +30,10 @@ $versionCheckArray = array(
 		'1.5'	        => array(
 			'branchName'	=> '1.5Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added sidebar for viewing the current grid status</li><li>Added option to pass through more config data (server ip, browser, platform)</li><li>Added option to lock cached test results</li></ul></li><li>Bug Fixes<ul><li>Improved poll time for log data collection</li></ul></li></ul>'
+		),
+		'1.5.1'	        => array(
+			'branchName'	=> '1.5.1Update',
+			'releaseNotes'	=> '<ul><li>Bug Fixes<ul><li>Fixed style issue with popup on view page</li></ul></li></ul>'
 		)
 	)
 );
