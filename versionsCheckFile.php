@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.5.2',
+	'version'		=> '1.5.3',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -34,10 +34,14 @@ $versionCheckArray = array(
 		'1.5.1'	        => array(
 			'branchName'	=> '1.5.1Update',
 			'releaseNotes'	=> '<ul><li>Bug Fixes<ul><li>Fixed style issue with popup on view page</li></ul></li></ul>'
-		)
+		),
 		'1.5.2'	        => array(
 			'branchName'	=> '1.5.2Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added refresh button to add test page (to refresh stats for max ajax/browsers)</li></ul></li><li>Bug Fixes<ul><li>Fixed bug with poll requests for sidebar (limited number of active requests to one)</li><li>Fixed issue with input number for max tests per requests (input field)</li></ul></li></ul>'
+		),
+		'1.5.3'	        => array(
+			'branchName'	=> '1.5.3Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Added ajax settings to header for running tests</li></ul></li><li>Bug Fixes<ul><li>Fixed styling issue on view past tests page</li></ul></li></ul>'
 		)
 	)
 );
