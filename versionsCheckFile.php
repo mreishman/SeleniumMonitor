@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.5.3',
+	'version'		=> '1.6.2',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -42,7 +42,19 @@ $versionCheckArray = array(
 		'1.5.3'	        => array(
 			'branchName'	=> '1.5.3Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added ajax settings to header for running tests</li></ul></li><li>Bug Fixes<ul><li>Fixed styling issue on view past tests page</li></ul></li></ul>'
-		)
+		),
+		'1.6'	        => array(
+			'branchName'	=> '1.6Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Added overview page</li><li>Added re-run tests option (re runs failed/errored tests if above specified percent)</li><li>Added more view options to view page</li></ul></li></ul>'
+		),
+		'1.6.1'	        => array(
+			'branchName'	=> '1.6.1Update',
+			'releaseNotes'	=> '<ul><li>Bug Fixes<ul><li>Added check for log before displaying in overview</li><li>Fixed bug with browser count being not displaying if all nodes were in use</li><li>Fixed bug with internet explore browser count</li><li>Fixed display bug with log width in overview (adding word break)</li></ul></li></ul>'
+		),
+		'1.6.2'	        => array(
+			'branchName'	=> '1.6.2Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Added date next to title on cached test results (if not renamed)</li><li>Moved video to iframe on running tests</li></ul></li><li>Bug Fixes<ul><li>Fixed js issue with sidebar and IE</li><li>Fixed some style issues and popup for viewing nodes</li><li>Fixed image display issue with IE on sidebar & overview page</li></ul></li></ul>'
+		),
 	)
 );
 ?>
