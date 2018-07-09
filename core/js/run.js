@@ -634,6 +634,10 @@ function pollInner(data)
 						{
 							var currentTime = performance.now();
 							totalTimeOfAllTests.push(Math.round((currentTime - _data["timeStart"][i])/1000));
+							if(totalTimeOfAllTests.length > 100)
+							{
+								totalTimeOfAllTests.shift();
+							}
 							if(document.getElementById(_data["id"][i]))
 							{
 								//update percent
