@@ -634,6 +634,10 @@ function pollInner(data)
 						{
 							var currentTime = performance.now();
 							totalTimeOfAllTests.push(Math.round((currentTime - _data["timeStart"][i])/1000));
+							if(totalTimeOfAllTests.length > 100)
+							{
+								totalTimeOfAllTests.shift();
+							}
 							if(document.getElementById(_data["id"][i]))
 							{
 								//update percent
@@ -1145,8 +1149,10 @@ function getVideoLink(functionData)
 					if(dataSuccess)
 					{
 						dataMessage = dataInner["proxyId"]+"/download_video/"+dataInner["session"]+".mp4";
-						dataMessage = dataMessage.replace(/5555/g,"3000");
-						dataMessage = "<iframe  src=\""+dataMessage+"\" ></iframe>";
+						var dataMessageNew = dataMessage.replace(/5555/g,"3000");
+						dataMessage = "<iframe id=\"iFrameFor"+dataInner["session"]+"\"  src=\""+dataMessageNew+"\" ></iframe>";
+						dataMessage += "<a class=\"link\" onclick=\"document.getElementById('iFrameFor"+dataInner["session"]+"').src = document.getElementById('iFrameFor"+dataInner["session"]+"').src;\" >Refresh</a>";
+						dataMessage += "<a target=\"_blank\" href=\""+dataMessageNew+"\"  >Open in new window</a>"
 					}
 					var selector = "";
 					var keysOfObjectOfVideos = Object.keys(objectOfVideos);
