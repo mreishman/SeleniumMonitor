@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.6.2',
+	'version'		=> '1.6.3',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -54,6 +54,10 @@ $versionCheckArray = array(
 		'1.6.2'	        => array(
 			'branchName'	=> '1.6.2Update',
 			'releaseNotes'	=> '<ul><li>Features<ul><li>Added date next to title on cached test results (if not renamed)</li><li>Moved video to iframe on running tests</li></ul></li><li>Bug Fixes<ul><li>Fixed js issue with sidebar and IE</li><li>Fixed some style issues and popup for viewing nodes</li><li>Fixed image display issue with IE on sidebar & overview page</li></ul></li></ul>'
+		),
+		'1.6.3'	        => array(
+			'branchName'	=> '1.6.3Update',
+			'releaseNotes'	=> '<ul><li>Bug Fixes<ul><li>Added refresh next to iframe in tests to refresh if video 404 on first load</li><li>Reduced size of array for generating time estimates. (only from last 100 tests now)</li></ul></li></ul>'
 		),
 	)
 );
