@@ -22,10 +22,10 @@ var numOfRetries = {};
 function getFileList()
 {
 	var urlForSend = '../core/php/returnFileContent.php?format=json';
-	var valueForFile = document.getElementById("fileListSelector").value;
-	if(valueForFile !== "PLACEHOLDER")
+	var valueForFile = $("#fileSelectListForm").serializeArray();
+	if(valueForFile.length > 0)
 	{
-		var data = {file: valueForFile };
+		var data = {files: valueForFile };
 		$.ajax(
 		{
 			url: urlForSend,
@@ -73,8 +73,8 @@ function getTestList()
 	{
 		groupsExclude = "empty array";
 	}
-	var valueForFile = document.getElementById("fileListSelector").value;
-	var data = {groupsInclude, groupsExclude, file: valueForFile };
+	var valueForFile = $("#fileSelectListForm").serializeArray();
+	var data = {groupsInclude, groupsExclude, files: valueForFile };
 	$.ajax(
 	{
 		url: urlForSend,
@@ -84,13 +84,15 @@ function getTestList()
 		success(data)
 		{
 			var tests = data["testList"];
+			var testsKeys = Object.keys(tests);
+			var testsKeysLength = testKeys.length;
 			document.getElementById("testCount").innerHTML =  data["testListCount"]+"/"+data["testListCount"];
 			var testsHtml = "";
-			if(tests.length > 0)
+			if(testsKeysLength > 0)
 			{
 				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a> <a onclick=\"toggleCheckBoxes('testsListForm', true); updateCount('testsListForm');\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false); updateCount('testsListForm');\" class=\"link\">Uncheck All</a> <br><form id='testsListForm'><ul class='list'>";
-				for (var i = tests.length - 1; i >= 0; i--) {
-					testsHtml += "<li><input onchange=\"updateCount('testsListForm');\" type='checkbox' checked name='"+tests[i]+"'>"+tests[i]+"</li>";
+				for (var i = testsKeysLength - 1; i >= 0; i--) {
+					testsHtml += "<li><input onchange=\"updateCount('testsListForm');\" type='checkbox' checked value='"+tests[testsKeys[i]]["file"]+"'  name='"+tests[testsKeys[i]]["name"]+"'>"+tests[testsKeys[i]]["name"]+"</li>";
 				}
 				testsHtml += "</ul></form>";
 			}
@@ -112,37 +114,38 @@ function runTests()
 {
 	//get list of tests, add to array
 	var groupsExclude = $("#testsListForm").serializeArray();
-	var listOfNames = new Array();
+	var listOfNames = {};
 	var progressBlocksHtml = "";
 	placeholderBaseUrl = document.getElementById("baseUrlInput").value;
-	var innerArrayOfTests = new Array();
 
 	for (var i = groupsExclude.length - 1; i >= 0; i--)
 	{
-		listOfNames.push(groupsExclude[i]["name"]);
+		listOfNames[groupsExclude[i]["value"]+"_"+groupsExclude[i]["name"]] = {"name" groupsExclude[i]["name"]: , "file" : groupsExclude[i]["value"]}
 	}
-
-	for (var i = listOfNames.length - 1; i >= 0; i--)
+	var listOfNamesKeys = Object.keys(listOfNames);
+	var listOfNamesKeysLength = listOfNamesKeys.length;
+	for (var i = listOfNamesKeysLength - 1; i >= 0; i--)
 	{
-		innerArrayOfTests.push(listOfNames[i]);
-		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNames[i]+"popup');\" title='"+listOfNames[i]+"' id='Test"+testNumber+listOfNames[i]+"' class='block blockEmpty'>";
-		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[i]+"\" id='Test"+testNumber+listOfNames[i]+"TestName' >";
+		var listOfNameCurrentKey = listOfNamesKeys[i];
+		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNameCurrentKey+"popup');\" title='"+listOfNameCurrentKey+"' id='Test"+testNumber+listOfNameCurrentKey+"' class='block blockEmpty'>";
+		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["name"]+"\" id='Test"+testNumber+listOfNameCurrentKey+"TestName' >";
+		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["file"]+"\" id='TestFile"+testNumber+listOfNameCurrentKey+"TestName' >";
 		progressBlocksHtml += "</div>";
-		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNames[i]+"popup'> <h3> Test: "+listOfNames[i]+" </h3> <br> ";
-		progressBlocksHtml += "<div id=\"Test"+testNumber+listOfNames[i]+"Menu\" ><div style=\"border-bottom: 1px solid black;\"><ul class=\"menu\">";
-		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuResultsMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Results');\"  class=\"active\">Results</li>";
-		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuVideoMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Video');\">Video</li>";
-		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNames[i]+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNames[i]+"Menu', 'Log');\">Log</li>";
+		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNameCurrentKey+"popup'> <h3> Test: "+listOfNameCurrentKey+" </h3> <br> ";
+		progressBlocksHtml += "<div id=\"Test"+testNumber+listOfNameCurrentKey+"Menu\" ><div style=\"border-bottom: 1px solid black;\"><ul class=\"menu\">";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNameCurrentKey+"MenuResultsMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNameCurrentKey+"Menu', 'Results');\"  class=\"active\">Results</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNameCurrentKey+"MenuVideoMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNameCurrentKey+"Menu', 'Video');\">Video</li>";
+		progressBlocksHtml += "<li id=\"Test"+testNumber+listOfNameCurrentKey+"MenuLogMenu\" onclick=\"toggleTab('Test"+testNumber+listOfNameCurrentKey+"Menu', 'Log');\">Log</li>";
 		progressBlocksHtml += "</ul></div>";
-		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuResults\" ><span id='Test"+testNumber+listOfNames[i]+"popupSpan' ><p> Pending Start </p></span></div>";
-		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuVideo\" ><p class=\""+listOfNames[i]+"Video\" >No Video Info Available</p></div>";
-		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNames[i]+"MenuLog\" ><p class=\""+listOfNames[i]+"Log\">No Log Info Available</p></div>";
+		progressBlocksHtml += " <div class=\"conainerSub\" id=\"Test"+testNumber+listOfNameCurrentKey+"MenuResults\" ><span id='Test"+testNumber+listOfNameCurrentKey+"popupSpan' ><p> Pending Start </p></span></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNameCurrentKey+"MenuVideo\" ><p class=\""+listOfNameCurrentKey+"Video\" >No Video Info Available</p></div>";
+		progressBlocksHtml += " <div style=\"display: none;\" class=\"conainerSub\" id=\"Test"+testNumber+listOfNameCurrentKey+"MenuLog\" ><p class=\""+listOfNameCurrentKey+"Log\">No Log Info Available</p></div>";
 		progressBlocksHtml += " </div></div>";
 	}
 
 	var arrayForNewTestArray = {
 		name: testNumber,
-		tests: innerArrayOfTests,
+		tests: listOfNames,
 		count: 0,
 		startCount: 0,
 		passedCount: 0,
@@ -150,7 +153,7 @@ function runTests()
 		failCount: 0,
 		skipCount: 0,
 		riskyCount: 0,
-		total: innerArrayOfTests.length
+		total: listOfNamesKeysLength
 		};
 
 	arrayOfTests.push(arrayForNewTestArray);
@@ -470,9 +473,11 @@ function pollInner(data)
 		if(document.getElementById("Test"+testNumberLocal))
 		{
 			var numberOfTestsToRun = testsPerAjax;
-			if(testsPerAjax > arrayOfTests[0]["tests"].length)
+			var arrayOfTestsKeys = Object.keys(arrayOfTests[0]["tests"]);
+			var arrayOfTestsKeysLength = arrayOfTestsKeys.length;
+			if(testsPerAjax > arrayOfTestsKeysLength)
 			{
-				numberOfTestsToRun = arrayOfTests[0]["tests"].length;
+				numberOfTestsToRun = arrayOfTestsKeysLength;
 			}
 			var id = {};
 			var testName = {};
@@ -480,19 +485,19 @@ function pollInner(data)
 			var timeStart = {};
 			for (var i = numberOfTestsToRun - 1; i >= 0; i--)
 			{
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).classList.remove("blockEmpty");
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).classList.add("blockInProgress");
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]).title = arrayOfTests[0]["tests"][0]+" Test In Progress";
-				document.getElementById("Test"+testNumberLocal+arrayOfTests[0]["tests"][i]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
+				document.getElementById("Test"+testNumberLocal+arrayOfTestsKeys[i]).classList.remove("blockEmpty");
+				document.getElementById("Test"+testNumberLocal+arrayOfTestsKeys[i]).classList.add("blockInProgress");
+				document.getElementById("Test"+testNumberLocal+arrayOfTestsKeys[i]).title = arrayOfTestsKeys[i]+" Test In Progress";
+				document.getElementById("Test"+testNumberLocal+arrayOfTestsKeys[i]+"popupSpan").innerHTML ="<p>Test In Progress</p>";
 
 				arrayOfTests[0]["startCount"]++;
 
-				valueForFile[i] = document.getElementById("Test"+testNumberLocal+"File").value;
+				valueForFile[i] = arrayOfTests[0]["tests"][arrayOfTestsKeys[i]]["file"];
 				id[i] = "Test"+testNumberLocal;
-				testName[i] = arrayOfTests[0]["tests"][i];
+				testName[i] = arrayOfTests[0]["tests"][arrayOfTestsKeys[i]]["name"];
 				timeStart[i] = performance.now();
 			}
-			var data = {id , testName , numberOfTestsToRun, timeStart};
+			var data = {id , testName , numberOfTestsToRun, timeStart, fileName: valueForFile};
 			var urlForSend = '../core/php/runTest.php?format=json';
 			updateProgressBar("Test"+testNumberLocal);
 			var localBaseUrl = document.getElementById("Test"+testNumberLocal+"BaseUrl").value;
@@ -519,10 +524,11 @@ function pollInner(data)
 						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
 							var result = data[i]["Result"];
+							var idForHtml = _data["id"][i]+_data["fileName"][i]+"_"+_data["testName"][i];
 							if(document.getElementById(_data["id"][i]))
 							{
-								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.remove("blockInProgress");
-								document.getElementById(_data["id"][i]+_data["testName"][i]).title = _data['testName'][i]+" "+data[i]['timeMem'];
+								document.getElementById(idForHtml).classList.remove("blockInProgress");
+								document.getElementById(idForHtml).title = _data['testName'][i]+" "+data[i]['timeMem'];
 
 								var arrayForOutput = "<table style='width: 100%; border-bottom: 1px solid black;'>";
 								var endFound = false;
@@ -564,45 +570,45 @@ function pollInner(data)
 								}
 								arrayForPopup += "</table>";
 
-								document.getElementById(_data["id"][i]+_data["testName"][i]+"popupSpan").innerHTML = arrayForPopup;
+								document.getElementById(idForHtml+"popupSpan").innerHTML = arrayForPopup;
 
 								if(result === "Passed")
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockPass");
-									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Passed";
+									document.getElementById(idForHtml).classList.add("blockPass");
+									document.getElementById(idForHtml).title += " Passed";
 									arrayOfTests[0]["passedCount"]++;
 								}
 								else if(result === "Error")
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
-									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Errored";
+									document.getElementById(idForHtml).classList.add("blockError");
+									document.getElementById(idForHtml).title += " Errored";
 									arrayOfTests[0]["errorCount"]++;
 									document.getElementById(_data["id"][i]+"ErrorCount").innerHTML = arrayOfTests[0]["errorCount"];
 									document.getElementById(_data["id"][i]+"Errors").innerHTML += arrayForOutput;
 								}
 								else if(result === "Failed")
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockFail");
-									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Failed";
+									document.getElementById(idForHtml).classList.add("blockFail");
+									document.getElementById(idForHtml).title += " Failed";
 									arrayOfTests[0]["failCount"]++;
 									document.getElementById(_data["id"][i]+"FailCount").innerHTML = arrayOfTests[0]["failCount"];
 									document.getElementById(_data["id"][i]+"Fails").innerHTML += arrayForOutput;
 								}
 								else if(result === "Skipped")
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockSkip");
-									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Skipped";
+									document.getElementById(idForHtml).classList.add("blockSkip");
+									document.getElementById(idForHtml).title += " Skipped";
 									arrayOfTests[0]["skipCount"]++;
 								}
 								else if(result === "Risky")
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockRisky");
-									document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Risky";
+									document.getElementById(idForHtml).classList.add("blockRisky");
+									document.getElementById(idForHtml).title += " Risky";
 									arrayOfTests[0]["riskyCount"]++;
 								}
 								else
 								{
-									document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
+									document.getElementById(idForHtml).classList.add("blockError");
 								}
 							}
 						}
@@ -611,19 +617,20 @@ function pollInner(data)
 					{
 						for (var i = _data["numberOfTestsToRun"] - 1; i >= 0; i--)
 						{
+							var idForHtml = _data["id"][i]+_data["fileName"][i]+"_"+_data["testName"][i];
 							if(document.getElementById(_data["id"][i]))
 							{
-								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.remove("blockInProgress");
-								document.getElementById(_data["id"][i]+_data["testName"][i]).title = _data['testName'][i];
+								document.getElementById(idForHtml).classList.remove("blockInProgress");
+								document.getElementById(idForHtml).title = _data['testName'][i];
 
 								var arrayForPopup = "<table>";
 								arrayForPopup += "<tr><td>"+JSON.stringify(xhr)+"</td><tr>";
 								arrayForPopup += "<tr><td>"+JSON.stringify(error)+"</td><tr>";
 								arrayForPopup += "</table>";
-								document.getElementById(_data["id"][i]+_data["testName"][i]+"popupSpan").innerHTML = arrayForPopup;
+								document.getElementById(idForHtml+"popupSpan").innerHTML = arrayForPopup;
 
-								document.getElementById(_data["id"][i]+_data["testName"][i]).classList.add("blockError");
-								document.getElementById(_data["id"][i]+_data["testName"][i]).title += " Errored";
+								document.getElementById(idForHtml).classList.add("blockError");
+								document.getElementById(idForHtml).title += " Errored";
 								arrayOfTests[0]["errorCount"]++;
 							}
 						}

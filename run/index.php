@@ -96,10 +96,11 @@ if($pollingRateType == 'Seconds')
 					<h1 class="title">1.</h1>
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
-						<select id="fileListSelector" onchange="getFileList();">
-							<option value="PLACEHOLDER">Select A File</option>
+					<form id="fileSelectListForm" >
+						<ul>
 							<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
-						</select>
+						</ul>
+					</form>
 					<?php else: ?>
 						Please specifiy a directory of where test are located on the settings page
 					<?php endif;?>

@@ -355,7 +355,7 @@ function scanDirForTests($dir, $showSubFolderTests)
 			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
 	        if(is_file($path) && returnArrayOfTests(file($path)) !== array())
 	        {
-	        	$stuffToReturn .= "<option value='".$path."'' >".$value."</option>";
+	        	$stuffToReturn .= "<li><input onchange=\"getFileList();\" type='checkbox' name=\"".$path."\">".$value."</li>";
 	        }
 	        elseif(is_dir($path) && $showSubFolderTests)
 	        {
@@ -366,7 +366,7 @@ function scanDirForTests($dir, $showSubFolderTests)
 	return $stuffToReturn;
 }
 
-function returnArrayOfTests($file)
+function returnArrayOfTests($file, $fileName)
 {
 	$arrayOfTests = array();
 	for ($i=0; $i < count($file); $i++)
@@ -380,7 +380,10 @@ function returnArrayOfTests($file)
 					$line = filterFunctionName($file[$i]);
 					if(!in_array($line, $arrayOfTests))
 					{
-						array_push($arrayOfTests, $line);
+						$arrayOfTests[$fileName.$line] = array(
+							"test"						=>	$line,
+							"file"						=>	$fileName
+						);
 					}
 				}
 			}
