@@ -85,13 +85,14 @@ function getTestList()
 		{
 			var tests = data["testList"];
 			var testsKeys = Object.keys(tests);
-			var testsKeysLength = testKeys.length;
+			var testsKeysLength = testsKeys.length;
 			document.getElementById("testCount").innerHTML =  data["testListCount"]+"/"+data["testListCount"];
 			var testsHtml = "";
 			if(testsKeysLength > 0)
 			{
 				testsHtml += "<a class=\"link\" onclick='runTests();'> Run Tests </a> <a onclick=\"toggleCheckBoxes('testsListForm', true); updateCount('testsListForm');\" class=\"link\">Check All</a> <a onclick=\"toggleCheckBoxes('testsListForm', false); updateCount('testsListForm');\" class=\"link\">Uncheck All</a> <br><form id='testsListForm'><ul class='list'>";
-				for (var i = testsKeysLength - 1; i >= 0; i--) {
+				for (var i = testsKeysLength - 1; i >= 0; i--)
+				{
 					testsHtml += "<li><input onchange=\"updateCount('testsListForm');\" type='checkbox' checked value='"+tests[testsKeys[i]]["file"]+"'  name='"+tests[testsKeys[i]]["name"]+"'>"+tests[testsKeys[i]]["name"]+"</li>";
 				}
 				testsHtml += "</ul></form>";
@@ -120,7 +121,7 @@ function runTests()
 
 	for (var i = groupsExclude.length - 1; i >= 0; i--)
 	{
-		listOfNames[groupsExclude[i]["value"]+"_"+groupsExclude[i]["name"]] = {"name" groupsExclude[i]["name"]: , "file" : groupsExclude[i]["value"]}
+		listOfNames[groupsExclude[i]["value"]+"_"+groupsExclude[i]["name"]] = {"name" : groupsExclude[i]["name"] , "file" : groupsExclude[i]["value"]}
 	}
 	var listOfNamesKeys = Object.keys(listOfNames);
 	var listOfNamesKeysLength = listOfNamesKeys.length;
@@ -161,15 +162,14 @@ function runTests()
 	var etaHtml = "ETA: ---";
 	if(totalTimeOfAllTests.length > 0)
 	{
-		etaHtml = "ETA: "+getEta("Test"+testNumber, innerArrayOfTests.length);
+		etaHtml = "ETA: "+getEta("Test"+testNumber, listOfNamesKeysLengthh);
 	}
  	
 	//create display for thing 
 	var item = $("#storage .container").html();
 	item = item.replace(/{{id}}/g, "Test"+testNumber);
-	item = item.replace(/{{file}}/g, document.getElementById("fileListSelector").value);
 	item = item.replace(/{{baseUrl}}/g, document.getElementById("baseUrlInput").value);
-	item = item.replace(/{{totalCount}}/g, innerArrayOfTests.length);
+	item = item.replace(/{{totalCount}}/g, listOfNamesKeysLength);
 	item = item.replace(/{{ProgressBlocks}}/g, progressBlocksHtml);
 	item = item.replace(/{{eta}}/g, etaHtml);
 	$("#main").append(item);

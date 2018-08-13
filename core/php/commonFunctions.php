@@ -258,9 +258,9 @@ function filterGroupname($line)
 	return $line;
 }
 
-function getAllTestsFromGroup($file, $groupNameArray)
+function getAllTestsFromGroup($fileName, $groupNameArray)
 {
-	$file = file($file);
+	$file = file($fileName);
 	$arrayOfTests = array();
 	foreach ($groupNameArray as $groupName)
 	{
@@ -287,9 +287,12 @@ function getAllTestsFromGroup($file, $groupNameArray)
 										if(strpos($lineCheckForFunction, "//") === false)
 										{
 											$line = filterFunctionName($lineCheckForFunction);
-											if(!in_array($line, $arrayOfTests))
+											if(!isset($arrayOfTests[$fileName."_".$line]))
 											{
-												array_push($arrayOfTests, $line);
+												$arrayOfTests[$fileName."_".$line] = array(
+													"file"				=> $fileName,
+													"name" 				=> $line
+												);
 											}
 										}
 									}
@@ -353,7 +356,7 @@ function scanDirForTests($dir, $showSubFolderTests)
 		foreach($files as $key => $value)
 		{
 			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
-	        if(is_file($path) && returnArrayOfTests(file($path)) !== array())
+	        if(is_file($path) && returnArrayOfTests(file($path), $path) !== array())
 	        {
 	        	$stuffToReturn .= "<li><input onchange=\"getFileList();\" type='checkbox' name=\"".$path."\">".$value."</li>";
 	        }

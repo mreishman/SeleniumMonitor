@@ -16,7 +16,7 @@ if($groupsExcludeArray == "empty array")
 {
 	$groupsExcludeArray = array();
 }
-$file = $_POST['file'];
+$files = $_POST['files'];
 
 foreach ($groupsIncludeArray as $key => $value)
 {
@@ -27,16 +27,28 @@ foreach ($groupsExcludeArray as $key => $value)
 	array_push($filterExclude, $value["name"]);
 }
 
-$testListOfIncludeArray = getAllTestsFromGroup($file, $filterInclude);
-$testListOfExcludeArray = getAllTestsFromGroup($file, $filterExclude);
+$arrayOfArrays = array(
+	"arrayOfInclude"	=> array(),
+	"arrayOfExclude"	=>	array()
+);
+
+foreach ($files as $file)
+{
+	$fileLoaded = file($file["name"]);
+	$arrayOfInclude = getAllTestsFromGroup($file["name"], $filterInclude);
+	$arrayOfExclude = getAllTestsFromGroup($file["name"], $filterExclude);
+
+	$arrayOfArrays['arrayOfInclude'] = array_merge($arrayOfInclude, $arrayOfArrays['arrayOfInclude']);
+	$arrayOfArrays['arrayOfExclude'] = array_merge($arrayOfExclude, $arrayOfArrays['arrayOfExclude']);
+}
 
 $count = 0;
 
-foreach ($testListOfIncludeArray as $test)
+foreach ($arrayOfArrays['arrayOfInclude'] as $testKey => $test)
 {
-	if(!in_array($test, $testListOfExcludeArray))
+	if(!isset($arrayOfArrays['arrayOfExclude'][$testKey]))
 	{
-		array_push($arrayOfFinalTests, $test);
+		$arrayOfFinalTests[$testKey] = $test;
 		$count++;
 	}
 }

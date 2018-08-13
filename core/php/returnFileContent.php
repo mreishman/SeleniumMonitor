@@ -8,9 +8,9 @@ $arrayOfArrays = array(
 
 foreach ($files as $file)
 {
-	$file = file($file["name"]);
-	$arrayOfGroups = returnArrayOfGroups($file);
-	$arrayOfTests = returnArrayOfTests($file, $file["name"]);
+	$fileLoaded = file($file["name"]);
+	$arrayOfGroups = returnArrayOfGroups($fileLoaded);
+	$arrayOfTests = returnArrayOfTests($fileLoaded, $file["name"]);
 
 	$arrayOfArrays['arrayOfGroups'] = array_merge($arrayOfGroups, $arrayOfArrays['arrayOfGroups']);
 	$arrayOfArrays['arrayOfTests'] = array_merge($arrayOfTests, $arrayOfArrays['arrayOfTests']);

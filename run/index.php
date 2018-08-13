@@ -97,7 +97,7 @@ if($pollingRateType == 'Seconds')
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
 					<form id="fileSelectListForm" >
-						<ul>
+						<ul style="list-style: none;" >
 							<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
 						</ul>
 					</form>
@@ -142,7 +142,6 @@ if($pollingRateType == 'Seconds')
 				</div>
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
-						<span id="{{id}}Folder">{{file}}</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="exportResults('{{id}}');" src="../core/img/save.png">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
