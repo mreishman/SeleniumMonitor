@@ -215,8 +215,6 @@ if($pollingRateType == 'Seconds')
 					</div>
 					<div class="fontChange conainerSub containerSubBG" id="{{id}}MainMenuConfig" style="display: none;" >
 						<br>
-						<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
-						<br>
 						<input style="width: 75%; display: block;" type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
 						<br>
 					</div>

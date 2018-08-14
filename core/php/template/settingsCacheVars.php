@@ -14,11 +14,12 @@ Cache Settings
 <ul id="settingsUl">
 	<li>
 		<span class="settingsBuffer" > Enable Cache Tests: </span>
-		<select name="cacheTestEnable">
-			<option <?php if($cacheTestEnable == 'true'){echo "selected";} ?> value="true">True</option>
-			<option <?php if($cacheTestEnable == 'false'){echo "selected";} ?> value="false">False</option>
-		</select>
-		<br>
+		<div class="selectDiv">
+			<select name="cacheTestEnable">
+				<option <?php if($cacheTestEnable == 'true'){echo "selected";} ?> value="true">True</option>
+				<option <?php if($cacheTestEnable == 'false'){echo "selected";} ?> value="false">False</option>
+			</select>
+		</div>
 	</li>
 	<li>
 		<span class="settingsBuffer" > Clear TMP folder: </span>
