@@ -358,7 +358,7 @@ function poll()
 	{
 		if(arrayOfTests.length > 0)
 		{
-			if(arrayOfTests[0]["tests"].length > 0)
+			if(Object.keys(arrayOfTests[0]["tests"]).length > 0)
 			{
 				if(currentTestsRunning < (ajaxRequestValue * testsPerAjax))
 				{
@@ -692,7 +692,7 @@ function pollInner(data)
 
 			for (var i = numberOfTestsToRun - 1; i >= 0; i--)
 			{
-				arrayOfTests[0]["tests"].shift();
+				delete arrayOfTests[0]["tests"][arrayOfTestsKeys[i]];
 				currentTestsRunning++;
 			}
 			currentAjaxRequestNum++;
