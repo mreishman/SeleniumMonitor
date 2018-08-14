@@ -129,8 +129,8 @@ function runTests()
 	{
 		var listOfNameCurrentKey = listOfNamesKeys[i];
 		progressBlocksHtml += "<div onclick=\"showTestPopup('Test"+testNumber+listOfNameCurrentKey+"popup');\" title='"+listOfNameCurrentKey+"' id='Test"+testNumber+listOfNameCurrentKey+"' class='block blockEmpty'>";
-		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["name"]+"\" id='Test"+testNumber+listOfNameCurrentKey+"TestName' >";
-		progressBlocksHtml += "<input type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["file"]+"\" id='TestFile"+testNumber+listOfNameCurrentKey+"TestName' >";
+		progressBlocksHtml += "<input class=\"inputTestName\" type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["name"]+"\" id='Test"+testNumber+listOfNameCurrentKey+"TestName' >";
+		progressBlocksHtml += "<input class=\"inputTestFile\" type=\"hidden\" value=\""+listOfNames[listOfNamesKeys[i]]["file"]+"\" id='TestFile"+testNumber+listOfNameCurrentKey+"TestName' >";
 		progressBlocksHtml += "</div>";
 		progressBlocksHtml += "<div class=\"testPopupBlock\" id='Test"+testNumber+listOfNameCurrentKey+"popup'> <h3> Test: "+listOfNameCurrentKey+" </h3> <br> ";
 		progressBlocksHtml += "<div id=\"Test"+testNumber+listOfNameCurrentKey+"Menu\" ><div style=\"border-bottom: 1px solid black;\"><ul class=\"menu\">";
@@ -876,11 +876,15 @@ function reRunTests(idOfTest)
 	for (var i = testReRun.length - 1; i >= 0; i--)
 	{
 		objectCount[testReRun[i]["name"]] = 0;
-		var testArray = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]+" input");
+		var testArray = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]+" .inputTestName");
+		var testArrayTwo = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]+" .inputTestFile");
 		var testArrayLength = testArray.length;
 		for (var j = 0; j < testArrayLength; j++)
 		{
-			arrayOfTestsToBeReRun.push(testArray[j].value);
+			arrayOfTestsToBeReRun.push({
+				"name"	: testArray[j].value
+				"file"	: testArrayTwo[j].value
+			});
 		}
 
 		testArray = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]);
@@ -1231,7 +1235,7 @@ function exportResults(idOfTest)
 
 function generateExportInfo(idOfTest)
 {
-	var testArray = $("#"+idOfTest+"ProgressBlocks input");
+	var testArray = $("#"+idOfTest+"ProgressBlocks .inputTestName");
 	var resultArray = $("#"+idOfTest+" .testPopupBlock span");
 	var blockArray = $("#"+idOfTest+" .block");
 	/* test: {result: ____, notes: ____, title: ____} */
