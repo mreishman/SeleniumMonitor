@@ -860,7 +860,7 @@ function reRunTests(idOfTest)
 
 	//schedule tests to re-run with applied filters
 	var testReRun = $("#testFormResetForm").serializeArray();
-	var arrayOfTestsToBeReRun = new Array();
+	var arrayOfTestsToBeReRun = {};
 	var testProgressBlocks = idOfTest+"ProgressBlocks";
 	var totalTestCount = $("#"+testProgressBlocks+" .block").length;
 
@@ -881,10 +881,10 @@ function reRunTests(idOfTest)
 		var testArrayLength = testArray.length;
 		for (var j = 0; j < testArrayLength; j++)
 		{
-			arrayOfTestsToBeReRun.push({
-				"name"	: testArray[j].value
+			arrayOfTestsToBeReRun[testArrayTwo[j].value+"_"+testArray[j].value] = {
+				"name"	: testArray[j].value,
 				"file"	: testArrayTwo[j].value
-			});
+			};
 		}
 
 		testArray = $("#"+testProgressBlocks+" ."+testReRun[i]["name"]);
@@ -906,8 +906,8 @@ function reRunTests(idOfTest)
 			document.getElementById(idOfTest+"Fails").innerHTML = "";
 		}
 	}
-
-	var newStart = totalTestCount - arrayOfTestsToBeReRun.length;
+	var arrayOfTestsToBeReRunLength = Object.keys(arrayOfTestsToBeReRun).length;
+	var newStart = totalTestCount - arrayOfTestsToBeReRunLength;
 	//reset percent bar (get number of tests from boxes)
 
 	var percentValue = (newStart/totalTestCount);
@@ -932,7 +932,7 @@ function reRunTests(idOfTest)
 	var etaHtml = "ETA: ---";
 	if(totalTimeOfAllTests.length > 0)
 	{
-		etaHtml = "ETA: "+getEta(idOfTest, arrayOfTestsToBeReRun.length);
+		etaHtml = "ETA: "+getEta(idOfTest, arrayOfTestsToBeReRunLength);
 	}
 	document.getElementById(idOfTest+"EtaTxt").innerHTML = etaHtml;
 
