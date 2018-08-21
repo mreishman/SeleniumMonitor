@@ -97,9 +97,7 @@ if($pollingRateType == 'Seconds')
 					<br>
 					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
 					<form id="fileSelectListForm" >
-						<ul style="list-style: none;" >
-							<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
-						</ul>
+						<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
 					</form>
 					<?php else: ?>
 						Please specifiy a directory of where test are located on the settings page
