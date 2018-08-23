@@ -427,7 +427,7 @@ function getListOfFiles($data)
 				$fullPath = $path . DIRECTORY_SEPARATOR . $filename;
 				if(is_dir($fullPath) && $recursive === "true")
 				{
-					$response = sizeFilesInDir(array(
+					$response = getListOfFiles(array(
 						"path" 			=> $fullPath,
 						"filter"		=> $filter,
 						"response"		=> $response,

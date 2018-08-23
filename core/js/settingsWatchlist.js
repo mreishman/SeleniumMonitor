@@ -305,29 +305,8 @@ function generateSubFiles(data)
 		if(fileArray[keyTwo]["type"] !== "folder")
 		{
 			var includeBool = "true";
-			var excludeTrim = defaultNewAddExcludeTrim;
-			var excludeDelete = "false";
-			var alertOnUpdate = defaultdefaultNewAddAlertEnabled;
-			var name = "";
-			
 			if(keyTwo in fileData)
 			{
-				if("Name" in fileData[keyTwo])
-				{
-					name = fileData[keyTwo]["Name"];
-				}
-				if("Alert" in fileData[keyTwo])
-				{
-					alertOnUpdate = fileData[keyTwo]["Alert"];
-				}
-				if("Delete" in fileData[keyTwo])
-				{
-					excludeDelete = fileData[keyTwo]["Delete"];
-				}
-				if("Trim" in fileData[keyTwo])
-				{
-					excludeTrim = fileData[keyTwo]["Trim"];
-				}
 				if("Include" in fileData[keyTwo])
 				{
 					includeBool = fileData[keyTwo]["Include"];
@@ -336,10 +315,6 @@ function generateSubFiles(data)
 			returnHtml += "<li>"+icons[fileArray[keyTwo]["image"]];
 			returnHtml += "<span style=\"width: 300px; overflow: auto; display: inline-block;\" >"+keyTwo.replace(mainFolder,"")+"</span><input name=\"watchListKey"+currentNum+"FileInFolder\"  type=\"hidden\" value=\""+keyTwo+"\" >";
 			returnHtml += "<span class=\"settingsBuffer\" >Include: <select onchange=\"updateFileInfo("+currentNum+");\" name=\"watchListKey"+currentNum+"FileInFolderInclude\" > "+generateTrueFalseSelect(includeBool)+" </select></span>";
-			returnHtml += "<span class=\"settingsBuffer\" >Exclude Trim: <select onchange=\"updateFileInfo("+currentNum+");\" name=\"watchListKey"+currentNum+"FileInFolderTrim\"> "+generateTrueFalseSelect(excludeTrim)+" </select></span>";
-			returnHtml += "<span class=\"settingsBuffer\" >Exclude Delete: <select onchange=\"updateFileInfo("+currentNum+");\" name=\"watchListKey"+currentNum+"ExcludeDelete\"> "+generateTrueFalseSelect(excludeDelete)+" </select></span>";
-			returnHtml += "<span class=\"settingsBuffer\" >Alert on Update: <select onchange=\"updateFileInfo("+currentNum+");\" name=\"watchListKey"+currentNum+"FileInFolderAlert\"> "+generateTrueFalseSelect(alertOnUpdate)+" </select></span>";
-			returnHtml += "<span class=\"settingsBuffer\" >Name: <input onchange=\"updateFileInfo("+currentNum+");\"  type=\"text\" name=\"watchListKey"+currentNum+"FileInFolderName\" value=\""+name+"\" > </span>";
 			returnHtml += "</li>";
 		}
 	}

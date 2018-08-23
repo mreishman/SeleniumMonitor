@@ -72,15 +72,6 @@ Run Settings
 			</select>
 		</div>
 	</li>
-	<li>
-		<span class="settingsBuffer" > Show Subfolder Files: </span>
-		<div class="selectDiv">
-			<select name="showSubFolderTests">
-				<option <?php if($showSubFolderTests == 'true'){echo "selected";} ?> value="true">True</option>
-				<option <?php if($showSubFolderTests == 'false'){echo "selected";} ?> value="false">False</option>
-			</select>
-		</div>
-	</li>
 </ul>
 </div>
 </form>

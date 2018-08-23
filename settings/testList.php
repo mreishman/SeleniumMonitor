@@ -25,6 +25,9 @@ require_once('../core/php/commonFunctions.php');
 		.settingsUl{
 			list-style: none;
 		}
+		.settingsUl li{
+			padding: 5px;
+		}
 	</style>
 </head>
 <body>

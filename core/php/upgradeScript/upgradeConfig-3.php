@@ -25,7 +25,7 @@ if(!is_array($locationOfTests))
 	$arrayWatchList .= "'FileType' => 'auto',";
 	$arrayWatchList .= "'Location' => '".$key."',";
 	$arrayWatchList .= "'Pattern' => '$',";
-	$arrayWatchList .= "'Recursive' => 'false'";
+	$arrayWatchList .= "'Recursive' => '".$showSubFolderTests."'";
 	$arrayWatchList .= "))";
 	$locationOfTests = $arrayWatchList;
 }
