@@ -221,7 +221,7 @@ function addFolder()
 function addFileFolderAjax(fileType, sentLocation)
 {
 	hidePopup();
-	displayLoadingPopup("../");
+	displayLoadingPopup();
 	var urlForSend = "../core/php/getFileFolderData.php?format=json";
 	var data = {currentFolder: sentLocation, filter: defaultNewAddPattern};
 	$.ajax({
@@ -729,22 +729,13 @@ function updateFileInfo(currentRow)
 	var stringToUpdateTo = "{";
 	var listOfFiles = document.getElementsByName("watchListKey"+currentRow+"FileInFolder");
 	var listOfFilesInclude = document.getElementsByName("watchListKey"+currentRow+"FileInFolderInclude");
-	var listOfFilesTrim = document.getElementsByName("watchListKey"+currentRow+"FileInFolderTrim");
-	var listOfFilesDelete = document.getElementsByName("watchListKey"+currentRow+"ExcludeDelete");
-	var listOfFilesName = document.getElementsByName("watchListKey"+currentRow+"FileInFolderName");
-	var listOfFilesAlert = document.getElementsByName("watchListKey"+currentRow+"FileInFolderAlert");
-	
 	if(listOfFiles)
 	{
 		listOfFilesLength = listOfFiles.length;
 		for (var i = 0; i < listOfFilesLength; i++)
 		{
 			stringToUpdateTo += "\""+listOfFiles[i].value+"\" : {";
-			stringToUpdateTo += " \"Include\": \""+listOfFilesInclude[i].value + "\" , ";
-			stringToUpdateTo += " \"Trim\":  \""+listOfFilesTrim[i].value + "\" , ";
-			stringToUpdateTo += " \"Delete\":  \""+listOfFilesDelete[i].value + "\", ";
-			stringToUpdateTo += " \"Name\":  \""+listOfFilesName[i].value + "\", ";
-			stringToUpdateTo += " \"Alert\":  \""+listOfFilesAlert[i].value + "\"  ";
+			stringToUpdateTo += " \"Include\": \""+listOfFilesInclude[i].value + "\"";
 			stringToUpdateTo += "}";
 			if(i !== (listOfFilesLength - 1))
 			{
