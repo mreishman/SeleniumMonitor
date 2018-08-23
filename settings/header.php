@@ -10,6 +10,11 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 	<?php else: ?>
 		<a id="MainLink" onclick="goToUrl('main.php');" >Main</a>
 	<?php endif; ?>
+	<?php if(strpos($URI, 'testList.php') !== false): ?>
+		<a style="cursor: default;" class="active" id="testListLink" >Test List</a>
+	<?php else: ?>
+		<a id="testListLink" onclick="goToUrl('testList.php');" >Test List</a>
+	<?php endif; ?>
 	<?php if(strpos($URI, 'update.php') !== false): ?>
 		<a style="cursor: default;" class="active" id="updateLink">
 	<?php else: ?>

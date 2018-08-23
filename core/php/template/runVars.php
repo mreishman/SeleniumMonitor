@@ -22,9 +22,6 @@ Run Settings
 		</div>
 	</li>
 	<li>
-		<span class="settingsBuffer" > Test Folder: </span>  <input style="width: 600px;" type="text" name="locationOfTests" value="<?php echo $locationOfTests;?>" >
-	</li>
-	<li>
 		<span class="settingsBuffer" > Selenium Folder: </span>  <input style="width: 600px;" type="text" name="locationOfSelenium" value="<?php echo $locationOfSelenium;?>" >
 	</li>
 	<li>

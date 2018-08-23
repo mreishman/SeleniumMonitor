@@ -398,3 +398,62 @@ function getAllTestLogFileTimes($path = "../../tmp/tests/")
 	}
 	return $response;
 }
+
+function getListOfFiles($data)
+{
+	$path = $data["path"];
+	$filter = $data["filter"];
+	$response = $data["response"];
+	$recursive = $data["recursive"];
+	$fileData = array();
+	if(isset($data["data"]))
+	{
+		$fileData = $data["data"];
+	}
+
+	$path = preg_replace('/\/$/', '', $path);
+	if(file_exists($path))
+	{
+		$scannedDir = scandir($path);
+		if(!is_array($scannedDir))
+		{
+			$scannedDir = array($scannedDir);
+		}
+		$files = array_diff($scannedDir, array('..', '.'));
+		if($files)
+		{
+			foreach($files as $k => $filename)
+			{
+				$fullPath = $path . DIRECTORY_SEPARATOR . $filename;
+				if(is_dir($fullPath) && $recursive === "true")
+				{
+					$response = sizeFilesInDir(array(
+						"path" 			=> $fullPath,
+						"filter"		=> $filter,
+						"response"		=> $response,
+						"recursive"		=> "true",
+						"data"			=> $fileData
+
+					));
+				}
+				elseif(preg_match('/' . $filter . '/S', $filename) && is_file($fullPath))
+				{
+					$boolCheck = true;
+					if(isset($fileData[$fullPath]))
+					{
+						$dataToUse = get_object_vars($fileData[$fullPath]);
+						if($dataToUse["Include"] === "false")
+						{
+							$boolCheck = false;
+						}
+					}
+					if($boolCheck)
+					{
+						array_push($response, $fullPath);
+					}
+				}
+			}
+		}
+	}
+	return $response;
+}
