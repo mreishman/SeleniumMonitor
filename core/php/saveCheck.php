@@ -50,29 +50,61 @@ $response = true;
 $arrayWatchList = "";
 if(isset($_POST['numberOfRows']))
 {
+	$baseKeys = $defaultConfig["locationOfTests"]["LocationOfTests1"];
+	$baseKeysCount = count($baseKeys);
 	for($i = 1; $i <= $_POST['numberOfRows']; $i++ )
 	{
-		$arrayWatchList .= "'".$_POST['watchListKey'.$i]."' => '".$_POST['watchListItem'.$i]."'";
+		$arrayWatchList .= "'".$_POST['watchListKey'.$i]."' => array(";
+		$baseKeyCounter = 0;
+		foreach ($baseKeys as $key => $value)
+		{
+			$baseKeyCounter++;
+			$arrayWatchList .= "'".$key."' => '".$_POST['watchListKey'.$i.$key]."'";
+			if($baseKeyCounter !== $baseKeysCount)
+			{
+				$arrayWatchList .= ",";
+			}
+		}
+		$arrayWatchList .= ")";
 		if($i != $_POST['numberOfRows'])
 		{
 			$arrayWatchList .= ",";
 		}
 	}
-	$watchListSave = $arrayWatchList;
+	$locationOfTestsSave = $arrayWatchList;
 	$arrayWatchList = "";
 
-	$numberOfRows = count($config['watchList']);
+	$numberOfRows = count($config['locationOfTests']);
 	$i = 0;
-	foreach ($config['watchList'] as $key => $value)
+	foreach ($config['locationOfTests'] as $key => $value)
 	{
 		$i++;
-		$arrayWatchList .= "'".$key."' => '".$value."'";
+		if(is_array($value))
+		{
+			$arrayWatchList .= "'".$key."' => array(";
+			$numberOfRows2 = count($value);
+			$j = 0;
+			foreach ($value as $key2 => $value2)
+			{
+				$j++;
+				$arrayWatchList .= "'".$key2."' => '".$value2."'";
+				if($j != $numberOfRows2)
+				{
+					$arrayWatchList .= ",";
+				}
+			}
+			$arrayWatchList .= ")";
+		}
+		else
+		{
+			$arrayWatchList .= "'".$key."' => '".$value."'";
+		}
 		if($i != $numberOfRows)
 		{
 			$arrayWatchList .= ",";
 		}
 	}
-	$watchList = $arrayWatchList;
+	$locationOfTests = $arrayWatchList;
 }
 
 if(isset($_POST['saveSettings']))

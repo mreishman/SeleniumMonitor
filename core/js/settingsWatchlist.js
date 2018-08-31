@@ -981,7 +981,6 @@ $( document ).ready(function()
 		'scroll',
 		function (event)
 		{
-			onScrollShowFixedMiniBar(["settingsMainWatch"]);
 			moveFileFolderDropdown();
 		},
 		true

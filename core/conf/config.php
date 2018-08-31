@@ -45,7 +45,7 @@ $defaultConfig = array(
 	'locationForMonitor'			=> '',
 	'locationForSearch'				=> '',
 	'locationForStatus'				=> '',
-	'locationOfTests'				=> '',
+	'locationOfTests'				=> array( 'LocationOfTests1' => array('FileInformation' => '{}','FileType' => 'auto','Location' => '/var/www/html/Tests/Selenium/','Pattern' => '$','Recursive' => 'true')),
 	'locationOfSelenium'			=> '',
 	'logFileLocation'				=> '',
 	'logFontColor'					=> '#FFFFFF',
