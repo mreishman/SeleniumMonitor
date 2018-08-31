@@ -323,12 +323,13 @@ function returnArrayOfGroups($file)
 
 function scanDirForTests($dir, $showSubFolderTests, $fileInfo)
 {
-	$stuffToReturn = "<ul style=\"list-style: none;\" >No Files Found In Directory";
+	$stuffToReturn = "<ul style=\"list-style: none;\" >No Files Found In Directory: ".$dir;
 	$files = array_diff(scandir($dir), array('..', '.'));
 	if($files !== array())
 	{
 		$stuffToReturn = "<ul style=\"list-style: none;\" >";
 		$stuffToReturn .= "<li>".$dir."</li>";
+		$counter = 0;
 		foreach($files as $key => $value)
 		{
 			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
@@ -336,6 +337,7 @@ function scanDirForTests($dir, $showSubFolderTests, $fileInfo)
 			{
 				continue;
 			}
+			$counter++;
 	        if(is_file($path) && returnArrayOfTests(file($path), $path) !== array())
 	        {
 	        	$stuffToReturn .= "<li><input onchange=\"getFileList();\" type='checkbox' name=\"".$path."\">".$value."</li>";
@@ -344,6 +346,10 @@ function scanDirForTests($dir, $showSubFolderTests, $fileInfo)
 	        {
 	        	$stuffToReturn .= scanDirForTests($path, $showSubFolderTests, $fileInfo);
 	        }
+		}
+		if($counter === 0)
+		{
+			$stuffToReturn = "<ul>";
 		}
 	}
 	$stuffToReturn .= "</ul>";
