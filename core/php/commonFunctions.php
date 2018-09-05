@@ -125,7 +125,7 @@ function loadSentryData($sendCrashInfoJS, $branchSelected)
 
 		function eventThrowException(e)
 		{
-			//this would send errors, but it is disabled
+			console.log(e);
 		}
 
 	</script>";

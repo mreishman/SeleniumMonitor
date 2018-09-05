@@ -1,4 +1,4 @@
-var titleOfPage = "Watchlist";
+var titleOfPage = "testList";
 var selectOptions =
 {
 	0:{
@@ -662,10 +662,8 @@ function addRowFunction(data)
 				pattern: patternFromData,
 				key: "Log "+countOfWatchList,
 				recursive: defaultNewAddRecursive,
-				excludeTrim: defaultNewAddExcludeTrim,
 				fileType: fileTypeFromData,
 				filesInFolder: filesInFolderFromData,
-				AutoDeleteFiles: defaultNewAddAutoDeleteFiles,
 				FileInformation: "{}",
 				Group: "",
 				Name: "",

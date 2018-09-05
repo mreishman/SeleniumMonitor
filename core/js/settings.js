@@ -260,11 +260,37 @@ function poll()
 	{
 		if(checkIfChanges())
 		{
-			document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage+"*";
+			if(titleOfPage === "testList")
+			{
+				if(document.getElementById(titleOfPage+"Link").innerHTML !== "Test List"+"*")
+				{
+					document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage+"*";
+				}
+			}
+			else
+			{
+				if(document.getElementById(titleOfPage+"Link").innerHTML !== titleOfPage+"*")
+				{
+					document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage+"*";
+				}
+			}
 		}
 		else
 		{
-			document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage;
+			if(titleOfPage === "testList")
+			{
+				if(document.getElementById(titleOfPage+"Link").innerHTML !== "Test List")
+				{
+					document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage;
+				}
+			}
+			else
+			{
+				if(document.getElementById(titleOfPage+"Link").innerHTML !== titleOfPage)
+				{
+					document.getElementById(titleOfPage+"Link").innerHTML = titleOfPage;
+				}
+			}
 		}
 	}
 	catch(e)
