@@ -95,11 +95,29 @@ if($pollingRateType == 'Seconds')
 				<div class="newTestPartOne">
 					<h1 class="title">1.</h1>
 					<br>
-					<?php if(is_dir($locationOfTests) && !isDirRmpty($locationOfTests)):?>
-						<select id="fileListSelector" onchange="getFileList();">
-							<option value="PLACEHOLDER">Select A File</option>
-							<?php echo scanDirForTests($locationOfTests, $showSubFolderTests); ?>
-						</select>
+					<?php
+					$listToEcho = "";
+					foreach($locationOfTests as $key => $values)
+					{
+						$location = $values["Location"];
+						$pattern = $values["Pattern"];
+						if(!file_exists($location))
+						{
+							$listToEcho .= "<ul style=\"list-style: none;\" ><li style=\"color: red;\" > Could not find file or dir: ".$location."</li></ul>";
+						}
+						elseif(is_dir($location))
+						{
+							$listToEcho .= scanDirForTests($location, $values["Recursive"], json_decode($values["FileInformation"], true));
+						}
+						elseif(is_file($location))
+						{
+							$listToEcho .= "<ul style=\"list-style: none;\" ><li><input onchange=\"getFileList();\" type='checkbox' name=\"".$location."\">".$location."</li></ul>";
+						}
+					}
+					if($listToEcho):?>
+					<form id="fileSelectListForm" >
+						<?php echo $listToEcho; ?>
+					</form>
 					<?php else: ?>
 						Please specifiy a directory of where test are located on the settings page
 					<?php endif;?>
@@ -141,7 +159,6 @@ if($pollingRateType == 'Seconds')
 				</div>
 				<div  class="fontChange" style="width: 100%; text-align: left;" id="{{id}}Title">
 					<h3>
-						<span id="{{id}}Folder">{{file}}</span>
 						<div style="float: right;">
 							<img class="imageInHeaderContainer" onclick="exportResults('{{id}}');" src="../core/img/save.png">
 							<img class="imageInHeaderContainer" onclick="deleteTests('{{id}}');" src="../core/img/trashCan.png">
@@ -214,8 +231,6 @@ if($pollingRateType == 'Seconds')
 						</div>
 					</div>
 					<div class="fontChange conainerSub containerSubBG" id="{{id}}MainMenuConfig" style="display: none;" >
-						<br>
-						<input style="width: 75%; display: block;" type="text" id="{{id}}File" value="{{file}}">
 						<br>
 						<input style="width: 75%; display: block;" type="text" id="{{id}}BaseUrl" value="{{baseUrl}}">
 						<br>

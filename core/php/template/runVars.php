@@ -22,9 +22,6 @@ Run Settings
 		</div>
 	</li>
 	<li>
-		<span class="settingsBuffer" > Test Folder: </span>  <input style="width: 600px;" type="text" name="locationOfTests" value="<?php echo $locationOfTests;?>" >
-	</li>
-	<li>
 		<span class="settingsBuffer" > Selenium Folder: </span>  <input style="width: 600px;" type="text" name="locationOfSelenium" value="<?php echo $locationOfSelenium;?>" >
 	</li>
 	<li>
@@ -47,33 +44,33 @@ Run Settings
 	</li>
 	<li>
 		<span class="settingsBuffer" > Enable Network Check: </span>
-		<select name="runCheckCount">
-			<option <?php if($runCheckCount == 'true'){echo "selected";} ?> value="true">True</option>
-			<option <?php if($runCheckCount == 'false'){echo "selected";} ?> value="false">False</option>
-		</select>
-		<br>
+		<div class="selectDiv">
+			<select name="runCheckCount">
+				<option <?php if($runCheckCount == 'true'){echo "selected";} ?> value="true">True</option>
+				<option <?php if($runCheckCount == 'false'){echo "selected";} ?> value="false">False</option>
+			</select>
+		</div>
+	</li>
+	<li>
 		* This could limit the ammount of tests running at a time depending of the speed of the network / main node
 	</li>
 	<li>
 		<span class="settingsBuffer" > Default progress indicator: </span>
-		<select name="defaultShowProgressType">
-			<option <?php if($defaultShowProgressType == 'percent'){echo "selected";} ?> value="percent">Percent</option>
-			<option <?php if($defaultShowProgressType == 'fraction'){echo "selected";} ?> value="fraction">Fraction</option>
-		</select>
+		<div class="selectDiv">
+			<select name="defaultShowProgressType">
+				<option <?php if($defaultShowProgressType == 'percent'){echo "selected";} ?> value="percent">Percent</option>
+				<option <?php if($defaultShowProgressType == 'fraction'){echo "selected";} ?> value="fraction">Fraction</option>
+			</select>
+		</div>
 	</li>
 	<li>
 		<span class="settingsBuffer" > Default ETA: </span>
-		<select name="defaultShowEta">
-			<option <?php if($defaultShowEta == 'eta'){echo "selected";} ?> value="eta">ETA</option>
-			<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="elapsed">Elapsed</option>
-		</select>
-	</li>
-	<li>
-		<span class="settingsBuffer" > Show Subfolder Files: </span>
-		<select name="showSubFolderTests">
-			<option <?php if($showSubFolderTests == 'true'){echo "selected";} ?> value="true">True</option>
-			<option <?php if($showSubFolderTests == 'false'){echo "selected";} ?> value="false">False</option>
-		</select>
+		<div class="selectDiv">
+			<select name="defaultShowEta">
+				<option <?php if($defaultShowEta == 'eta'){echo "selected";} ?> value="eta">ETA</option>
+				<option <?php if($defaultShowEta == 'elapsed'){echo "selected";} ?> value="elapsed">Elapsed</option>
+			</select>
+		</div>
 	</li>
 </ul>
 </div>

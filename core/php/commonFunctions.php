@@ -120,38 +120,12 @@ function evaluateBool($boolVal, $trueVal, $falseVal)
 
 function loadSentryData($sendCrashInfoJS, $branchSelected)
 {
-	if($sendCrashInfoJS === "true")
-	{
-		include(baseURL()."core/php/configStatic.php");
-		$versionForSentry = $configStatic["version"];
-		$returnString =  "
-		<script src=\"https://cdn.ravenjs.com/3.17.0/raven.min.js\" crossorigin=\"anonymous\"></script>
-		<script type=\"text/javascript\">
-		Raven.config(\"https://2e455acb0e7a4f8b964b9b65b60743ed@sentry.io/205980\", {
-		    release: \"".$versionForSentry."\"
-		}).install();
-
-		function eventThrowException(e)
-		{
-			Raven.captureException(e);
-			";
-			if($branchSelected === 'beta')
-			{
-				$returnString .= "
-					Raven.showReportDialog();
-				";
-			}
-
-		$returnString .= "}
-
-		</script>";
-	}
 	return "
 	<script>
 
 		function eventThrowException(e)
 		{
-			//this would send errors, but it is disabled
+			console.log(e);
 		}
 
 	</script>";
@@ -258,9 +232,9 @@ function filterGroupname($line)
 	return $line;
 }
 
-function getAllTestsFromGroup($file, $groupNameArray)
+function getAllTestsFromGroup($fileName, $groupNameArray)
 {
-	$file = file($file);
+	$file = file($fileName);
 	$arrayOfTests = array();
 	foreach ($groupNameArray as $groupName)
 	{
@@ -287,9 +261,12 @@ function getAllTestsFromGroup($file, $groupNameArray)
 										if(strpos($lineCheckForFunction, "//") === false)
 										{
 											$line = filterFunctionName($lineCheckForFunction);
-											if(!in_array($line, $arrayOfTests))
+											if(!isset($arrayOfTests[$fileName."_".$line]))
 											{
-												array_push($arrayOfTests, $line);
+												$arrayOfTests[$fileName."_".$line] = array(
+													"file"				=> $fileName,
+													"name" 				=> $line
+												);
 											}
 										}
 									}
@@ -344,29 +321,42 @@ function returnArrayOfGroups($file)
 	return $arrayOfGroups;
 }
 
-function scanDirForTests($dir, $showSubFolderTests)
+function scanDirForTests($dir, $showSubFolderTests, $fileInfo)
 {
-	$stuffToReturn = "";
+	$stuffToReturn = "<ul style=\"list-style: none;\" >No Files Found In Directory: ".$dir;
 	$files = array_diff(scandir($dir), array('..', '.'));
 	if($files !== array())
 	{
+		$stuffToReturn = "<ul style=\"list-style: none;\" >";
+		$stuffToReturn .= "<li>".$dir."</li>";
+		$counter = 0;
 		foreach($files as $key => $value)
 		{
 			$path = realpath($dir.DIRECTORY_SEPARATOR.$value);
-	        if(is_file($path) && returnArrayOfTests(file($path)) !== array())
+			if(isset($fileInfo[$path]) && isset($fileInfo[$path]["Include"]) && $fileInfo[$path]["Include"] !== "true")
+			{
+				continue;
+			}
+			$counter++;
+	        if(is_file($path) && returnArrayOfTests(file($path), $path) !== array())
 	        {
-	        	$stuffToReturn .= "<option value='".$path."'' >".$value."</option>";
+	        	$stuffToReturn .= "<li><input onchange=\"getFileList();\" type='checkbox' name=\"".$path."\">".$value."</li>";
 	        }
 	        elseif(is_dir($path) && $showSubFolderTests)
 	        {
-	        	$stuffToReturn .= scanDirForTests($path, $showSubFolderTests);
+	        	$stuffToReturn .= scanDirForTests($path, $showSubFolderTests, $fileInfo);
 	        }
 		}
+		if($counter === 0)
+		{
+			$stuffToReturn = "<ul>";
+		}
 	}
+	$stuffToReturn .= "</ul>";
 	return $stuffToReturn;
 }
 
-function returnArrayOfTests($file)
+function returnArrayOfTests($file, $fileName)
 {
 	$arrayOfTests = array();
 	for ($i=0; $i < count($file); $i++)
@@ -380,7 +370,10 @@ function returnArrayOfTests($file)
 					$line = filterFunctionName($file[$i]);
 					if(!in_array($line, $arrayOfTests))
 					{
-						array_push($arrayOfTests, $line);
+						$arrayOfTests[$fileName.$line] = array(
+							"test"						=>	$line,
+							"file"						=>	$fileName
+						);
 					}
 				}
 			}
@@ -411,6 +404,65 @@ function getAllTestLogFileTimes($path = "../../tmp/tests/")
 			elseif(is_file($fullPath))
 			{
 				$response[$filename] = filemtime($fullPath);
+			}
+		}
+	}
+	return $response;
+}
+
+function getListOfFiles($data)
+{
+	$path = $data["path"];
+	$filter = $data["filter"];
+	$response = $data["response"];
+	$recursive = $data["recursive"];
+	$fileData = array();
+	if(isset($data["data"]))
+	{
+		$fileData = $data["data"];
+	}
+
+	$path = preg_replace('/\/$/', '', $path);
+	if(file_exists($path))
+	{
+		$scannedDir = scandir($path);
+		if(!is_array($scannedDir))
+		{
+			$scannedDir = array($scannedDir);
+		}
+		$files = array_diff($scannedDir, array('..', '.'));
+		if($files)
+		{
+			foreach($files as $k => $filename)
+			{
+				$fullPath = $path . DIRECTORY_SEPARATOR . $filename;
+				if(is_dir($fullPath) && $recursive === "true")
+				{
+					$response = getListOfFiles(array(
+						"path" 			=> $fullPath,
+						"filter"		=> $filter,
+						"response"		=> $response,
+						"recursive"		=> "true",
+						"data"			=> $fileData
+
+					));
+				}
+				elseif(preg_match('/' . $filter . '/S', $filename) && is_file($fullPath))
+				{
+					$boolCheck = true;
+					if(isset($fileData[$fullPath]))
+					{
+						$dataToUse = get_object_vars($fileData[$fullPath]);
+						if($dataToUse["Include"] === "false")
+						{
+							$boolCheck = false;
+						}
+					}
+					if($boolCheck)
+					{
+						array_push($response, $fullPath);
+					}
+				}
 			}
 		}
 	}

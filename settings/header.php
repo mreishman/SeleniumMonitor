@@ -10,17 +10,12 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 	<?php else: ?>
 		<a id="MainLink" onclick="goToUrl('main.php');" >Main</a>
 	<?php endif; ?>
-	<?php if(strpos($URI, 'about.php') !== false): ?>
-		<a style="cursor: default;" class="active" id="aboutLink" >About</a>
-	<?php else: ?>	
-		<a id="aboutLink" onclick="goToUrl('about.php');">About</a>
+	<?php if(strpos($URI, 'testList.php') !== false): ?>
+		<a style="cursor: default;" class="active" id="testListLink" >Test List</a>
+	<?php else: ?>
+		<a id="testListLink" onclick="goToUrl('testList.php');" >Test List</a>
 	<?php endif; ?>
-	<?php if(strpos($URI, 'faq.php') !== false): ?>
-		<a style="cursor: default;" class="active" id="faqLink" >FAQ</a>
-	<?php else: ?>	
-		<a id="faqLink" onclick="goToUrl('faq.php');">FAQ</a>
-	<?php endif; ?>
-	<?php if((strpos($URI, 'whatsNew.php') !== false) || (strpos($URI, 'update.php') !== false) || (strpos($URI, 'changeLog.php') !== false)): ?>
+	<?php if(strpos($URI, 'update.php') !== false): ?>
 		<a style="cursor: default;" class="active" id="updateLink">
 	<?php else: ?>
 		<a id="updateLink" onclick="goToUrl('update.php');">
@@ -60,12 +55,7 @@ echo loadSentryData($sendCrashInfoJS, $branchSelected); ?>
 	> Dev</a>
 </div>
 
-<?php if((strpos($URI, 'whatsNew.php') !== false) || (strpos($URI, 'update.php') !== false) || (strpos($URI, 'changeLog.php') !== false)): ?>
-	<div id="menu2">
-		<a <?php if(strpos($URI, 'update.php') !== false): ?> class='active' <?php else: ?>  onclick="goToUrl('./update.php');"  <?php endif;?> > Update </a>
-		<a <?php if(strpos($URI, 'changeLog.php') !== false): ?> class='active' <?php else: ?>  onclick="goToUrl('./changeLog.php');"  <?php endif;?> > Changelog </a>
-	</div>
-<?php endif;
+<?php
 $baseUrlImages = $localURL;
 ?>
 <script type="text/javascript">

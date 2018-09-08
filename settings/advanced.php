@@ -124,42 +124,6 @@ while (file_exists($baseUrl."conf/config".$count.".php"))
 			</ul>
 		</div>
 	</form>
-	<form id="jsPhpSend" action="../core/php/settingsSave.php" method="post">
-		<div class="settingsHeader">
-			Error / Crash Info
-			<div class="settingsHeaderButtons"> 
-				<?php echo addResetButton("jsPhpSend");
-				if ($setupProcess == "preStart" || $setupProcess == "finished"): ?>
-					<a class="linkSmall" onclick="saveAndVerifyMain('jsPhpSend');" >Save Changes</a>
-				<?php else: ?>
-					<button  onclick="displayLoadingPopup();">Save Changes</button>
-				<?php endif; ?>
-			</div>
-		</div>
-		<div class="settingsDiv" >
-			<ul id="settingsUl">
-				<li>
-					Send anonymous information about javascript errors/crashes:
-					<div class="selectDiv">
-						<select name="sendCrashInfoJS">
-  							<option <?php if($sendCrashInfoJS == 'true'){echo "selected";} ?> value="true">True</option>
-  							<option <?php if($sendCrashInfoJS == 'false'){echo "selected";} ?> value="false">False</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					Send anonymous information about php errors/crashes:
-					<div class="selectDiv">
-						<select name="sendCrashInfoPHP">
-  							<option <?php if($sendCrashInfoPHP == 'true'){echo "selected";} ?> value="true">True</option>
-  							<option <?php if($sendCrashInfoPHP == 'false'){echo "selected";} ?> value="false">False</option>
-						</select>
-					</div>
-				</li>
-				<img src="../core/img/exampleErrorJS.png" height="200px;">
-			</ul>
-		</div>
-	</form>
 	<form id="locationOtherApps" action="../core/php/settingsSave.php" method="post">
 		<div class="settingsHeader">
 			File Locations
