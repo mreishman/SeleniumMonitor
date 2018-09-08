@@ -1,7 +1,7 @@
 <?php
 
 $versionCheckArray = array(
-	'version'		=> '1.6.3',
+	'version'		=> '1.7',
 	'versionList'		=> array(
 		'1.0'	        => array(
 			'branchName'	=> '1.0Update',
@@ -58,6 +58,10 @@ $versionCheckArray = array(
 		'1.6.3'	        => array(
 			'branchName'	=> '1.6.3Update',
 			'releaseNotes'	=> '<ul><li>Bug Fixes<ul><li>Added refresh next to iframe in tests to refresh if video 404 on first load</li><li>Reduced size of array for generating time estimates. (only from last 100 tests now)</li></ul></li></ul>'
+		),
+		'1.7'	        => array(
+			'branchName'	=> '1.7Update',
+			'releaseNotes'	=> '<ul><li>Features<ul><li>Run tests from more than one file at a time</li><li>Seperated info and settings into two panels</li><li>Added ability to add more than one test folder directory</li></ul></li><li>Bug Fixes<ul><li>Removed some unused settings</li><li>Fixed update > 10 bug</li></ul></li></ul>'
 		),
 	)
 );
